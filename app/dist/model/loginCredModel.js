@@ -3,19 +3,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userProfileModel = void 0;
+exports.loginCredModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
-const userProfileSchema = new mongoose_1.default.Schema({
-    userId: String,
+const loginCredSchema = new mongoose_1.default.Schema({
     email: String,
-    studioName: String,
     mobile: String,
     pwd: String,
+    userId: String,
     status: String,
+    clientId: String,
     customerType: String,
     otp: Number,
     createdDate: String,
-    udpatedDate: String,
+    updatedDate: String,
 });
-const userProfileModel = () => mongoose_1.default.model("t_user", userProfileSchema);
-exports.userProfileModel = userProfileModel;
+const loginCredModel = () => mongoose_1.default.model("t_login_cred", loginCredSchema);
+exports.loginCredModel = loginCredModel;

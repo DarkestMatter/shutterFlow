@@ -1,7 +1,9 @@
 export interface IEvent {
-  eventName: string;
-  eventType?: string;
-  eventDate?: string;
-  photoCount?: string;
-  videoCount?: string;
+  eventName: String;
+  eventType?: String;
+  eventDate?: String;
+  photoCount?: String;
+  videoCount?: String;
+  createdDate?: String;
+  updatedDate: String;
 }

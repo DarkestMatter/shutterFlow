@@ -3,7 +3,7 @@ import { defaultClient, IClientData } from "../../interfaces/IClient";
 import { addClientThunk } from "../../thunk/addClientThunk";
 import { getClientListThunk } from "../../thunk/getClientListThunk";
 
-export const clientSlice = createSlice({
+export const userSlice = createSlice({
   name: "client",
   initialState: defaultClient,
   reducers: {
@@ -11,7 +11,7 @@ export const clientSlice = createSlice({
       state.clientList = action.payload;
     },
     updateSelectedClient: (state, action: PayloadAction<IClientData>) => {
-      state.selected = action.payload;
+      state.selectedClient = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -20,7 +20,7 @@ export const clientSlice = createSlice({
   },
 });
 
-export const { updateClientList } = clientSlice.actions;
-export const { updateSelectedClient } = clientSlice.actions;
+export const { updateClientList } = userSlice.actions;
+export const { updateSelectedClient } = userSlice.actions;
 
-export const clientReducer = clientSlice.reducer;
+export const userReducer = userSlice.reducer;

@@ -3,7 +3,7 @@ import axios from "axios";
 import { api } from "../env";
 import { IClientData } from "../interfaces/IClient";
 import { updateSelectedClient } from "../slices/client/clientSlice";
-import { updateLoader } from "../slices/common/commonSlice";
+import { updateLoader, updateToken } from "../slices/common/commonSlice";
 import { updateMsg } from "../slices/common/msgSlice";
 
 const url = api;
@@ -22,9 +22,14 @@ export const addClientThunk = createAsyncThunk(
           headers: { authorisation: `${token}` },
         })
         .then((response) => {
-          dispatch(updateMsg({ errorMsg: response.data?.errorMsg }));
-          dispatch(updateSelectedClient(response.data?.result));
-          dispatch(updateLoader({ isLoading: false }));
+          if (response.data?.validToken) {
+            dispatch(updateMsg({ errorMsg: response.data?.errorMsg }));
+            dispatch(updateSelectedClient(response.data?.result));
+            dispatch(updateLoader({ isLoading: false }));
+          } else {
+            dispatch(updateMsg({ errorMsg: response.data?.errorMsg }));
+            dispatch(updateLoader({ isLoading: false }));
+          }
         });
     } catch (error) {
       return rejectWithValue("something went wrong");

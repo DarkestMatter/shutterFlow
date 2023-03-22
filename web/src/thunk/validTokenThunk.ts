@@ -18,7 +18,7 @@ export const validateTokenThunk = createAsyncThunk(
           headers: { authorisation: `${token}` },
         })
         .then((response) => {
-          if (response.data?.result?.email) {
+          if (response.data?.result?.email || response.data?.result?.mobile) {
             dispatch(updateToken({ isValidToken: true }));
             dispatch(updateUserProfile(response.data?.result));
             dispatch(updateLoader({ isLoading: false }));

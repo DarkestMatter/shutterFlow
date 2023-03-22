@@ -1,18 +1,19 @@
 import { RequestHandler } from "express";
-import { IUserProfile } from "../../../interface/IUserProfile";
-import { findUserDataController } from "../findUserDataController";
-import { responderController } from "../responderController";
-import { otpVerificationController } from "./otpVerificationController";
+import { findValidLogin } from "../../../common/findValidLogin";
 import { tokenGenerator } from "../../../common/tokenGenerator";
+import { IUserProfile } from "../../../interface/IUserProfile";
+import { responderController } from "../responderController";
 
 export const loginController: RequestHandler = async (req, res, next) => {
   try {
-    const userData = (await findUserDataController(
+    const userData = (await findValidLogin(
       req.body?.email
     )) as unknown as IUserProfile;
-    if (userData?.status === userStatus.registered) {
+    if (
+      userData?.pwd === req.body?.pwd &&
+      userData?.status === statusEnum.registered
+    ) {
       const resultObj = {
-        userId: userData?.userId,
         email: userData?.email,
         mobile: userData?.mobile,
         studioName: userData?.studioName,
@@ -20,11 +21,14 @@ export const loginController: RequestHandler = async (req, res, next) => {
       };
       responderController({ result: resultObj, statusCode: 200 }, res);
     } else if (userData?.pwd === req.body?.pwd) {
-      const token = await tokenGenerator(req.body.email);
+      //console.log(userData);
+      const token = await tokenGenerator(
+        userData?.userId,
+        userData?.customerType
+      );
       const resultObj = {
         email: userData?.email,
         studioName: userData?.studioName,
-        userId: userData?.userId,
         mobile: userData?.mobile,
         status: userData?.status,
         token: token,

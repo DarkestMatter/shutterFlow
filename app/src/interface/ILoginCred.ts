@@ -1,13 +1,12 @@
-export interface IUserProfile {
-  _id?: String;
-  userId?: String;
+export interface ILoginCred {
   email?: String;
-  studioName?: String;
   mobile?: String;
   pwd?: String;
+  userId?: String;
   status?: String;
+  clientId?: String;
   customerType?: String;
   otp?: Number;
   createdDate?: String;
-  udpatedDate: String;
+  updatedDate: String;
 }

@@ -12,7 +12,7 @@ const enum successMsg {
   enterOtp = "Enter OTP recieved on your email ID",
 }
 
-const enum userStatus {
+const enum statusEnum {
   registered = "Registered",
   verified = "Verified",
   inactive = "Inactive",
@@ -20,4 +20,9 @@ const enum userStatus {
 
 const enum eventName {
   defaultEventName = "HighLight",
+}
+
+const enum customerType {
+  user = "user",
+  client = "client",
 }

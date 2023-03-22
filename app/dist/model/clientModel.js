@@ -8,12 +8,14 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const clientSchema = new mongoose_1.default.Schema({
     clientName: String,
     clientId: String,
-    mobile: String,
+    clientMobileNo: String,
     eventType: String,
     eventList: [],
     clientOwnerName: String,
     clientOwnerId: String,
     clientOwnerEmail: String,
+    createdDate: String,
+    updatedDate: String,
 });
 const clientModel = () => mongoose_1.default.model("t_client", clientSchema);
 exports.clientModel = clientModel;

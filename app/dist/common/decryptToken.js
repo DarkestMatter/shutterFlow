@@ -19,7 +19,7 @@ const decryptToken = (token) => {
             });
         }
         catch (err) {
-            reject("Please login again with proper Email" /* errorMsg.incorrectUserEmail */);
+            reject("enter correct otp" /* errorMsg.incorrectOtp */);
         }
     });
 };

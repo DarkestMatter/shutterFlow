@@ -28,13 +28,16 @@ export const Dashboard: React.FC = () => {
     await dispatch(
       getClientListThunk({
         uri: "getClientList",
-        data: { email: getUser.email, userId: getUser.userId },
+        data: { email: getUser.email },
       })
     );
-    !getMsg.errorMsg ? navigate("/eventDashboard") : null;
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (isValidToken) {
+      getClientList();
+    }
+  }, []);
 
   return (
     <Grid container>

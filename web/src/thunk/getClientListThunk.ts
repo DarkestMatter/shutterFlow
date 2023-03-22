@@ -27,11 +27,10 @@ export const getClientListThunk = createAsyncThunk(
         })
         .then((response) => {
           if (response.data?.validToken) {
-            dispatch(updateToken({ isValidToken: true }));
             dispatch(updateLoader({ isLoading: false }));
+            dispatch(updateClientList(response.data?.result));
           } else {
             dispatch(updateMsg({ errorMsg: response.data?.errorMsg }));
-            dispatch(updateClientList(response.data?.result));
             dispatch(updateLoader({ isLoading: false }));
           }
         });

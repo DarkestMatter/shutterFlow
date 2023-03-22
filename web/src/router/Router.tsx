@@ -33,13 +33,7 @@ export const Router: React.FC = () => {
         </Backdrop>
       )}
       {getUserProfile?.status === userStatus.verified ? (
-        <Grid
-          item
-          xs={0}
-          md={4}
-          xl={3}
-          sx={{ display: { xs: "none", md: "block" } }}
-        >
+        <Grid item xs={0} md={4} xl={3}>
           <HeaderBody />
         </Grid>
       ) : (

@@ -3,7 +3,7 @@ import axios from "axios";
 import { api } from "../env";
 import { IUserProfile } from "../interfaces/IUserProfile";
 import { dialogName } from "../services/enum";
-import { updateLoader } from "../slices/common/commonSlice";
+import { updateLoader, updateToken } from "../slices/common/commonSlice";
 import { openDialogBox } from "../slices/common/dialogBoxSlice";
 import { updateMsg } from "../slices/common/msgSlice";
 import { updateUserProfile } from "../slices/user/userProfileSlice";
@@ -46,10 +46,16 @@ export const submitRegistrationOtpThunk = createAsyncThunk(
       await axios
         .post(`${url.api}${payload.uri}`, payload.data)
         .then((response) => {
-          dispatch(updateUserProfile(response.data?.result));
-          dispatch(updateMsg(response.data));
-          localStorage.setItem("token", response.data?.result?.token);
-          dispatch(updateLoader({ isLoading: false }));
+          if (response?.data?.result?.token) {
+            dispatch(updateUserProfile(response.data?.result));
+            dispatch(updateToken({ isValidToken: true }));
+            dispatch(updateMsg(response.data));
+            localStorage.setItem("token", response.data?.result?.token);
+            dispatch(updateLoader({ isLoading: false }));
+          } else {
+            dispatch(updateMsg(response.data));
+            dispatch(updateLoader({ isLoading: false }));
+          }
         });
     } catch (error) {
       return rejectWithValue("something went wrong");

@@ -1,12 +1,12 @@
-import { IUserProfile } from "../../interface/IUserProfile";
-import { userProfileModel } from "../../model/userProfileModel";
+import { IUserProfile } from "../interface/IUserProfile";
+import { userProfileModel } from "../model/userProfileModel";
 
-export const findUserDataController = (email: String) => {
+export const findValidUser = (userId: String | undefined) => {
   return new Promise((resolve, reject) => {
     try {
-      if (email) {
+      if (userId) {
         userProfileModel().findOne(
-          { email: email },
+          { userId: userId },
           { _id: 0 },
           (err: Error, result: IUserProfile) => {
             if (!err) {

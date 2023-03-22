@@ -1,13 +1,18 @@
-import { IUserProfile } from "../interface/IUserProfile";
-import jwt, { Secret, JwtPayload } from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
+import { ILoginCred } from "../interface/ILoginCred";
 
 export const SECRET_KEY: Secret = "7896-5630-7564-0809";
 
-export const tokenGenerator = (email: IUserProfile) => {
+export const tokenGenerator = (
+  userId: String | undefined,
+  customerType: String | undefined
+) => {
+  console.log(userId);
   return new Promise((resolve) => {
     const token = jwt.sign(
       {
-        email: email,
+        userId: userId,
+        customerType: customerType,
       },
       SECRET_KEY,
       { expiresIn: "7d" }

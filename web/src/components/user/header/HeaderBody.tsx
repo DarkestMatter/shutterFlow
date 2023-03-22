@@ -64,7 +64,9 @@ export const HeaderBody: React.FC = () => {
                 src={`${envProp.imgApi}/mnr_logo.png`}
                 onClick={handleLogoClick}
               /> */}
-              <h4 style={{ marginLeft: 15 }}>Shutter Flow</h4>
+              <h4 style={{ marginLeft: 15 }} onClick={handleLogoClick}>
+                Shutter Flow
+              </h4>
             </Grid>
           </Grid>
         </HeaderFixed>

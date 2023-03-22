@@ -6,7 +6,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField/TextField";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IClientData } from "../../../interfaces/IClient";
@@ -25,9 +25,9 @@ export const AddClientDialogBox: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const clientNameRef = useRef<HTMLInputElement>();
-  const clientMobileNoRef = useRef<HTMLInputElement>();
-  const eventTypeRef = useRef<HTMLInputElement>();
+  const [clientName, setClientName] = useState<string>("");
+  const [clientMobileNo, setClientMobileNo] = useState<string>("");
+  const [eventType, setEventType] = useState<string>("");
 
   const getUserProfile = useSelector(getUserProfileSelector);
   const getDialogBox = useSelector(getDialogBoxSelector);
@@ -37,9 +37,9 @@ export const AddClientDialogBox: React.FC = () => {
 
   const handleAddClientSubmit = async () => {
     const addClientFormData: IClientData = {
-      clientName: clientNameRef?.current?.value,
-      clientMobileNo: clientMobileNoRef?.current?.value,
-      eventType: eventTypeRef?.current?.value,
+      clientName: clientName,
+      clientMobileNo: clientMobileNo,
+      eventType: eventType,
       clientOwnerId: getUserProfile.userId,
       clientOwnerEmail: getUserProfile.email,
     };
@@ -85,8 +85,9 @@ export const AddClientDialogBox: React.FC = () => {
             <Grid item xs={12}>
               <TextField
                 id="clientNameInput"
-                inputRef={clientNameRef}
+                value={clientName}
                 label="Enter Client Name"
+                onChange={(e) => setClientName(e.target.value)}
                 onBlur={() => handleOnBlur("clientName")}
                 fullWidth
               ></TextField>
@@ -94,8 +95,9 @@ export const AddClientDialogBox: React.FC = () => {
             <Grid item xs={12}>
               <TextField
                 id="clientMobileNoInput"
-                inputRef={clientMobileNoRef}
+                value={clientMobileNo}
                 label="Enter Client Mobile Number"
+                onChange={(e) => setClientMobileNo(e.target.value)}
                 onBlur={() => handleOnBlur("clientMobileNo")}
                 fullWidth
               ></TextField>
@@ -103,8 +105,9 @@ export const AddClientDialogBox: React.FC = () => {
             <Grid item xs={12}>
               <TextField
                 id="clientEventType"
-                inputRef={eventTypeRef}
+                value={eventType}
                 label="Enter Client Event"
+                onChange={(e) => setEventType(e.target.value)}
                 onBlur={() => handleOnBlur("eventType")}
                 fullWidth
               ></TextField>

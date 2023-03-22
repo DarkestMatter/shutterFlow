@@ -4,41 +4,16 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getClientListSelector } from "../../../selectors/selectors";
 import { dialogName } from "../../../services/enum";
 import { openDialogBox } from "../../../slices/common/dialogBoxSlice";
 import { AddClientDialogBox } from "./AddClientDialogBox";
 
-const clientList = [
-  {
-    clientName: "Satish",
-    tileImgUrl: "https://mui.com/static/images/cards/contemplative-reptile.jpg",
-  },
-  {
-    clientName: "Satish",
-    tileImgUrl:
-      "https://expertphotography.b-cdn.net/wp-content/uploads/2019/02/Types-Of-Portrait-Photography-BW.jpg",
-  },
-  {
-    clientName: "Satish",
-    tileImgUrl: "https://mui.com/static/images/cards/contemplative-reptile.jpg",
-  },
-  {
-    clientName: "Satish",
-    tileImgUrl: "https://mui.com/static/images/cards/contemplative-reptile.jpg",
-  },
-  {
-    clientName: "Satish",
-    tileImgUrl: "https://mui.com/static/images/cards/contemplative-reptile.jpg",
-  },
-  {
-    clientName: "Satish",
-    tileImgUrl: "https://mui.com/static/images/cards/contemplative-reptile.jpg",
-  },
-];
-
 export const ClientTiles: React.FC = () => {
   const dispatch = useDispatch();
+
+  const clientList = useSelector(getClientListSelector);
 
   const handleAddClient = () =>
     dispatch(openDialogBox({ dialogName: dialogName.addClientDialog }));
@@ -69,14 +44,14 @@ export const ClientTiles: React.FC = () => {
           </CardActionArea>
         </Card>
       </Grid>
-      {clientList.map((client) => {
+      {clientList?.map((client) => {
         return (
           <Grid item xs={6} sm={3} md={4} xl={3}>
             <Card>
               <CardActionArea>
                 <CardMedia
                   component="img"
-                  image={client.tileImgUrl}
+                  image={client?.tileImgUrl}
                   alt="green iguana"
                   style={{ height: 150 }}
                 />
@@ -86,7 +61,7 @@ export const ClientTiles: React.FC = () => {
                     color="text.secondary"
                     textAlign="center"
                   >
-                    {client.clientName}
+                    {client?.clientName}
                   </Typography>
                 </CardContent>
               </CardActionArea>

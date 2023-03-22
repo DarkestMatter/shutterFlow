@@ -1,10 +1,12 @@
 import { RequestHandler } from "express";
-import { v4 as uuidv4 } from "uuid";
+import { addLoginCred } from "../../../common/addLoginCred";
+import { findValidLogin } from "../../../common/findValidLogin";
+import { findValidUser } from "../../../common/findValidUser";
 import { otpGenerator } from "../../../common/otpGenerator";
+import { ILoginCred } from "../../../interface/ILoginCred";
 import { IResponderResult } from "../../../interface/IResponderResult";
 import { IUserProfile } from "../../../interface/IUserProfile";
 import { userProfileModel } from "../../../model/userProfileModel";
-import { findUserDataController } from "../findUserDataController";
 import { responderController } from "../responderController";
 
 export const registrationController: RequestHandler = async (
@@ -13,59 +15,76 @@ export const registrationController: RequestHandler = async (
   next
 ) => {
   try {
-    const userData = (await findUserDataController(
+    const userData = (await findValidLogin(
       req.body?.email
-    )) as unknown as IUserProfile;
-    if (userData?.email && userData?.status === userStatus.verified) {
+    )) as unknown as ILoginCred;
+    if (userData?.email && userData?.status === statusEnum.verified) {
       const resultObj: IResponderResult = {
         result: userData,
         statusCode: 200,
         errorMsg: errorMsg.userExist,
       };
       responderController(resultObj, res);
-    } else if (userData?.email && userData?.status === userStatus.registered) {
+    } else if (userData?.email && userData?.status === statusEnum.registered) {
       const resultObj: IResponderResult = {
         result: userData,
         statusCode: 200,
         successMsg: successMsg.enterOtp,
       };
       responderController(resultObj, res);
-    } else if (!userData?.email && !userData?.status) {
-      const saveUserRegistration = userProfileModel();
-      let new_model: IUserProfile = {
-        userId: uuidv4(),
-        email: req.body.email.trim(),
-        mobile: req.body.mobile.trim(),
-        studioName: req.body.studioName.trim(),
-        pwd: req.body.pwd,
-        status: userStatus.registered,
-        otp: otpGenerator(),
-      };
-      let obj = new saveUserRegistration(new_model);
-      obj.save((err, result) => {
-        try {
-          if (!err) {
-            const resultObj = {
-              userId: result?.userId,
-              email: result?.email,
-              mobile: result?.mobile,
-              studioName: result?.studioName,
-              status: result?.status,
-            };
-            responderController({ result: resultObj, statusCode: 200 }, res);
-          } else {
+    } else {
+      try {
+        const newUserData: IUserProfile = {
+          ...req.body,
+          status: statusEnum.registered,
+          customerType: customerType.user,
+          otp: otpGenerator(),
+        };
+
+        const loginCreated = (await addLoginCred(
+          newUserData
+        )) as unknown as ILoginCred;
+
+        const saveUserRegistration = userProfileModel();
+        let new_model: IUserProfile = {
+          userId: loginCreated?.userId,
+          email: loginCreated?.email,
+          mobile: loginCreated?.mobile,
+          studioName: req.body?.studioName,
+          status: statusEnum.registered,
+          createdDate: new Date() as unknown as String,
+          udpatedDate: new Date() as unknown as String,
+        };
+        let obj = new saveUserRegistration(new_model);
+        obj.save((err, result) => {
+          try {
+            if (!err) {
+              const resultObj = {
+                email: result?.email,
+                mobile: result?.mobile,
+                studioName: result?.studioName,
+                status: result?.status,
+              };
+              responderController({ result: resultObj, statusCode: 200 }, res);
+            } else {
+              responderController(
+                { result: {}, statusCode: 500, errorMsg: errorMsg.serverError },
+                res
+              );
+            }
+          } catch (err) {
             responderController(
               { result: {}, statusCode: 500, errorMsg: errorMsg.serverError },
               res
             );
           }
-        } catch (err) {
-          responderController(
-            { result: {}, statusCode: 500, errorMsg: errorMsg.serverError },
-            res
-          );
-        }
-      });
+        });
+      } catch (err) {
+        responderController(
+          { result: {}, statusCode: 500, errorMsg: errorMsg.serverError },
+          res
+        );
+      }
     }
   } catch (err) {
     const errMsg = typeof err === "string" ? err : errorMsg.serverError;

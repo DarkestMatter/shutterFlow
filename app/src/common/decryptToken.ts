@@ -17,7 +17,7 @@ export const decryptToken = (token: any) => {
         }
       );
     } catch (err) {
-      reject(errorMsg.incorrectUserEmail);
+      reject(errorMsg.incorrectOtp);
     }
   });
 };

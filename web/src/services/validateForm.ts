@@ -1,7 +1,6 @@
 import isEmail from "validator/lib/isEmail";
 import isEmpty from "validator/lib/isEmpty";
 import isNumeric from "validator/lib/isNumeric";
-import { IFormValues } from "../interfaces/form/IForm";
 
 export const validateForm = (
   value: string | number | Date,

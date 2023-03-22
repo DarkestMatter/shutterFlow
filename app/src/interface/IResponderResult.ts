@@ -3,5 +3,5 @@ export interface IResponderResult {
   statusCode: Number;
   errorMsg?: String;
   successMsg?: String;
-  validToken?: Boolean;
+  inValidToken?: Boolean;
 }

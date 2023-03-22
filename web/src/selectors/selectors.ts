@@ -10,12 +10,12 @@ export const isValidTokenSelector = createSelector(
 
 export const getUserProfileSelector = createSelector(
   state,
-  (state) => state?.profile
+  (state) => state?.userProfile
 );
 
 export const getUserEmailSelector = createSelector(
   state,
-  (state) => state?.profile?.email
+  (state) => state?.userProfile?.email
 );
 
 export const getMsgSelector = createSelector(state, (state) => state?.msg);
@@ -28,4 +28,9 @@ export const isLoadingSelector = createSelector(
 export const getDialogBoxSelector = createSelector(
   state,
   (state) => state?.dialog?.dialogName
+);
+
+export const getClientListSelector = createSelector(
+  state,
+  (state) => state?.user?.clientList
 );

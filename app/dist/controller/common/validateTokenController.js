@@ -2,13 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateTokenController = void 0;
 const decryptToken_1 = require("../../common/decryptToken");
-const findUserDataController_1 = require("./findUserDataController");
+const findValidUser_1 = require("../../common/findValidUser");
 const responderController_1 = require("./responderController");
 const validateTokenController = async (req, res, next) => {
     try {
         const auth = (await (0, decryptToken_1.decryptToken)(req.headers));
-        if (auth === null || auth === void 0 ? void 0 : auth.email) {
-            const userData = (await (0, findUserDataController_1.findUserDataController)(auth === null || auth === void 0 ? void 0 : auth.email));
+        if (auth === null || auth === void 0 ? void 0 : auth.userId) {
+            const userData = (await (0, findValidUser_1.findValidUser)(auth === null || auth === void 0 ? void 0 : auth.userId));
             const resultObj = {
                 result: {
                     userId: userData === null || userData === void 0 ? void 0 : userData.userId,

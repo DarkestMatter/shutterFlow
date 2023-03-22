@@ -1,9 +1,9 @@
 import { RequestHandler } from "express";
 import { decryptToken } from "../../common/decryptToken";
+import { findValidUser } from "../../common/findValidUser";
 import { IAuth } from "../../interface/IAuth";
 import { IResponderResult } from "../../interface/IResponderResult";
 import { IUserProfile } from "../../interface/IUserProfile";
-import { findUserDataController } from "./findUserDataController";
 import { responderController } from "./responderController";
 
 export const validateTokenController: RequestHandler = async (
@@ -13,9 +13,9 @@ export const validateTokenController: RequestHandler = async (
 ) => {
   try {
     const auth = (await decryptToken(req.headers)) as unknown as IAuth;
-    if (auth?.email) {
-      const userData: IUserProfile = (await findUserDataController(
-        auth?.email
+    if (auth?.userId) {
+      const userData: IUserProfile = (await findValidUser(
+        auth?.userId
       )) as unknown as IUserProfile;
       const resultObj: IResponderResult = {
         result: {

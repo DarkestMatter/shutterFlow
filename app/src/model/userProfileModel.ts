@@ -8,7 +8,10 @@ const userProfileSchema = new mongoose.Schema<IUserProfile>({
   mobile: String,
   pwd: String,
   status: String,
+  customerType: String,
   otp: Number,
+  createdDate: String,
+  udpatedDate: String,
 });
 export const userProfileModel = () =>
   mongoose.model("t_user", userProfileSchema);

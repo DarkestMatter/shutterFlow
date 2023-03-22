@@ -3,8 +3,15 @@ import { IResponderResult } from "../../interface/IResponderResult";
 
 export const responderController = (result: IResponderResult, res: any) => {
   try {
-    res.status(result.statusCode);
-    res.json(result);
+    if (result?.inValidToken) {
+      const resultObj = { ...result, validToken: false };
+      res.status(resultObj.statusCode);
+      res.json(resultObj);
+    } else {
+      const resultObj = { ...result, validToken: true };
+      res.status(resultObj.statusCode);
+      res.json(resultObj);
+    }
   } catch (err) {
     console.log(err);
   }
