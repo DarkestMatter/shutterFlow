@@ -8,7 +8,6 @@ import {
   isValidTokenSelector,
 } from "../../../selectors/selectors";
 import { AppDispatch } from "../../../store";
-import { validateTokenThunk } from "../../../thunk/validTokenThunk";
 
 export const HeaderBody: React.FC = () => {
   const navigate = useNavigate();

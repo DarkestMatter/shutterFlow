@@ -16,13 +16,13 @@ export const findValidUser = (userId: String | undefined) => {
                 resolve(errorMsg.incorrectUserEmail);
               }
             } else {
-              reject(errorMsg.serverError);
+              reject(errorMsg.noValidUser);
             }
           }
         );
       }
     } catch (err) {
-      reject(errorMsg.serverError);
+      reject(errorMsg.userFoundError);
     }
   });
 };

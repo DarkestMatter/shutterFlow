@@ -20,7 +20,7 @@ const loginController = async (req, res, next) => {
         }
         else if ((userData === null || userData === void 0 ? void 0 : userData.pwd) === ((_c = req.body) === null || _c === void 0 ? void 0 : _c.pwd)) {
             //console.log(userData);
-            const token = await (0, tokenGenerator_1.tokenGenerator)(userData === null || userData === void 0 ? void 0 : userData.userId, userData === null || userData === void 0 ? void 0 : userData.customerType);
+            const token = await (0, tokenGenerator_1.tokenGenerator)(userData === null || userData === void 0 ? void 0 : userData.userId, userData === null || userData === void 0 ? void 0 : userData.customerType, userData === null || userData === void 0 ? void 0 : userData.status);
             const resultObj = {
                 email: userData === null || userData === void 0 ? void 0 : userData.email,
                 studioName: userData === null || userData === void 0 ? void 0 : userData.studioName,
@@ -35,7 +35,7 @@ const loginController = async (req, res, next) => {
         }
     }
     catch (err) {
-        (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: "Some Error occurred" /* errorMsg.serverError */ }, res);
+        (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: "Error occurred while Login" /* errorMsg.loginError */ }, res);
     }
 };
 exports.loginController = loginController;

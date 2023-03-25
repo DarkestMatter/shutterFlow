@@ -16,13 +16,13 @@ const findValidUser = (userId) => {
                         }
                     }
                     else {
-                        reject("Some Error occurred" /* errorMsg.serverError */);
+                        reject("No Valid User Found" /* errorMsg.noValidUser */);
                     }
                 });
             }
         }
         catch (err) {
-            reject("Some Error occurred" /* errorMsg.serverError */);
+            reject("Error while finding user" /* errorMsg.userFoundError */);
         }
     });
 };

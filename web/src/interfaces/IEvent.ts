@@ -1,8 +1,10 @@
-import { MutableRefObject } from "react";
-
 export interface IEvent {
+  eventId?: string;
+  clientId?: string;
+  clientName?: string;
+  clientOwnerId?: string;
   eventName?: string;
-  eventType?: string | MutableRefObject<string | undefined>;
+  eventType?: string;
   eventDate?: string;
   photoCount?: string;
   videoCount?: string;

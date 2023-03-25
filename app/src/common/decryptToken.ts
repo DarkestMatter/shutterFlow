@@ -12,12 +12,12 @@ export const decryptToken = (token: any) => {
           if (!err) {
             resolve(decoded);
           } else {
-            resolve(errorMsg.serverError);
+            resolve(errorMsg.invalidToken);
           }
         }
       );
     } catch (err) {
-      reject(errorMsg.incorrectOtp);
+      reject(errorMsg.invalidToken);
     }
   });
 };

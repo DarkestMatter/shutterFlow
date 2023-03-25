@@ -5,6 +5,7 @@ export const enum userStatus {
 }
 
 export enum dialogName {
-  otpDialogBox = "otpDialog",
+  otpDialog = "otpDialog",
   addClientDialog = "addClientDialog",
+  addEventDialog = "addEventDialog",
 }

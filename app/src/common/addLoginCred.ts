@@ -1,20 +1,20 @@
 import { v4 as uuidv4 } from "uuid";
-import { responderController } from "../controller/common/responderController";
 import { ILoginCred } from "../interface/ILoginCred";
 import { IUserProfile } from "../interface/IUserProfile";
 import { loginCredModel } from "../model/loginCredModel";
+import { otpGenerator } from "./otpGenerator";
 
 export const addLoginCred = async (userData: IUserProfile) => {
   return new Promise((resolve, reject) => {
     const saveNewLoginCred = loginCredModel();
     let new_model: ILoginCred = {
-      userId: uuidv4(),
+      userId: `${userData?.studioName?.replace(/\s/g, "")}-${uuidv4()}`,
       email: userData?.email?.trim(),
       mobile: userData?.mobile?.trim(),
       pwd: userData?.pwd,
       status: userData?.status,
       customerType: userData?.customerType,
-      otp: userData.otp,
+      otp: otpGenerator(),
       createdDate: new Date() as unknown as String,
       updatedDate: new Date() as unknown as String,
     };

@@ -19,13 +19,13 @@ const findValidLogin = (email) => {
                         }
                     }
                     else {
-                        reject("Some Error occurred" /* errorMsg.serverError */);
+                        reject("No valid login cred found" /* errorMsg.noLoginCredFound */);
                     }
                 });
             }
         }
         catch (err) {
-            reject("Some Error occurred" /* errorMsg.serverError */);
+            reject("Error occurred while Login" /* errorMsg.loginError */);
         }
     });
 };

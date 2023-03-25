@@ -27,7 +27,7 @@ export const getClientListController = async (
     );
   } catch (err) {
     responderController(
-      { result: {}, statusCode: 500, errorMsg: errorMsg.serverError },
+      { result: {}, statusCode: 500, errorMsg: errorMsg.errorAtClientList },
       res
     );
   }

@@ -22,13 +22,13 @@ export const findValidLogin = (email: String) => {
                 resolve(errorMsg.incorrectUserEmail);
               }
             } else {
-              reject(errorMsg.serverError);
+              reject(errorMsg.noLoginCredFound);
             }
           }
         );
       }
     } catch (err) {
-      reject(errorMsg.serverError);
+      reject(errorMsg.loginError);
     }
   });
 };

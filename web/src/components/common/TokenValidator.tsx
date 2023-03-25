@@ -1,9 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { isValidTokenSelector } from "../../selectors/selectors";
+import { validateTokenApi } from "../../api/validateTokenApi";
+import {
+  getUserProfileSelector,
+  isValidTokenSelector,
+} from "../../selectors/selectors";
 import { AppDispatch } from "../../store";
-import { validateTokenThunk } from "../../thunk/validTokenThunk";
 
 export const TokenValidator: React.FC = () => {
   const navigate = useNavigate();
@@ -12,15 +15,14 @@ export const TokenValidator: React.FC = () => {
   const isValidToken = useSelector(isValidTokenSelector);
 
   const getToken = async () => {
-    await dispatch(
-      validateTokenThunk({
-        uri: "validateToken",
-        data: {},
-      })
-    );
-    if (isValidToken) {
+    const apiResp = await validateTokenApi({
+      dispatch: dispatch,
+      uri: "validateToken",
+      data: {},
+    });
+    if (apiResp) {
       navigate(location.pathname);
-    } else if (isValidToken === false) {
+    } else {
       navigate("/login");
     }
   };

@@ -34,3 +34,8 @@ export const getClientListSelector = createSelector(
   state,
   (state) => state?.user?.clientList
 );
+
+export const getSelectedClient = createSelector(
+  state,
+  (state) => state?.user?.selectedClient
+);

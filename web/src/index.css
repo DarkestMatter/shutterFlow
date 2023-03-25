@@ -1,5 +1,6 @@
 :root {
-  font-family: Verdana, Arial, Sans-Serif !important;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif !important;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
@@ -22,6 +23,7 @@
   font-weight: 300;
   font-size: 30;
   margin-bottom: 50px;
+  font-family: inherit;
 }
 
 .centerDiv {

@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { defaultClient, IClientData } from "../../interfaces/IClient";
-import { addClientThunk } from "../../thunk/addClientThunk";
-import { getClientListThunk } from "../../thunk/getClientListThunk";
+import { IEvent } from "../../interfaces/IEvent";
 
 export const userSlice = createSlice({
   name: "client",
@@ -13,14 +12,18 @@ export const userSlice = createSlice({
     updateSelectedClient: (state, action: PayloadAction<IClientData>) => {
       state.selectedClient = action.payload;
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(addClientThunk.fulfilled, (state, action) => {});
-    builder.addCase(getClientListThunk.fulfilled, (state, action) => {});
+    updateSelectedClientEventList: (state, action: PayloadAction<IEvent>) => {
+      if (state?.selectedClient) {
+        state.selectedClient.eventList?.push(action.payload);
+      }
+    },
   },
 });
 
-export const { updateClientList } = userSlice.actions;
-export const { updateSelectedClient } = userSlice.actions;
+export const {
+  updateClientList,
+  updateSelectedClientEventList,
+  updateSelectedClient,
+} = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

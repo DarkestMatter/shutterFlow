@@ -3,10 +3,6 @@ import {
   defaultIUserProfile,
   IUserProfile,
 } from "../../interfaces/IUserProfile";
-import {
-  submitRegistrationFormThunk,
-  submitRegistrationOtpThunk,
-} from "../../thunk/registrationThunk";
 
 export const userProfileSlice = createSlice({
   name: "userProfile",
@@ -26,16 +22,6 @@ export const userProfileSlice = createSlice({
           state.status = action.payload?.status;
       }
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(
-      submitRegistrationFormThunk.fulfilled,
-      (state, action) => {}
-    );
-    builder.addCase(
-      submitRegistrationOtpThunk.fulfilled,
-      (state, action) => {}
-    );
   },
 });
 

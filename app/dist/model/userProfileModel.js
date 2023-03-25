@@ -13,7 +13,6 @@ const userProfileSchema = new mongoose_1.default.Schema({
     pwd: String,
     status: String,
     customerType: String,
-    otp: Number,
     createdDate: String,
     udpatedDate: String,
 });

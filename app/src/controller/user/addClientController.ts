@@ -7,6 +7,7 @@ import { IEvent } from "../../interface/IEvent";
 import { IUserProfile } from "../../interface/IUserProfile";
 import { clientModel } from "../../model/clientModel";
 import { responderController } from "../common/responderController";
+import { addEvent } from "./addEventController";
 
 export const addClientController = async (
   req: IClient & IAuth,
@@ -18,21 +19,40 @@ export const addClientController = async (
       req?.userId
     )) as unknown as IUserProfile;
 
-    if (userData?.email) {
+    if (userData && userData?.email && userData?.userId) {
       // && userData?.customerType === customerType.user) {
+
+      const clientId = `${req?.clientName?.replace(/\s/g, "")}-${uuidv4()}`;
+      const eventId = `${eventName.defaultEventName?.replace(
+        /\s/g,
+        ""
+      )}-${uuidv4()}`;
       const eventList: IEvent[] = [
         {
+          eventId: eventId,
           eventName: eventName.defaultEventName,
+          clientId: clientId,
+          clientName: req?.clientName,
+          clientOwnerId: userData.userId,
           createdDate: new Date() as unknown as String,
           updatedDate: new Date() as unknown as String,
         },
       ];
-
+      await addEvent(
+        {
+          eventId: eventId,
+          eventName: eventName.defaultEventName,
+          clientId: clientId,
+          clientName: req?.clientName,
+          clientOwnerId: userData.userId,
+        },
+        { userId: req?.userId, customerType: req?.customerType }
+      );
       const newClientModel = clientModel();
 
       let clientObjectModel: IClient = {
         clientName: req?.clientName,
-        clientId: uuidv4(),
+        clientId: clientId,
         clientMobileNo: req?.clientMobileNo,
         eventType: req?.eventType,
         eventList: eventList,
@@ -60,20 +80,28 @@ export const addClientController = async (
             responderController({ result: resultObj, statusCode: 200 }, res);
           } else {
             responderController(
-              { result: {}, statusCode: 500, errorMsg: errorMsg.serverError },
+              {
+                result: {},
+                statusCode: 500,
+                errorMsg: errorMsg.errorAtAddCLient,
+              },
               res
             );
           }
         } catch (err) {
           responderController(
-            { result: {}, statusCode: 500, errorMsg: errorMsg.serverError },
+            {
+              result: {},
+              statusCode: 500,
+              errorMsg: errorMsg.errorAtAddCLient,
+            },
             res
           );
         }
       });
     } else {
       responderController(
-        { result: {}, statusCode: 500, errorMsg: errorMsg.serverError },
+        { result: {}, statusCode: 500, errorMsg: errorMsg.incorrectUserEmail },
         res
       );
     }

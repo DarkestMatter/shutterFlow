@@ -3,6 +3,7 @@ import { IEvent } from "./IEvent";
 
 export interface IClientData {
   clientName?: string;
+  clientId?: string;
   clientMobileNo?: string;
   eventType?: string;
   eventList?: IEvent[];

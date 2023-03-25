@@ -13,7 +13,7 @@ const loginCredSchema = new mongoose_1.default.Schema({
     status: String,
     clientId: String,
     customerType: String,
-    otp: Number,
+    otp: String,
     createdDate: String,
     updatedDate: String,
 });

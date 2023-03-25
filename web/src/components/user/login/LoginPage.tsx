@@ -1,17 +1,18 @@
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { loginApi } from "../../../api/loginApi";
+import { IUserProfile } from "../../../interfaces/IUserProfile";
 import {
   getMsgSelector,
   getUserProfileSelector,
 } from "../../../selectors/selectors";
-import { userStatus, dialogName } from "../../../services/enum";
+import { dialogName, userStatus } from "../../../services/enum";
 import { openDialogBox } from "../../../slices/common/dialogBoxSlice";
 import { AppDispatch } from "../../../store";
-import { loginThunk } from "../../../thunk/loginThunk";
 import { OtpDialogBox } from "../registeration/OtpDialogBox";
 
 const inputFieldStyle = {
@@ -44,14 +45,13 @@ export const LoginPage: React.FC = () => {
   };
 
   const handleLogin = async () => {
-    await dispatch(
-      loginThunk({
-        uri: "/loginUser",
-        data: { email: email, pwd: pwd },
-      })
-    );
-    getUserProfile?.status === userStatus.registered
-      ? dispatch(openDialogBox({ dialogName: dialogName.otpDialogBox }))
+    const apiResp = (await loginApi({
+      dispatch: dispatch,
+      uri: "loginUser",
+      data: { email: email, pwd: pwd },
+    })) as IUserProfile;
+    apiResp?.status === userStatus.registered
+      ? dispatch(openDialogBox({ dialogName: dialogName.otpDialog }))
       : navigate("/dashboard");
   };
 

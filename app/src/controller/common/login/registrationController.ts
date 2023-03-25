@@ -1,8 +1,6 @@
 import { RequestHandler } from "express";
 import { addLoginCred } from "../../../common/addLoginCred";
 import { findValidLogin } from "../../../common/findValidLogin";
-import { findValidUser } from "../../../common/findValidUser";
-import { otpGenerator } from "../../../common/otpGenerator";
 import { ILoginCred } from "../../../interface/ILoginCred";
 import { IResponderResult } from "../../../interface/IResponderResult";
 import { IUserProfile } from "../../../interface/IUserProfile";
@@ -38,7 +36,6 @@ export const registrationController: RequestHandler = async (
           ...req.body,
           status: statusEnum.registered,
           customerType: customerType.user,
-          otp: otpGenerator(),
         };
 
         const loginCreated = (await addLoginCred(
@@ -68,26 +65,34 @@ export const registrationController: RequestHandler = async (
               responderController({ result: resultObj, statusCode: 200 }, res);
             } else {
               responderController(
-                { result: {}, statusCode: 500, errorMsg: errorMsg.serverError },
+                {
+                  result: {},
+                  statusCode: 500,
+                  errorMsg: errorMsg.registrationError,
+                },
                 res
               );
             }
           } catch (err) {
             responderController(
-              { result: {}, statusCode: 500, errorMsg: errorMsg.serverError },
+              {
+                result: {},
+                statusCode: 500,
+                errorMsg: errorMsg.registrationError,
+              },
               res
             );
           }
         });
       } catch (err) {
         responderController(
-          { result: {}, statusCode: 500, errorMsg: errorMsg.serverError },
+          { result: {}, statusCode: 500, errorMsg: errorMsg.registrationError },
           res
         );
       }
     }
   } catch (err) {
-    const errMsg = typeof err === "string" ? err : errorMsg.serverError;
+    const errMsg = typeof err === "string" ? err : errorMsg.registrationError;
     responderController({ result: {}, statusCode: 500, errorMsg: errMsg }, res);
   }
 };

@@ -1,6 +1,7 @@
 export interface IAuth {
+  status?: statusEnum;
   userId: string;
-  customerType: String;
-  exp: Number;
-  iat: Number;
+  customerType: customerType;
+  exp?: Number;
+  iat?: Number;
 }

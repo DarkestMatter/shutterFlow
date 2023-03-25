@@ -9,7 +9,6 @@ const userProfileSchema = new mongoose.Schema<IUserProfile>({
   pwd: String,
   status: String,
   customerType: String,
-  otp: Number,
   createdDate: String,
   udpatedDate: String,
 });

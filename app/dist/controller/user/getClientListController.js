@@ -17,7 +17,7 @@ const getClientListController = async (req, res, next) => {
         });
     }
     catch (err) {
-        (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: "Some Error occurred" /* errorMsg.serverError */ }, res);
+        (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: "Error occurred while finding client List" /* errorMsg.errorAtClientList */ }, res);
     }
 };
 exports.getClientListController = getClientListController;

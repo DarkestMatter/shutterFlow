@@ -24,7 +24,8 @@ export const loginController: RequestHandler = async (req, res, next) => {
       //console.log(userData);
       const token = await tokenGenerator(
         userData?.userId,
-        userData?.customerType
+        userData?.customerType,
+        userData?.status
       );
       const resultObj = {
         email: userData?.email,
@@ -42,7 +43,7 @@ export const loginController: RequestHandler = async (req, res, next) => {
     }
   } catch (err) {
     responderController(
-      { result: {}, statusCode: 500, errorMsg: errorMsg.serverError },
+      { result: {}, statusCode: 500, errorMsg: errorMsg.loginError },
       res
     );
   }

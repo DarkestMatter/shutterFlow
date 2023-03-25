@@ -14,12 +14,12 @@ const decryptToken = (token) => {
                     resolve(decoded);
                 }
                 else {
-                    resolve("Some Error occurred" /* errorMsg.serverError */);
+                    resolve("Token is invalid, Please Login again" /* errorMsg.invalidToken */);
                 }
             });
         }
         catch (err) {
-            reject("enter correct otp" /* errorMsg.incorrectOtp */);
+            reject("Token is invalid, Please Login again" /* errorMsg.invalidToken */);
         }
     });
 };

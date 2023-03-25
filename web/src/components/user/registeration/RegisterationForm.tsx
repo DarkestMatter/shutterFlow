@@ -4,9 +4,9 @@ import TextField from "@mui/material/TextField";
 import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { submitRegistrationFormApi } from "../../../api/registrationApi";
 import { IUserProfile } from "../../../interfaces/IUserProfile";
 import { AppDispatch } from "../../../store";
-import { submitRegistrationFormThunk } from "../../../thunk/registrationThunk";
 import { OtpDialogBox } from "./OtpDialogBox";
 
 const inputFieldStyle = {
@@ -49,12 +49,11 @@ export const RegisterationForm: React.FC = () => {
       mobile: mobile,
       pwd: pwd,
     };
-    await dispatch(
-      submitRegistrationFormThunk({
-        uri: "/registerUser",
-        data: formObj,
-      })
-    );
+    await submitRegistrationFormApi({
+      dispatch: dispatch,
+      uri: "registerUser",
+      data: formObj,
+    });
   };
 
   return (

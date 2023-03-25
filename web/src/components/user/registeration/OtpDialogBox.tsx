@@ -9,15 +9,16 @@ import { TransitionProps } from "@mui/material/transitions";
 import React, { ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { submitRegistrationOtpApi } from "../../../api/registrationApi";
+import { IUserProfile } from "../../../interfaces/IUserProfile";
 import {
   getDialogBoxSelector,
-  getUserProfileSelector,
   getMsgSelector,
+  getUserProfileSelector,
 } from "../../../selectors/selectors";
-import { userStatus, dialogName } from "../../../services/enum";
+import { dialogName, userStatus } from "../../../services/enum";
 import { openDialogBox } from "../../../slices/common/dialogBoxSlice";
 import { AppDispatch } from "../../../store";
-import { submitRegistrationOtpThunk } from "../../../thunk/registrationThunk";
 
 export const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -53,20 +54,19 @@ export const OtpDialogBox: React.FC = () => {
       email: getUserProfile?.email,
       otp: otp,
     };
-    await dispatch(
-      submitRegistrationOtpThunk({
-        uri: "/otpVerify",
-        data: otpObj,
-      })
-    );
-    getUserProfile?.status === userStatus.verified && !getMsg.errorMsg
+    const apiResp = (await submitRegistrationOtpApi({
+      dispatch: dispatch,
+      uri: "otpVerify",
+      data: otpObj,
+    })) as IUserProfile;
+    apiResp?.status === userStatus.verified && !getMsg.errorMsg
       ? navigate("/dashboard")
-      : null;
+      : dispatch(openDialogBox({ dialogName: dialogName.otpDialog }));
   };
 
   return (
     <Dialog
-      open={getDialogBox === dialogName.otpDialogBox}
+      open={getDialogBox === dialogName.otpDialog}
       TransitionComponent={Transition}
       keepMounted
       onClose={handleCancelDialog}

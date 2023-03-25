@@ -6,23 +6,22 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField/TextField";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { addClientApi } from "../../../api/addClientApi";
 import { IClientData } from "../../../interfaces/IClient";
 import {
-  getUserProfileSelector,
   getDialogBoxSelector,
   getMsgSelector,
+  getUserProfileSelector,
 } from "../../../selectors/selectors";
 import { dialogName } from "../../../services/enum";
 import { openDialogBox } from "../../../slices/common/dialogBoxSlice";
-import { AppDispatch } from "../../../store";
-import { addClientThunk } from "../../../thunk/addClientThunk";
 import { Transition } from "../registeration/OtpDialogBox";
 
 export const AddClientDialogBox: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [clientName, setClientName] = useState<string>("");
@@ -31,7 +30,6 @@ export const AddClientDialogBox: React.FC = () => {
 
   const getUserProfile = useSelector(getUserProfileSelector);
   const getDialogBox = useSelector(getDialogBoxSelector);
-  const getMsg = useSelector(getMsgSelector);
 
   const handleOnBlur = (fieldName: string) => {};
 
@@ -44,13 +42,12 @@ export const AddClientDialogBox: React.FC = () => {
       clientOwnerEmail: getUserProfile.email,
     };
     dispatch(openDialogBox({ dialogName: "" }));
-    await dispatch(
-      addClientThunk({
-        uri: "addClient",
-        data: addClientFormData,
-      })
-    );
-    !getMsg.errorMsg ? navigate("/eventDashboard") : null;
+    const apiResp = await addClientApi({
+      dispatch: dispatch,
+      uri: "addClient",
+      data: addClientFormData,
+    });
+    apiResp ? navigate("/eventDashboard") : null;
   };
 
   const handleCancelDialog = () => {

@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.registrationController = void 0;
 const addLoginCred_1 = require("../../../common/addLoginCred");
 const findValidLogin_1 = require("../../../common/findValidLogin");
-const otpGenerator_1 = require("../../../common/otpGenerator");
 const userProfileModel_1 = require("../../../model/userProfileModel");
 const responderController_1 = require("../responderController");
 const registrationController = async (req, res, next) => {
@@ -32,7 +31,6 @@ const registrationController = async (req, res, next) => {
                     ...req.body,
                     status: "Registered" /* statusEnum.registered */,
                     customerType: "user" /* customerType.user */,
-                    otp: (0, otpGenerator_1.otpGenerator)(),
                 };
                 const loginCreated = (await (0, addLoginCred_1.addLoginCred)(newUserData));
                 const saveUserRegistration = (0, userProfileModel_1.userProfileModel)();
@@ -58,21 +56,29 @@ const registrationController = async (req, res, next) => {
                             (0, responderController_1.responderController)({ result: resultObj, statusCode: 200 }, res);
                         }
                         else {
-                            (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: "Some Error occurred" /* errorMsg.serverError */ }, res);
+                            (0, responderController_1.responderController)({
+                                result: {},
+                                statusCode: 500,
+                                errorMsg: "Error occurred while Registration" /* errorMsg.registrationError */,
+                            }, res);
                         }
                     }
                     catch (err) {
-                        (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: "Some Error occurred" /* errorMsg.serverError */ }, res);
+                        (0, responderController_1.responderController)({
+                            result: {},
+                            statusCode: 500,
+                            errorMsg: "Error occurred while Registration" /* errorMsg.registrationError */,
+                        }, res);
                     }
                 });
             }
             catch (err) {
-                (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: "Some Error occurred" /* errorMsg.serverError */ }, res);
+                (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: "Error occurred while Registration" /* errorMsg.registrationError */ }, res);
             }
         }
     }
     catch (err) {
-        const errMsg = typeof err === "string" ? err : "Some Error occurred" /* errorMsg.serverError */;
+        const errMsg = typeof err === "string" ? err : "Error occurred while Registration" /* errorMsg.registrationError */;
         (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: errMsg }, res);
     }
 };

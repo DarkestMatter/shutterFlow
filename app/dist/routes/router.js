@@ -3,13 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
 const express_1 = require("express");
 const decryptToken_1 = require("../common/decryptToken");
-const addClientController_1 = require("../controller/user/addClientController");
-const getClientListController_1 = require("../controller/user/getClientListController");
 const loginController_1 = require("../controller/common/login/loginController");
 const otpVerificationController_1 = require("../controller/common/login/otpVerificationController");
 const registrationController_1 = require("../controller/common/login/registrationController");
 const responderController_1 = require("../controller/common/responderController");
 const validateTokenController_1 = require("../controller/common/validateTokenController");
+const addClientController_1 = require("../controller/user/addClientController");
+const addEventController_1 = require("../controller/user/addEventController");
+const getClientListController_1 = require("../controller/user/getClientListController");
+const uploadFileController_1 = require("../controller/user/uploadFileController");
 exports.router = (0, express_1.Router)();
 exports.router.post("/registerUser", (req, res, next) => {
     (0, registrationController_1.registrationController)(req, res, next);
@@ -30,18 +32,47 @@ exports.router.post("/addClient", async (req, res, next) => {
         userId: auth === null || auth === void 0 ? void 0 : auth.userId,
         customerType: auth === null || auth === void 0 ? void 0 : auth.customerType,
     };
-    (auth === null || auth === void 0 ? void 0 : auth.userId)
+    (auth === null || auth === void 0 ? void 0 : auth.userId) && (auth === null || auth === void 0 ? void 0 : auth.status) === "Verified" /* statusEnum.verified */
         ? (0, addClientController_1.addClientController)(request, res, next)
-        : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: false }, res);
+        : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: true }, res);
 });
 exports.router.post("/getClientList", async (req, res, next) => {
     const auth = (await (0, decryptToken_1.decryptToken)(req.headers));
     const request = {
         ...req.body,
         userId: auth === null || auth === void 0 ? void 0 : auth.userId,
-        customerType: auth === null || auth === void 0 ? void 0 : auth.customerType,
     };
-    (auth === null || auth === void 0 ? void 0 : auth.userId)
+    (auth === null || auth === void 0 ? void 0 : auth.userId) && (auth === null || auth === void 0 ? void 0 : auth.status) === "Verified" /* statusEnum.verified */
         ? (0, getClientListController_1.getClientListController)(request, res, next)
-        : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: false }, res);
+        : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: true }, res);
+});
+exports.router.post("/addEvent", async (req, res, next) => {
+    const auth = (await (0, decryptToken_1.decryptToken)(req.headers));
+    const request = {
+        ...req.body,
+        userId: auth === null || auth === void 0 ? void 0 : auth.userId,
+    };
+    (auth === null || auth === void 0 ? void 0 : auth.userId) && (auth === null || auth === void 0 ? void 0 : auth.status) === "Verified" /* statusEnum.verified */
+        ? (0, addEventController_1.addEventController)(request, res, next)
+        : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: true }, res);
+});
+exports.router.post("/getEventData", async (req, res, next) => {
+    const auth = (await (0, decryptToken_1.decryptToken)(req.headers));
+    const request = {
+        ...req.body,
+        userId: auth === null || auth === void 0 ? void 0 : auth.userId,
+    };
+    (auth === null || auth === void 0 ? void 0 : auth.userId) && (auth === null || auth === void 0 ? void 0 : auth.status) === "Verified" /* statusEnum.verified */
+        ? (0, addEventController_1.addEventController)(request, res, next)
+        : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: true }, res);
+});
+exports.router.post("/uploadFile", async (req, res, next) => {
+    const auth = (await (0, decryptToken_1.decryptToken)(req.headers));
+    const request = {
+        ...req.body,
+        userId: auth === null || auth === void 0 ? void 0 : auth.userId,
+    };
+    (auth === null || auth === void 0 ? void 0 : auth.userId) && (auth === null || auth === void 0 ? void 0 : auth.status) === "Verified" /* statusEnum.verified */
+        ? (0, uploadFileController_1.uploadFileController)(req, res, next, auth)
+        : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: true }, res);
 });
