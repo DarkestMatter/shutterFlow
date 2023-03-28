@@ -1,10 +1,11 @@
 import { RequestHandler } from "express";
-import { tokenGenerator } from "../../../common/tokenGenerator";
+import { tokenGenerator } from "../../../service/tokenGenerator";
 import { ILoginCred } from "../../../interface/ILoginCred";
 import { IUserProfile } from "../../../interface/IUserProfile";
 import { loginCredModel } from "../../../model/loginCredModel";
 import { userProfileModel } from "../../../model/userProfileModel";
 import { responderController } from "../responderController";
+import { errorMsg, statusEnum } from "../../../service/enum";
 
 export const otpVerificationController: RequestHandler = async (
   req,

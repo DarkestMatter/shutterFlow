@@ -1,8 +1,9 @@
 import { RequestHandler } from "express";
-import { findValidLogin } from "../../../common/findValidLogin";
-import { tokenGenerator } from "../../../common/tokenGenerator";
+import { findValidLogin } from "../../../service/findValidLogin";
+import { tokenGenerator } from "../../../service/tokenGenerator";
 import { IUserProfile } from "../../../interface/IUserProfile";
 import { responderController } from "../responderController";
+import { errorMsg, statusEnum } from "../../../service/enum";
 
 export const loginController: RequestHandler = async (req, res, next) => {
   try {

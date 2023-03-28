@@ -4,6 +4,7 @@ exports.checkEventAlreadyExists = exports.addEvent = exports.addEventController 
 const uuid_1 = require("uuid");
 const clientModel_1 = require("../../model/clientModel");
 const eventModel_1 = require("../../model/eventModel");
+const enum_1 = require("../../service/enum");
 const responderController_1 = require("../common/responderController");
 const addEventController = async (req, res, next) => {
     var _a;
@@ -27,13 +28,19 @@ const addEventController = async (req, res, next) => {
                         eventList: newEventObj,
                     },
                 }));
-                (0, responderController_1.responderController)({ result: newEventObj, statusCode: 200 }, res);
+                (updatedResult === null || updatedResult === void 0 ? void 0 : updatedResult.clientId)
+                    ? (0, responderController_1.responderController)({ result: newEventObj, statusCode: 200 }, res)
+                    : (0, responderController_1.responderController)({
+                        result: {},
+                        statusCode: 200,
+                        errorMsg: enum_1.errorMsg.errorAtAddEvent,
+                    }, res);
             }
             catch (err) {
                 (0, responderController_1.responderController)({
                     result: {},
                     statusCode: 500,
-                    errorMsg: "Error occurred while updating event in client data" /* errorMsg.errorAtUpdateClientEvent */,
+                    errorMsg: enum_1.errorMsg.errorAtUpdateClientEvent,
                 }, res);
             }
         }
@@ -41,12 +48,12 @@ const addEventController = async (req, res, next) => {
             (0, responderController_1.responderController)({
                 result: {},
                 statusCode: 200,
-                errorMsg: "Event Already Exists, please create with different Name" /* errorMsg.eventExists */,
+                errorMsg: enum_1.errorMsg.eventExists,
             }, res);
         }
     }
     catch (err) {
-        (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: "Some Error occurred" /* errorMsg.serverError */ }, res);
+        (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: enum_1.errorMsg.serverError }, res);
     }
 };
 exports.addEventController = addEventController;
@@ -82,7 +89,7 @@ const addEvent = async (req, authData) => {
                             reject({
                                 result: {},
                                 statusCode: 500,
-                                errorMsg: "Error occurred while adding event" /* errorMsg.errorAtAddEvent */,
+                                errorMsg: enum_1.errorMsg.errorAtAddEvent,
                             });
                         }
                     }
@@ -90,7 +97,7 @@ const addEvent = async (req, authData) => {
                         reject({
                             result: {},
                             statusCode: 500,
-                            errorMsg: "Error occurred while adding event" /* errorMsg.errorAtAddEvent */,
+                            errorMsg: enum_1.errorMsg.errorAtAddEvent,
                         });
                     }
                 });
@@ -100,7 +107,7 @@ const addEvent = async (req, authData) => {
             reject({
                 result: {},
                 statusCode: 500,
-                errorMsg: "Please login again with proper Email" /* errorMsg.incorrectUserEmail */,
+                errorMsg: enum_1.errorMsg.incorrectUserEmail,
             });
         }
     });

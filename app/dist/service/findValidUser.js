@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.findValidUser = void 0;
 const userProfileModel_1 = require("../model/userProfileModel");
+const enum_1 = require("./enum");
 const findValidUser = (userId) => {
     return new Promise((resolve, reject) => {
         try {
@@ -12,17 +13,17 @@ const findValidUser = (userId) => {
                             resolve(result);
                         }
                         else {
-                            resolve(errorMsg.incorrectUserEmail);
+                            resolve(enum_1.errorMsg.incorrectUserEmail);
                         }
                     }
                     else {
-                        reject(errorMsg.noValidUser);
+                        reject(enum_1.errorMsg.noValidUser);
                     }
                 });
             }
         }
         catch (err) {
-            reject(errorMsg.userFoundError);
+            reject(enum_1.errorMsg.userFoundError);
         }
     });
 };

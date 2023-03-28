@@ -1,4 +1,5 @@
 import jwt, { Secret } from "jsonwebtoken";
+import { errorMsg } from "./enum";
 
 export const SECRET_KEY: Secret = "7896-5630-7564-0809";
 

@@ -1,11 +1,17 @@
 import { RequestHandler } from "express";
-import { addLoginCred } from "../../../common/addLoginCred";
-import { findValidLogin } from "../../../common/findValidLogin";
+import { addLoginCred } from "../../../service/addLoginCred";
+import { findValidLogin } from "../../../service/findValidLogin";
 import { ILoginCred } from "../../../interface/ILoginCred";
 import { IResponderResult } from "../../../interface/IResponderResult";
 import { IUserProfile } from "../../../interface/IUserProfile";
 import { userProfileModel } from "../../../model/userProfileModel";
 import { responderController } from "../responderController";
+import {
+  customerType,
+  errorMsg,
+  statusEnum,
+  successMsg,
+} from "../../../service/enum";
 
 export const registrationController: RequestHandler = async (
   req,

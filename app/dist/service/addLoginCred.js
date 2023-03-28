@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.addLoginCred = void 0;
 const uuid_1 = require("uuid");
 const loginCredModel_1 = require("../model/loginCredModel");
+const enum_1 = require("./enum");
 const otpGenerator_1 = require("./otpGenerator");
 const addLoginCred = async (userData) => {
     return new Promise((resolve, reject) => {
@@ -34,11 +35,11 @@ const addLoginCred = async (userData) => {
                     resolve(resultObj);
                 }
                 else {
-                    reject({ errorMsg: errorMsg.serverError });
+                    reject({ errorMsg: enum_1.errorMsg.serverError });
                 }
             }
             catch (err) {
-                reject({ errorMsg: errorMsg.serverError });
+                reject({ errorMsg: enum_1.errorMsg.serverError });
             }
         });
     });

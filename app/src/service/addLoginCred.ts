@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import { ILoginCred } from "../interface/ILoginCred";
 import { IUserProfile } from "../interface/IUserProfile";
 import { loginCredModel } from "../model/loginCredModel";
+import { errorMsg } from "./enum";
 import { otpGenerator } from "./otpGenerator";
 
 export const addLoginCred = async (userData: IUserProfile) => {

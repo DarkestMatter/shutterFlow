@@ -1,5 +1,6 @@
 import { IUserProfile } from "../interface/IUserProfile";
 import { userProfileModel } from "../model/userProfileModel";
+import { errorMsg } from "./enum";
 
 export const findValidUser = (userId: String | undefined) => {
   return new Promise((resolve, reject) => {

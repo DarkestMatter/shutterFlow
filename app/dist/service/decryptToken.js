@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.decryptToken = exports.SECRET_KEY = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const enum_1 = require("./enum");
 exports.SECRET_KEY = "7896-5630-7564-0809";
 const decryptToken = (token) => {
     return new Promise((resolve, reject) => {
@@ -14,12 +15,12 @@ const decryptToken = (token) => {
                     resolve(decoded);
                 }
                 else {
-                    resolve(errorMsg.invalidToken);
+                    resolve(enum_1.errorMsg.invalidToken);
                 }
             });
         }
         catch (err) {
-            reject(errorMsg.invalidToken);
+            reject(enum_1.errorMsg.invalidToken);
         }
     });
 };

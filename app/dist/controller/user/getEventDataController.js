@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getEventDataController = void 0;
 const eventModel_1 = require("../../model/eventModel");
 const responderController_1 = require("../common/responderController");
+const enum_1 = require("../../service/enum");
 const getEventDataController = async (req, res, next) => {
     try {
         if (req === null || req === void 0 ? void 0 : req.userId) {
@@ -21,7 +22,7 @@ const getEventDataController = async (req, res, next) => {
         }
     }
     catch (err) {
-        (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: "Some Error occurred" /* errorMsg.serverError */ }, res);
+        (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: enum_1.errorMsg.serverError }, res);
     }
 };
 exports.getEventDataController = getEventDataController;

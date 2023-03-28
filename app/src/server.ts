@@ -19,7 +19,8 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use(bodyParser());
+app.use(express.json()); // Used to parse JSON bodies
+app.use(express.urlencoded());
 
 app.use(express.static(path.join(__dirname, "../../web/dist")));
 app.get("/", (req, res) => {

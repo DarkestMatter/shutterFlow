@@ -1,56 +1,76 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadFileController = void 0;
-const client_s3_1 = require("@aws-sdk/client-s3");
-const multer_1 = __importDefault(require("multer"));
-const multer_s3_1 = __importDefault(require("multer-s3"));
+exports.saveUploadFileData = exports.uploadFileController = void 0;
 const uuid_1 = require("uuid");
-const s3 = new client_s3_1.S3Client({
-    credentials: {
-        secretAccessKey: "dDk6JCcRWmmHdOm9RCt6wYuAheA1TyrvLvmoKdZw",
-        accessKeyId: "5XkxLdSVFLfL3bfFnsEy",
-    },
-    endpoint: "https:i1h6.ldn.idrivee2-18.com",
-    region: "gb-ldn",
-});
+const eventModel_1 = require("../../model/eventModel");
+const enum_1 = require("../../service/enum");
+const uploadFile_1 = require("../../service/uploadFile");
+const responderController_1 = require("../common/responderController");
 const uploadFileController = async (req, res, next, auth) => {
+    var _a;
     try {
-        const bucketParams = {
-            Bucket: "shutterFlow",
-            Delimiter: "/",
+        const fileId = (0, uuid_1.v4)();
+        const fileData = {
+            fileId: fileId,
+            clientOwnerId: auth === null || auth === void 0 ? void 0 : auth.userId,
+            clientId: (_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.clientId,
+            originalFilePath: `${auth === null || auth === void 0 ? void 0 : auth.userId}/${fileId}`,
+            minFilePath: `${auth === null || auth === void 0 ? void 0 : auth.userId}/min/${fileId}`,
+            microFilePath: ``,
         };
-        const data = await s3.send(new client_s3_1.ListObjectsCommand(bucketParams));
-        const storage = (0, multer_s3_1.default)({
-            s3: s3,
-            acl: "public-read",
-            bucket: "poc",
-            key: function (req, file, cb) {
-                const fullPath = `sattasaphire-gmail.com_Satish/${(0, uuid_1.v4)()}.jpg`;
-                cb(null, fullPath);
-            },
-        });
-        const upload = (0, multer_1.default)({
-            storage: storage,
-            limits: { fileSize: 100000000 },
-        }).single("myImage");
-        upload(req, res, (err) => {
-            console.log("inside");
-            if (!err) {
-                if (res.req.file && req.file) {
-                    console.log("success");
-                }
-                res.json("success");
-            }
-            else {
-                console.log(err);
-            }
-        });
+        //original file upload
+        const fileUploadResponse = (await (0, uploadFile_1.uploadFile)(req, res, next, fileData));
+        if (fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.errorMsg) {
+            (0, responderController_1.responderController)({ result: {}, statusCode: 200, errorMsg: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.errorMsg }, res);
+            return;
+        }
+        const eventFileDataObj = {
+            fileId: fileData === null || fileData === void 0 ? void 0 : fileData.fileId,
+            clientOwnerId: fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId,
+            clientId: fileData === null || fileData === void 0 ? void 0 : fileData.clientId,
+            name: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.name,
+            originalFilePath: `${enum_1.iDriveData.baseUrl}${fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId}/${fileData === null || fileData === void 0 ? void 0 : fileData.fileId}`,
+            minFilePath: `${enum_1.iDriveData.baseUrl}${fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId}/min/${fileData === null || fileData === void 0 ? void 0 : fileData.fileId}`,
+            microFilePath: ``,
+            originalFileSize: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.originalFileSize,
+            minFileSize: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.minFileSize,
+            microFileSize: 0,
+            type: enum_1.fileType.video,
+            format: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.mimetype,
+            eventId: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.eventId,
+        };
+        const fileDataSaved = (await (0, exports.saveUploadFileData)(eventFileDataObj));
+        (fileDataSaved === null || fileDataSaved === void 0 ? void 0 : fileDataSaved.clientId)
+            ? (0, responderController_1.responderController)({ result: {}, statusCode: 200 }, res)
+            : (0, responderController_1.responderController)({
+                result: {},
+                statusCode: 200,
+                errorMsg: enum_1.errorMsg.errorFileUpload,
+            }, res);
     }
     catch (err) {
         console.log(err);
+        (0, responderController_1.responderController)({ result: {}, statusCode: 200, errorMsg: enum_1.errorMsg.errorFileUpload }, res);
     }
 };
 exports.uploadFileController = uploadFileController;
+const saveUploadFileData = (fileData) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const updatedResult = (await (0, eventModel_1.eventModel)().findOneAndUpdate({
+                clientOwnerId: fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId,
+                eventId: fileData === null || fileData === void 0 ? void 0 : fileData.eventId,
+            }, {
+                $push: {
+                    eventFileList: fileData,
+                },
+            }));
+            (updatedResult === null || updatedResult === void 0 ? void 0 : updatedResult.clientId) ? resolve(updatedResult) : resolve(false);
+        }
+        catch (err) {
+            console.log(err);
+            resolve(false);
+        }
+    });
+};
+exports.saveUploadFileData = saveUploadFileData;

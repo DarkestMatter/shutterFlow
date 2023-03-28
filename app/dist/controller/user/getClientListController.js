@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getClientListController = void 0;
 const clientModel_1 = require("../../model/clientModel");
+const enum_1 = require("../../service/enum");
 const responderController_1 = require("../common/responderController");
 const getClientListController = async (req, res, next) => {
     try {
@@ -17,7 +18,7 @@ const getClientListController = async (req, res, next) => {
         });
     }
     catch (err) {
-        (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: "Error occurred while finding client List" /* errorMsg.errorAtClientList */ }, res);
+        (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: enum_1.errorMsg.errorAtClientList }, res);
     }
 };
 exports.getClientListController = getClientListController;

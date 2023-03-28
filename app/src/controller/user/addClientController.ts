@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express-serve-static-core";
 import { v4 as uuidv4 } from "uuid";
-import { findValidUser } from "../../common/findValidUser";
+import { findValidUser } from "../../service/findValidUser";
 import { IAuth } from "../../interface/IAuth";
 import { IClient } from "../../interface/IClient";
 import { IEvent } from "../../interface/IEvent";
@@ -8,6 +8,7 @@ import { IUserProfile } from "../../interface/IUserProfile";
 import { clientModel } from "../../model/clientModel";
 import { responderController } from "../common/responderController";
 import { addEvent } from "./addEventController";
+import { errorMsg, eventName } from "../../service/enum";
 
 export const addClientController = async (
   req: IClient & IAuth,

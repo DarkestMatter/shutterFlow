@@ -3,6 +3,7 @@ import { Response, NextFunction } from "express-serve-static-core";
 import { IAuth } from "../../interface/IAuth";
 import { IClient } from "../../interface/IClient";
 import { clientModel } from "../../model/clientModel";
+import { errorMsg } from "../../service/enum";
 import { responderController } from "../common/responderController";
 
 export const getClientListController = async (

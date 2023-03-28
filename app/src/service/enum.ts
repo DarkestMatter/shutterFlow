@@ -1,4 +1,4 @@
-const enum errorMsg {
+export enum errorMsg {
   registrationError = "Error occurred while Registration",
   noLoginCredFound = "No valid login cred found",
   loginError = "Error occurred while Login",
@@ -15,25 +15,50 @@ const enum errorMsg {
   userExist = "User already exists, Please try Login",
   invalidToken = "Token is invalid, Please Login again",
   eventExists = "Event Already Exists, please create with different Name",
+  incorrectUploadFormat = "Only .png, .jpg and .jpeg format allowed!",
+  errorFileUpload = "Error at file uploading",
 }
 
-const enum successMsg {
+export enum successMsg {
   loginSuccess = "login successful",
   clientAdded = "Client added successfully",
   enterOtp = "Enter OTP recieved on your email ID",
 }
 
-const enum statusEnum {
+export enum statusEnum {
   registered = "Registered",
   verified = "Verified",
   inactive = "Inactive",
 }
 
-const enum eventName {
+export enum eventName {
   defaultEventName = "HighLight",
 }
 
-const enum customerType {
+export enum customerType {
   user = "user",
   client = "client",
+}
+
+export enum uploadImgFormat {
+  jpg = "image/jpg",
+  jpeg = "image/jpeg",
+  png = "image/png",
+  webp = "image/webp",
+}
+
+export enum uploadVideoFormat {
+  mp4 = "image/mp4",
+  mkv = "image/mkv",
+}
+
+export enum iDriveData {
+  bucket = "shutter-flow",
+  acl = "public-read",
+  baseUrl = "https://shutter-flow.c3l1.c10.e2-3.dev/",
+}
+
+export enum fileType {
+  img = "image",
+  video = "video",
 }

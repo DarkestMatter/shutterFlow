@@ -1,10 +1,11 @@
 import { RequestHandler } from "express";
-import { decryptToken } from "../../common/decryptToken";
-import { findValidUser } from "../../common/findValidUser";
+import { decryptToken } from "../../service/decryptToken";
+import { findValidUser } from "../../service/findValidUser";
 import { IAuth } from "../../interface/IAuth";
 import { IResponderResult } from "../../interface/IResponderResult";
 import { IUserProfile } from "../../interface/IUserProfile";
 import { responderController } from "./responderController";
+import { errorMsg } from "../../service/enum";
 
 export const validateTokenController: RequestHandler = async (
   req,

@@ -1,15 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginController = void 0;
-const findValidLogin_1 = require("../../../common/findValidLogin");
-const tokenGenerator_1 = require("../../../common/tokenGenerator");
+const findValidLogin_1 = require("../../../service/findValidLogin");
+const tokenGenerator_1 = require("../../../service/tokenGenerator");
 const responderController_1 = require("../responderController");
+const enum_1 = require("../../../service/enum");
 const loginController = async (req, res, next) => {
     var _a, _b, _c;
     try {
         const userData = (await (0, findValidLogin_1.findValidLogin)((_a = req.body) === null || _a === void 0 ? void 0 : _a.email));
         if ((userData === null || userData === void 0 ? void 0 : userData.pwd) === ((_b = req.body) === null || _b === void 0 ? void 0 : _b.pwd) &&
-            (userData === null || userData === void 0 ? void 0 : userData.status) === "Registered" /* statusEnum.registered */) {
+            (userData === null || userData === void 0 ? void 0 : userData.status) === enum_1.statusEnum.registered) {
             const resultObj = {
                 email: userData === null || userData === void 0 ? void 0 : userData.email,
                 mobile: userData === null || userData === void 0 ? void 0 : userData.mobile,
@@ -31,11 +32,11 @@ const loginController = async (req, res, next) => {
             (0, responderController_1.responderController)({ result: resultObj, statusCode: 200 }, res);
         }
         else {
-            (0, responderController_1.responderController)({ result: {}, statusCode: 401, errorMsg: "Please login again with proper Email" /* errorMsg.incorrectUserEmail */ }, res);
+            (0, responderController_1.responderController)({ result: {}, statusCode: 401, errorMsg: enum_1.errorMsg.incorrectUserEmail }, res);
         }
     }
     catch (err) {
-        (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: "Error occurred while Login" /* errorMsg.loginError */ }, res);
+        (0, responderController_1.responderController)({ result: {}, statusCode: 500, errorMsg: enum_1.errorMsg.loginError }, res);
     }
 };
 exports.loginController = loginController;

@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateTokenController = void 0;
-const decryptToken_1 = require("../../common/decryptToken");
-const findValidUser_1 = require("../../common/findValidUser");
+const decryptToken_1 = require("../../service/decryptToken");
+const findValidUser_1 = require("../../service/findValidUser");
 const responderController_1 = require("./responderController");
+const enum_1 = require("../../service/enum");
 const validateTokenController = async (req, res, next) => {
     try {
         const auth = (await (0, decryptToken_1.decryptToken)(req.headers));
@@ -24,15 +25,15 @@ const validateTokenController = async (req, res, next) => {
                 : (0, responderController_1.responderController)({
                     result: {},
                     statusCode: 200,
-                    errorMsg: "Please login again with proper Email" /* errorMsg.incorrectUserEmail */,
+                    errorMsg: enum_1.errorMsg.incorrectUserEmail,
                 }, res);
         }
         else {
-            (0, responderController_1.responderController)({ result: {}, statusCode: 200, errorMsg: "Token is invalid, Please Login again" /* errorMsg.invalidToken */ }, res);
+            (0, responderController_1.responderController)({ result: {}, statusCode: 200, errorMsg: enum_1.errorMsg.invalidToken }, res);
         }
     }
     catch (err) {
-        (0, responderController_1.responderController)({ result: {}, statusCode: 200, errorMsg: "Some Error occurred" /* errorMsg.serverError */ }, res);
+        (0, responderController_1.responderController)({ result: {}, statusCode: 200, errorMsg: enum_1.errorMsg.serverError }, res);
     }
 };
 exports.validateTokenController = validateTokenController;

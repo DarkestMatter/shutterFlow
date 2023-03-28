@@ -1,10 +1,11 @@
 import { NextFunction, Response } from "express-serve-static-core";
-import { findValidUser } from "../../common/findValidUser";
+import { findValidUser } from "../../service/findValidUser";
 import { IAuth } from "../../interface/IAuth";
 import { IClient } from "../../interface/IClient";
 import { IUserProfile } from "../../interface/IUserProfile";
 import { eventModel } from "../../model/eventModel";
 import { responderController } from "../common/responderController";
+import { errorMsg } from "../../service/enum";
 
 export const getEventDataController = async (
   req: IClient & IAuth,

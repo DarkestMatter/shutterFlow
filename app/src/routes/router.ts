@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { decryptToken } from "../common/decryptToken";
 import { loginController } from "../controller/common/login/loginController";
 import { otpVerificationController } from "../controller/common/login/otpVerificationController";
 import { registrationController } from "../controller/common/login/registrationController";
@@ -10,6 +9,8 @@ import { addEventController } from "../controller/user/addEventController";
 import { getClientListController } from "../controller/user/getClientListController";
 import { uploadFileController } from "../controller/user/uploadFileController";
 import { IAuth } from "../interface/IAuth";
+import { decryptToken } from "../service/decryptToken";
+import { statusEnum } from "../service/enum";
 
 export const router = Router();
 
@@ -59,17 +60,23 @@ router.post("/getClientList", async (req, res, next) => {
 });
 
 router.post("/addEvent", async (req, res, next) => {
-  const auth = (await decryptToken(req.headers)) as unknown as IAuth;
-  const request = {
-    ...req.body,
-    userId: auth?.userId,
-  };
-  auth?.userId && auth?.status === statusEnum.verified
-    ? addEventController(request, res, next)
-    : responderController(
-        { result: {}, statusCode: 200, inValidToken: true },
-        res
-      );
+  try {
+    const auth = (await decryptToken(req.headers)) as unknown as IAuth;
+    const request = {
+      ...req.body,
+      userId: auth?.userId,
+    };
+    console.log(auth?.status, statusEnum?.verified);
+    auth?.userId && auth?.status === statusEnum?.verified
+      ? addEventController(request, res, next)
+      : responderController(
+          { result: {}, statusCode: 200, inValidToken: true },
+          res
+        );
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
 });
 
 router.post("/getEventData", async (req, res, next) => {
@@ -88,10 +95,6 @@ router.post("/getEventData", async (req, res, next) => {
 
 router.post("/uploadFile", async (req, res, next) => {
   const auth = (await decryptToken(req.headers)) as unknown as IAuth;
-  const request = {
-    ...req.body,
-    userId: auth?.userId,
-  };
   auth?.userId && auth?.status === statusEnum.verified
     ? uploadFileController(req, res, next, auth)
     : responderController(

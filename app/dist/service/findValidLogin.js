@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.findValidLogin = void 0;
 const loginCredModel_1 = require("../model/loginCredModel");
+const enum_1 = require("./enum");
 const findValidUser_1 = require("./findValidUser");
 const findValidLogin = (email) => {
     return new Promise((resolve, reject) => {
@@ -15,17 +16,17 @@ const findValidLogin = (email) => {
                             resolve({ ...result._doc, pwd: result === null || result === void 0 ? void 0 : result.pwd });
                         }
                         else {
-                            resolve(errorMsg.incorrectUserEmail);
+                            resolve(enum_1.errorMsg.incorrectUserEmail);
                         }
                     }
                     else {
-                        reject(errorMsg.noLoginCredFound);
+                        reject(enum_1.errorMsg.noLoginCredFound);
                     }
                 });
             }
         }
         catch (err) {
-            reject(errorMsg.loginError);
+            reject(enum_1.errorMsg.loginError);
         }
     });
 };

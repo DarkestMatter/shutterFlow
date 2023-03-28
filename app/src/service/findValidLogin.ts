@@ -1,6 +1,7 @@
 import { ILoginCred } from "../interface/ILoginCred";
 import { IUserProfile } from "../interface/IUserProfile";
 import { loginCredModel } from "../model/loginCredModel";
+import { errorMsg } from "./enum";
 import { findValidUser } from "./findValidUser";
 
 export const findValidLogin = (email: String) => {

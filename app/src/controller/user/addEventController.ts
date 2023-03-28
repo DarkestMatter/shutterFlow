@@ -5,6 +5,7 @@ import { IClient } from "../../interface/IClient";
 import { IEvent } from "../../interface/IEvent";
 import { clientModel } from "../../model/clientModel";
 import { eventModel } from "../../model/eventModel";
+import { errorMsg } from "../../service/enum";
 import { responderController } from "../common/responderController";
 
 export const addEventController = async (
@@ -36,7 +37,16 @@ export const addEventController = async (
             },
           }
         )) as IClient;
-        responderController({ result: newEventObj, statusCode: 200 }, res);
+        updatedResult?.clientId
+          ? responderController({ result: newEventObj, statusCode: 200 }, res)
+          : responderController(
+              {
+                result: {},
+                statusCode: 200,
+                errorMsg: errorMsg.errorAtAddEvent,
+              },
+              res
+            );
       } catch (err) {
         responderController(
           {

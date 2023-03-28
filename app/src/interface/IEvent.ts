@@ -8,14 +8,27 @@ export interface IEvent {
   eventDate?: String;
   photoCount?: String;
   videoCount?: String;
-  eventItemlist?: IEventItemList;
+  eventFileList?: IEventFile[];
   createdDate?: String;
   updatedDate?: String;
 }
 
-export interface IEventItemList {
-  name: String;
-  url: String;
-  type: String;
-  format: String;
+export interface IEventFile {
+  eventId?: String;
+  fileId?: String;
+  clientOwnerId: String;
+  clientId: String;
+  name?: String;
+  originalFileSize?: Number;
+  minFileSize?: Number;
+  microFileSize?: Number;
+  originalFilePath?: String;
+  minFilePath?: String;
+  microFilePath?: String;
+  originalFileKey?: String;
+  minFileKey?: String;
+  microFileKey?: String;
+  type?: String;
+  format?: String;
+  errorMsg?: String;
 }
