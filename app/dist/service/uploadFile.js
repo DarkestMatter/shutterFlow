@@ -39,7 +39,7 @@ const uploadFile = async (req, res, next, fileData) => {
                 },
             });
             upload.single("myImage")(req, res, async (err) => {
-                var _a, _b, _c, _d, _e;
+                var _a, _b, _c, _d, _e, _f, _g;
                 const fileType = (_a = res.req.file) === null || _a === void 0 ? void 0 : _a.mimetype.split("/")[1];
                 if (!err) {
                     if (((_b = res === null || res === void 0 ? void 0 : res.req) === null || _b === void 0 ? void 0 : _b.file) && (req === null || req === void 0 ? void 0 : req.file)) {
@@ -50,9 +50,9 @@ const uploadFile = async (req, res, next, fileData) => {
                             params: {
                                 Bucket: enum_1.iDriveData.bucket,
                                 Key: `${fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId}/${fileData === null || fileData === void 0 ? void 0 : fileData.fileId}.${fileType}`,
-                                ContentType: "application/pdf",
+                                ContentType: (_c = req === null || req === void 0 ? void 0 : req.file) === null || _c === void 0 ? void 0 : _c.mimetype,
                                 ACL: "public-read",
-                                Body: (_c = req.file) === null || _c === void 0 ? void 0 : _c.buffer,
+                                Body: (_d = req.file) === null || _d === void 0 ? void 0 : _d.buffer,
                             },
                         });
                         fileUplaod.on("httpUploadProgress", async (progress) => {
@@ -64,7 +64,7 @@ const uploadFile = async (req, res, next, fileData) => {
                             fileRespnseObj.originalFileSize = progress === null || progress === void 0 ? void 0 : progress.loaded;
                         });
                         await fileUplaod.done();
-                        if ((_d = req === null || req === void 0 ? void 0 : req.file) === null || _d === void 0 ? void 0 : _d.mimetype.startsWith("image")) {
+                        if ((_e = req === null || req === void 0 ? void 0 : req.file) === null || _e === void 0 ? void 0 : _e.mimetype.startsWith("image")) {
                             const compressImageUpload = new lib_storage_1.Upload({
                                 client: s3,
                                 queueSize: 4,
@@ -72,9 +72,9 @@ const uploadFile = async (req, res, next, fileData) => {
                                 params: {
                                     Bucket: enum_1.iDriveData.bucket,
                                     Key: `${fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId}/min/${fileData === null || fileData === void 0 ? void 0 : fileData.fileId}.${fileType}`,
-                                    ContentType: "application/pdf",
+                                    ContentType: (_f = req === null || req === void 0 ? void 0 : req.file) === null || _f === void 0 ? void 0 : _f.mimetype,
                                     ACL: "public-read",
-                                    Body: (0, sharp_1.default)((_e = req.file) === null || _e === void 0 ? void 0 : _e.buffer).webp({ quality: 30 }),
+                                    Body: (0, sharp_1.default)((_g = req.file) === null || _g === void 0 ? void 0 : _g.buffer).webp({ quality: 30 }),
                                 },
                             });
                             compressImageUpload.on("httpUploadProgress", (progress) => {

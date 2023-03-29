@@ -58,7 +58,7 @@ export const uploadFile = async (
               params: {
                 Bucket: iDriveData.bucket,
                 Key: `${fileData?.clientOwnerId}/${fileData?.fileId}.${fileType}`,
-                ContentType: "application/pdf",
+                ContentType: req?.file?.mimetype,
                 ACL: "public-read",
                 Body: req.file?.buffer,
               },
@@ -79,7 +79,7 @@ export const uploadFile = async (
                 params: {
                   Bucket: iDriveData.bucket,
                   Key: `${fileData?.clientOwnerId}/min/${fileData?.fileId}.${fileType}`,
-                  ContentType: "application/pdf",
+                  ContentType: req?.file?.mimetype,
                   ACL: "public-read",
                   Body: sharp(req.file?.buffer).webp({ quality: 30 }),
                 },
