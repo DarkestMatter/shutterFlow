@@ -10,6 +10,7 @@ const validateTokenController_1 = require("../controller/common/validateTokenCon
 const addClientController_1 = require("../controller/user/addClientController");
 const addEventController_1 = require("../controller/user/addEventController");
 const getClientListController_1 = require("../controller/user/getClientListController");
+const getEventDataController_1 = require("../controller/user/getEventDataController");
 const uploadFileController_1 = require("../controller/user/uploadFileController");
 const decryptToken_1 = require("../service/decryptToken");
 const enum_1 = require("../service/enum");
@@ -65,14 +66,20 @@ exports.router.post("/addEvent", async (req, res, next) => {
     }
 });
 exports.router.post("/getEventData", async (req, res, next) => {
-    const auth = (await (0, decryptToken_1.decryptToken)(req.headers));
-    const request = {
-        ...req.body,
-        userId: auth === null || auth === void 0 ? void 0 : auth.userId,
-    };
-    (auth === null || auth === void 0 ? void 0 : auth.userId) && (auth === null || auth === void 0 ? void 0 : auth.status) === enum_1.statusEnum.verified
-        ? (0, addEventController_1.addEventController)(request, res, next)
-        : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: true }, res);
+    try {
+        const auth = (await (0, decryptToken_1.decryptToken)(req.headers));
+        const request = {
+            ...req.body,
+            userId: auth === null || auth === void 0 ? void 0 : auth.userId,
+        };
+        (auth === null || auth === void 0 ? void 0 : auth.userId) && (auth === null || auth === void 0 ? void 0 : auth.status) === enum_1.statusEnum.verified
+            ? (0, getEventDataController_1.getEventDataController)(request, res, next)
+            : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: true }, res);
+    }
+    catch (err) {
+        console.log(err);
+        res.json(err);
+    }
 });
 exports.router.post("/uploadFile", async (req, res, next) => {
     const auth = (await (0, decryptToken_1.decryptToken)(req.headers));

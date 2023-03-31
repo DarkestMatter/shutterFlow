@@ -51,11 +51,8 @@ export const uploadFileController = async (
       name: fileUploadResponse?.name,
       originalFilePath: `${iDriveData.baseUrl}${fileData?.clientOwnerId}/${fileData?.fileId}.${fileUploadResponse?.fileType}`,
       minFilePath: `${iDriveData.baseUrl}${fileData?.clientOwnerId}/min/${fileData?.fileId}.${fileUploadResponse?.fileType}`,
-      microFilePath: ``,
       originalFileSize: fileUploadResponse?.originalFileSize,
       minFileSize: fileUploadResponse?.minFileSize,
-      microFileSize: 0,
-      type: fileType.video,
       format: fileUploadResponse?.mimetype,
       eventId: fileUploadResponse?.eventId,
     };
@@ -84,6 +81,23 @@ export const uploadFileController = async (
 export const saveUploadFileData = (fileData: IEventFile) => {
   return new Promise(async (resolve, reject) => {
     try {
+      const originalFileData: IEventFile = {
+        clientId: fileData?.clientId,
+        clientOwnerId: fileData?.clientOwnerId,
+        name: fileData?.name,
+        originalFilePath: fileData?.originalFilePath,
+      };
+      const minFileData: IEventFile = {
+        fileId: fileData?.fileId,
+        clientOwnerId: fileData?.clientOwnerId,
+        clientId: fileData?.clientId,
+        name: fileData?.name,
+        minFilePath: fileData?.minFilePath,
+        originalFileSize: fileData?.originalFileSize,
+        minFileSize: fileData?.minFileSize,
+        format: fileData?.format,
+        eventId: fileData?.eventId,
+      };
       const updatedResult = (await eventModel().findOneAndUpdate(
         {
           clientOwnerId: fileData?.clientOwnerId,
@@ -91,7 +105,8 @@ export const saveUploadFileData = (fileData: IEventFile) => {
         },
         {
           $push: {
-            eventFileList: fileData,
+            originalFileList: originalFileData,
+            eventFileList: minFileData,
           },
         }
       )) as IEvent;

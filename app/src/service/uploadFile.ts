@@ -51,48 +51,57 @@ export const uploadFile = async (
         const fileType = res.req.file?.mimetype.split("/")[1];
         if (!err) {
           if (res?.req?.file && req?.file) {
-            const fileUplaod = new Upload({
-              client: s3,
-              queueSize: 4, // optional concurrency configuration
-              leavePartsOnError: false, // optional manually handle dropped parts
-              params: {
-                Bucket: iDriveData.bucket,
-                Key: `${fileData?.clientOwnerId}/${fileData?.fileId}.${fileType}`,
-                ContentType: req?.file?.mimetype,
-                ACL: "public-read",
-                Body: req.file?.buffer,
-              },
-            });
-            fileUplaod.on("httpUploadProgress", async (progress: any) => {
-              fileRespnseObj.fileType = fileType;
-              fileRespnseObj.eventId = req.body?.eventId;
-              fileRespnseObj.mimetype = res.req.file?.mimetype;
-              fileRespnseObj.name = res.req.file?.originalname;
-              fileRespnseObj.originalFileSize = progress?.loaded;
-            });
-            await fileUplaod.done();
-            if (req?.file?.mimetype.startsWith("image")) {
-              const compressImageUpload = new Upload({
+            try {
+              const fileUplaod = new Upload({
                 client: s3,
                 queueSize: 4, // optional concurrency configuration
                 leavePartsOnError: false, // optional manually handle dropped parts
                 params: {
                   Bucket: iDriveData.bucket,
-                  Key: `${fileData?.clientOwnerId}/min/${fileData?.fileId}.${fileType}`,
+                  Key: `${fileData?.clientOwnerId}/${fileData?.fileId}.${fileType}`,
                   ContentType: req?.file?.mimetype,
                   ACL: "public-read",
-                  Body: sharp(req.file?.buffer).webp({ quality: 30 }),
+                  Body: req.file?.buffer,
                 },
               });
-
-              compressImageUpload.on("httpUploadProgress", (progress: any) => {
-                fileRespnseObj.minFileSize = progress?.loaded;
-                console.log(fileRespnseObj);
+              fileUplaod.on("httpUploadProgress", async (progress: any) => {
+                fileRespnseObj.fileType = fileType;
+                fileRespnseObj.eventId = req.body?.eventId;
+                fileRespnseObj.mimetype = res.req.file?.mimetype;
+                fileRespnseObj.name = res.req.file?.originalname;
+                fileRespnseObj.originalFileSize = progress?.loaded;
               });
-              await compressImageUpload.done();
-              resolve(fileRespnseObj);
-            } else {
-              resolve(fileRespnseObj);
+              const a = await fileUplaod.done();
+              console.log(a);
+              if (req?.file?.mimetype.startsWith("image")) {
+                const compressImageUpload = new Upload({
+                  client: s3,
+                  queueSize: 4, // optional concurrency configuration
+                  leavePartsOnError: false, // optional manually handle dropped parts
+                  params: {
+                    Bucket: iDriveData.bucket,
+                    Key: `${fileData?.clientOwnerId}/min/${fileData?.fileId}.${fileType}`,
+                    ContentType: req?.file?.mimetype,
+                    ACL: "public-read",
+                    Body: sharp(req.file?.buffer).webp({ quality: 10 }),
+                  },
+                });
+
+                compressImageUpload.on(
+                  "httpUploadProgress",
+                  (progress: any) => {
+                    fileRespnseObj.minFileSize = progress?.loaded;
+                    console.log(fileRespnseObj);
+                  }
+                );
+                await compressImageUpload.done();
+                resolve(fileRespnseObj);
+              } else {
+                resolve(fileRespnseObj);
+              }
+            } catch (err) {
+              console.log(err);
+              resolve({ errorMsg: errorMsg.errorFileUpload });
             }
           }
         } else {

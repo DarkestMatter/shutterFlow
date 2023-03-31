@@ -1,14 +1,13 @@
 import { NextFunction, Response } from "express-serve-static-core";
-import { findValidUser } from "../../service/findValidUser";
 import { IAuth } from "../../interface/IAuth";
 import { IClient } from "../../interface/IClient";
-import { IUserProfile } from "../../interface/IUserProfile";
+import { IEvent } from "../../interface/IEvent";
 import { eventModel } from "../../model/eventModel";
-import { responderController } from "../common/responderController";
 import { errorMsg } from "../../service/enum";
+import { responderController } from "../common/responderController";
 
 export const getEventDataController = async (
-  req: IClient & IAuth,
+  req: IEvent & IAuth,
   res: Response<any, Record<string, any>, number>,
   next: NextFunction
 ) => {
@@ -19,12 +18,23 @@ export const getEventDataController = async (
         {
           clientOwnerId: req?.userId,
           clientId: req?.clientId,
+          eventId: req?.eventId,
         },
         { _id: 0 },
         { sort: { updatedDate: 1 } },
-        (err, result: IClient[]) => {
+        (err, result: IEvent[]) => {
           if (!err) {
-            responderController({ result: result, statusCode: 200 }, res);
+            const resultObj = {
+              eventId: result[0]?.eventId,
+              clientId: result[0]?.clientId,
+              clientName: result[0]?.clientName,
+              clientOwnerId: result[0]?.clientOwnerId,
+              eventName: result[0]?.eventName,
+              eventFileList: result[0]?.eventFileList,
+              createdDate: result[0]?.createdDate,
+              updatedDate: result[0]?.updatedDate,
+            };
+            responderController({ result: resultObj, statusCode: 200 }, res);
           } else {
             responderController({ result: {}, statusCode: 200 }, res);
           }

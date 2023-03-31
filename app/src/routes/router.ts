@@ -7,6 +7,7 @@ import { validateTokenController } from "../controller/common/validateTokenContr
 import { addClientController } from "../controller/user/addClientController";
 import { addEventController } from "../controller/user/addEventController";
 import { getClientListController } from "../controller/user/getClientListController";
+import { getEventDataController } from "../controller/user/getEventDataController";
 import { uploadFileController } from "../controller/user/uploadFileController";
 import { IAuth } from "../interface/IAuth";
 import { decryptToken } from "../service/decryptToken";
@@ -80,17 +81,22 @@ router.post("/addEvent", async (req, res, next) => {
 });
 
 router.post("/getEventData", async (req, res, next) => {
-  const auth = (await decryptToken(req.headers)) as unknown as IAuth;
-  const request = {
-    ...req.body,
-    userId: auth?.userId,
-  };
-  auth?.userId && auth?.status === statusEnum.verified
-    ? addEventController(request, res, next)
-    : responderController(
-        { result: {}, statusCode: 200, inValidToken: true },
-        res
-      );
+  try {
+    const auth = (await decryptToken(req.headers)) as unknown as IAuth;
+    const request = {
+      ...req.body,
+      userId: auth?.userId,
+    };
+    auth?.userId && auth?.status === statusEnum.verified
+      ? getEventDataController(request, res, next)
+      : responderController(
+          { result: {}, statusCode: 200, inValidToken: true },
+          res
+        );
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
 });
 
 router.post("/uploadFile", async (req, res, next) => {
