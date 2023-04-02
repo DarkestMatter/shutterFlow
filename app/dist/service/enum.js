@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fileType = exports.iDriveData = exports.uploadVideoFormat = exports.uploadImgFormat = exports.customerType = exports.eventName = exports.statusEnum = exports.successMsg = exports.errorMsg = void 0;
+exports.fileType = exports.iDriveData = exports.uploadVideoFormat = exports.uploadImgFormat = exports.customerType = exports.eventName = exports.registrationStatus = exports.successMsg = exports.errorMsg = void 0;
 var errorMsg;
 (function (errorMsg) {
     errorMsg["registrationError"] = "Error occurred while Registration";
@@ -17,6 +17,7 @@ var errorMsg;
     errorMsg["incorrectOtp"] = "enter correct otp";
     errorMsg["incorrectUserEmail"] = "Please login again with proper Email";
     errorMsg["userExist"] = "User already exists, Please try Login";
+    errorMsg["clientExist"] = "Client already exists, Please try another Mobile no";
     errorMsg["invalidToken"] = "Token is invalid, Please Login again";
     errorMsg["eventExists"] = "Event Already Exists, please create with different Name";
     errorMsg["incorrectUploadFormat"] = "Only .png, .jpg and .jpeg format allowed!";
@@ -28,12 +29,12 @@ var successMsg;
     successMsg["clientAdded"] = "Client added successfully";
     successMsg["enterOtp"] = "Enter OTP recieved on your email ID";
 })(successMsg = exports.successMsg || (exports.successMsg = {}));
-var statusEnum;
-(function (statusEnum) {
-    statusEnum["registered"] = "Registered";
-    statusEnum["verified"] = "Verified";
-    statusEnum["inactive"] = "Inactive";
-})(statusEnum = exports.statusEnum || (exports.statusEnum = {}));
+var registrationStatus;
+(function (registrationStatus) {
+    registrationStatus["registered"] = "Registered";
+    registrationStatus["verified"] = "Verified";
+    registrationStatus["inactive"] = "Inactive";
+})(registrationStatus = exports.registrationStatus || (exports.registrationStatus = {}));
 var eventName;
 (function (eventName) {
     eventName["defaultEventName"] = "HighLight";

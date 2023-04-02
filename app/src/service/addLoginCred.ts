@@ -5,11 +5,17 @@ import { loginCredModel } from "../model/loginCredModel";
 import { errorMsg } from "./enum";
 import { otpGenerator } from "./otpGenerator";
 
-export const addLoginCred = async (userData: IUserProfile) => {
+export const addLoginCred = async (userData: IUserProfile & ILoginCred) => {
   return new Promise((resolve, reject) => {
     const saveNewLoginCred = loginCredModel();
-    let new_model: ILoginCred = {
-      userId: `${userData?.studioName?.replace(/\s/g, "")}-${uuidv4()}`,
+    const userId = userData?.studioName
+      ? `${userData?.studioName?.replace(/\s/g, "")}-${uuidv4()}`
+      : undefined;
+    const new_model: ILoginCred = {
+      name: userData?.name,
+      studioName: userData?.studioName,
+      userId: userId,
+      clientId: userData?.clientId,
       email: userData?.email?.trim(),
       mobile: userData?.mobile?.trim(),
       pwd: userData?.pwd,

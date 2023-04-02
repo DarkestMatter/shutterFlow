@@ -9,8 +9,14 @@ const addLoginCred = async (userData) => {
     return new Promise((resolve, reject) => {
         var _a, _b, _c;
         const saveNewLoginCred = (0, loginCredModel_1.loginCredModel)();
-        let new_model = {
-            userId: `${(_a = userData === null || userData === void 0 ? void 0 : userData.studioName) === null || _a === void 0 ? void 0 : _a.replace(/\s/g, "")}-${(0, uuid_1.v4)()}`,
+        const userId = (userData === null || userData === void 0 ? void 0 : userData.studioName)
+            ? `${(_a = userData === null || userData === void 0 ? void 0 : userData.studioName) === null || _a === void 0 ? void 0 : _a.replace(/\s/g, "")}-${(0, uuid_1.v4)()}`
+            : undefined;
+        const new_model = {
+            name: userData === null || userData === void 0 ? void 0 : userData.name,
+            studioName: userData === null || userData === void 0 ? void 0 : userData.studioName,
+            userId: userId,
+            clientId: userData === null || userData === void 0 ? void 0 : userData.clientId,
             email: (_b = userData === null || userData === void 0 ? void 0 : userData.email) === null || _b === void 0 ? void 0 : _b.trim(),
             mobile: (_c = userData === null || userData === void 0 ? void 0 : userData.mobile) === null || _c === void 0 ? void 0 : _c.trim(),
             pwd: userData === null || userData === void 0 ? void 0 : userData.pwd,

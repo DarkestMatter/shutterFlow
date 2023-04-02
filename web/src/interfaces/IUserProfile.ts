@@ -1,4 +1,5 @@
 export interface IUserProfile {
+  customerType?: string;
   studioName?: string;
   userId?: string;
   email?: string;

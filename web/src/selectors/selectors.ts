@@ -13,6 +13,11 @@ export const getUserProfileSelector = createSelector(
   (state) => state?.userProfile
 );
 
+export const getClientProfileSelector = createSelector(
+  state,
+  (state) => state?.clientProfile
+);
+
 export const getUserEmailSelector = createSelector(
   state,
   (state) => state?.userProfile?.email
@@ -35,7 +40,52 @@ export const getClientListSelector = createSelector(
   (state) => state?.user?.clientList
 );
 
-export const getSelectedClient = createSelector(
+export const getSelectedClientSelector = createSelector(
   state,
   (state) => state?.user?.selectedClient
 );
+
+export const getUploadedFileListSelector = createSelector(
+  state,
+  (state) => state?.upload?.uploadedFileList
+);
+
+export const getAddedFileListSelector = createSelector(
+  state,
+  (state) => state?.upload?.addedFileList
+);
+
+export const getSelectedEventSelector = createSelector(
+  state,
+  (state) => state?.event?.selectedEvent
+);
+
+export const getEventFileListSelector = createSelector(
+  state,
+  (state) => state?.event?.selectedEvent?.eventFileList
+);
+
+export const getSelectedEventNameSelector = createSelector(
+  state,
+  (state) => state?.event?.selectedEvent?.eventName
+);
+
+export const getSelectFileEnabledSelector = createSelector(
+  state,
+  (state) => state?.event?.selectedEvent?.selectFile
+);
+
+export const getSelectedFilesSelector = createSelector(
+  state,
+  (state) => state?.event?.selectedFiles
+);
+
+export const getLandingImageDataSelector = createSelector(state, (state) => {
+  if (
+    state?.clientEvent &&
+    state?.clientEvent?.eventList &&
+    state?.clientEvent?.eventList[0]?.eventFileList
+  ) {
+    return state?.clientEvent?.eventList[0]?.eventFileList[3];
+  }
+});

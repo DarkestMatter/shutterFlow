@@ -12,7 +12,7 @@ import { addEventApi } from "../../../api/addEventApi";
 import { IEvent } from "../../../interfaces/IEvent";
 import {
   getDialogBoxSelector,
-  getSelectedClient,
+  getSelectedClientSelector,
 } from "../../../selectors/selectors";
 import { dialogName } from "../../../services/enum";
 import { openDialogBox } from "../../../slices/common/dialogBoxSlice";
@@ -25,7 +25,7 @@ export const AddEventDialogBox: React.FC = () => {
   const [eventDate, setEventDate] = useState<string>("");
 
   const getDialogBox = useSelector(getDialogBoxSelector);
-  const selectedClient = useSelector(getSelectedClient);
+  const selectedClient = useSelector(getSelectedClientSelector);
 
   const handleCancelDialog = () => {
     dispatch(openDialogBox({ dialogName: "" }));

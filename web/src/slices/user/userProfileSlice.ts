@@ -20,6 +20,8 @@ export const userProfileSlice = createSlice({
           state.userId = action.payload?.userId;
         case Object.keys(action.payload).includes("status"):
           state.status = action.payload?.status;
+        case Object.keys(action.payload).includes("customerType"):
+          state.customerType = action.payload?.customerType;
       }
     },
   },

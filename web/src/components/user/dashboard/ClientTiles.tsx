@@ -16,7 +16,7 @@ import {
   isValidTokenSelector,
 } from "../../../selectors/selectors";
 import { dialogName } from "../../../services/enum";
-import { updateSelectedClient } from "../../../slices/client/clientSlice";
+import { updateSelectedClient } from "../../../slices/user/clientMgmtSlice";
 import { openDialogBox } from "../../../slices/common/dialogBoxSlice";
 import { AddClientDialogBox } from "./AddClientDialogBox";
 
@@ -52,64 +52,68 @@ export const ClientTiles: React.FC = () => {
   };
 
   return (
-    <Grid container spacing={5}>
+    <Grid container spacing={3}>
       <AddClientDialogBox />
       <Grid item xs={6} sm={3} md={4} xl={3}>
-        <Card onClick={handleAddClient}>
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              image={
-                "https://icons-for-free.com/download-icon-add+photo+plus+upload+icon-1320184050039319890_512.png"
-              }
-              alt="green iguana"
-              style={{ height: 150 }}
-            />
-            <CardContent>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                textAlign="center"
-              >
-                <b>Add Client</b>
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
+        <div>
+          <Card onClick={handleAddClient}>
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                image={
+                  "https://icons-for-free.com/download-icon-add+photo+plus+upload+icon-1320184050039319890_512.png"
+                }
+                alt="green iguana"
+                style={{ height: 150 }}
+              />
+              <CardContent>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  textAlign="center"
+                >
+                  <b>Add Client</b>
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </div>
       </Grid>
       {clientList?.map((client) => {
         return (
           <Grid item xs={6} sm={3} md={4} xl={3} key={client?.clientId}>
-            <Card onClick={() => handleClientClicked(client)}>
-              <CardActionArea>
-                {client?.tileImgUrl ? (
-                  <CardMedia
-                    component="img"
-                    image={client?.tileImgUrl}
-                    alt="No image Uploaded"
-                    style={{ height: 150 }}
-                  />
-                ) : (
-                  <CardMedia
-                    component="img"
-                    image={
-                      "https://cdas.link/wp-content/uploads/2019/02/dummy.png"
-                    }
-                    alt="No image Uploaded"
-                    style={{ height: 150 }}
-                  />
-                )}
-                <CardContent>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    textAlign="center"
-                  >
-                    {client?.clientName}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
+            <div>
+              <Card onClick={() => handleClientClicked(client)}>
+                <CardActionArea>
+                  {client?.tileImgUrl ? (
+                    <CardMedia
+                      component="img"
+                      image={client?.tileImgUrl}
+                      alt="No image Uploaded"
+                      style={{ height: 150 }}
+                    />
+                  ) : (
+                    <CardMedia
+                      component="img"
+                      image={
+                        "https://c3l1.c10.e2-3.dev/shutter-flow/asd-6982abac-1b98-4810-bb07-9424667dce5a/62b63cdf-73f4-4607-87f3-b8b77df6390b.jpeg"
+                      }
+                      alt="No image Uploaded"
+                      style={{ height: 150 }}
+                    />
+                  )}
+                  <CardContent>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      textAlign="center"
+                    >
+                      {client?.clientName}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </div>
           </Grid>
         );
       })}

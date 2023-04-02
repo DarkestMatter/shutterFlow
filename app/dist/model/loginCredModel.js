@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginCredModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const loginCredSchema = new mongoose_1.default.Schema({
+    name: String,
+    studioName: String,
     email: String,
     mobile: String,
     pwd: String,

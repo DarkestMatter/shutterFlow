@@ -1,4 +1,3 @@
-import { MutableRefObject } from "react";
 import { IEvent } from "./IEvent";
 
 export interface IClientData {
@@ -7,6 +6,7 @@ export interface IClientData {
   clientMobileNo?: string;
   eventType?: string;
   eventList?: IEvent[];
+  eventName?: String;
   clientOwnerId?: string;
   clientOwnerEmail?: string;
   clientTileImgUrl?: string;

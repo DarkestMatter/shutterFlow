@@ -8,7 +8,15 @@ import { IUserProfile } from "../../interface/IUserProfile";
 import { clientModel } from "../../model/clientModel";
 import { responderController } from "../common/responderController";
 import { addEvent } from "./addEventController";
-import { errorMsg, eventName } from "../../service/enum";
+import {
+  customerType,
+  errorMsg,
+  eventName,
+  registrationStatus,
+} from "../../service/enum";
+import { addLoginCred } from "../../service/addLoginCred";
+import { ILoginCred } from "../../interface/ILoginCred";
+import { findValidLogin } from "../../service/findValidLogin";
 
 export const addClientController = async (
   req: IClient & IAuth,
@@ -23,11 +31,38 @@ export const addClientController = async (
     if (userData && userData?.email && userData?.userId) {
       // && userData?.customerType === customerType.user) {
 
+      const loginData = (await findValidLogin(
+        req?.clientMobileNo
+      )) as unknown as ILoginCred;
+
+      if (loginData?.clientId) {
+        responderController(
+          {
+            result: {},
+            statusCode: 500,
+            errorMsg: errorMsg.clientExist,
+          },
+          res
+        );
+        return;
+      }
+
       const clientId = `${req?.clientName?.replace(/\s/g, "")}-${uuidv4()}`;
       const eventId = `${eventName.defaultEventName?.replace(
         /\s/g,
         ""
       )}-${uuidv4()}`;
+
+      const clientData: ILoginCred = {
+        email: req?.clientEmail,
+        mobile: req?.clientMobileNo,
+        clientId: clientId,
+        status: registrationStatus.verified,
+        customerType: customerType.client,
+        pwd: "1234",
+      };
+      await addLoginCred(clientData);
+
       const eventList: IEvent[] = [
         {
           eventId: eventId,

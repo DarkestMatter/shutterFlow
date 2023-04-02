@@ -10,7 +10,7 @@ import {
   getMsgSelector,
   getUserProfileSelector,
 } from "../../../selectors/selectors";
-import { dialogName, userStatus } from "../../../services/enum";
+import { customerType, dialogName, userStatus } from "../../../services/enum";
 import { openDialogBox } from "../../../slices/common/dialogBoxSlice";
 import { AppDispatch } from "../../../store";
 import { OtpDialogBox } from "../registeration/OtpDialogBox";
@@ -24,7 +24,7 @@ const inputFieldStyle = {
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const [email, setEmail] = useState<string>("");
+  const [loginId, setLoginId] = useState<string>("");
   const [pwd, setPwd] = useState<string>("");
 
   const getMsg = useSelector(getMsgSelector);
@@ -35,8 +35,8 @@ export const LoginPage: React.FC = () => {
     valueKey: string
   ) => {
     switch (true) {
-      case valueKey === "email":
-        setEmail(e.target.value);
+      case valueKey === "loginId":
+        setLoginId(e.target.value);
         break;
       case valueKey === "pwd":
         setPwd(e.target.value);
@@ -48,15 +48,25 @@ export const LoginPage: React.FC = () => {
     const apiResp = (await loginApi({
       dispatch: dispatch,
       uri: "loginUser",
-      data: { email: email, pwd: pwd },
+      data: { loginId: loginId, pwd: pwd },
     })) as IUserProfile;
-    apiResp?.status === userStatus.registered
-      ? dispatch(openDialogBox({ dialogName: dialogName.otpDialog }))
-      : navigate("/dashboard");
+    switch (true) {
+      case apiResp?.status === userStatus.registered:
+        dispatch(openDialogBox({ dialogName: dialogName.otpDialog }));
+        break;
+      case apiResp?.customerType === customerType.user:
+        navigate("/dashboard");
+        break;
+      case apiResp?.customerType === customerType.client:
+        navigate("/client");
+        break;
+      default:
+        navigate("/login");
+    }
   };
 
   return (
-    <Grid container className="centerDiv">
+    <Grid container className="padding3">
       <OtpDialogBox />
       <Grid item xs={12} display="flex" justifyContent="center">
         <h1 className="ShutterFlowTitleText">Shutter Flow</h1>
@@ -68,9 +78,9 @@ export const LoginPage: React.FC = () => {
             <TextField
               variant="outlined"
               fullWidth
-              onChange={(e) => handleInputChange(e, "email")}
-              label="Enter email"
-              value={email}
+              onChange={(e) => handleInputChange(e, "loginId")}
+              label="Enter Email / Mobile No"
+              value={loginId}
               sx={inputFieldStyle}
             />
           </Grid>

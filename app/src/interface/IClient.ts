@@ -4,6 +4,7 @@ export interface IClient {
   clientName: String;
   clientId: String;
   clientMobileNo: String;
+  clientEmail?: String;
   eventType: String;
   eventList: IEvent[];
   clientOwnerName?: String;

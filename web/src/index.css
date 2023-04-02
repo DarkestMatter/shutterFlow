@@ -26,7 +26,7 @@
   font-family: inherit;
 }
 
-.centerDiv {
+.padding3 {
   padding-top: 3% !important;
 }
 .hand {
@@ -34,6 +34,65 @@
 }
 .anchorText {
   color: #428bca;
+}
+.imgCardBox {
+  margin: 15px;
+  width: 180px;
+}
+.sideBarBox {
+  position: fixed;
+  max-width: 150px;
+  box-shadow: gainsboro 0px 10px 10px 1px;
+  background-color: #fff;
+  color: #515451;
+}
+.eventSidebar {
+  margin-top: 10px;
+  position: fixed;
+  overflow-y: scroll;
+}
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+.centerDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+}
+.horizontalBar {
+  border-bottom: 1px solid #827676;
+  margin-top: 20px;
+}
+.midBtn {
+  border: 2px solid gray;
+  color: gray;
+  background-color: white;
+  padding: 8px 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.upload-btn-wrapper input[type="file"] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+@media screen and (max-width: 1100px) {
+  .imgCardBox {
+    width: 120px;
+  }
+}
+@media screen and (min-width: 2200px) {
+  .imgCardBox {
+    width: 120px;
+  }
+  .sideBarBox {
+    max-width: 240px;
+  }
 }
 body,
 html {

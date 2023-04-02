@@ -1,9 +1,10 @@
-import { customerType, statusEnum } from "../service/enum";
+import { customerType, registrationStatus } from "../service/enum";
 
 export interface IAuth {
   fileId?: String;
-  status?: statusEnum;
-  userId: string;
+  status?: registrationStatus;
+  userId: String;
+  clientId?: String;
   customerType: customerType;
   exp?: Number;
   iat?: Number;

@@ -4,29 +4,28 @@ import { loginCredModel } from "../model/loginCredModel";
 import { errorMsg } from "./enum";
 import { findValidUser } from "./findValidUser";
 
-export const findValidLogin = (email: String) => {
+export const findValidLogin = (loginId: String) => {
   return new Promise((resolve, reject) => {
     try {
-      if (email) {
+      if (loginId) {
         loginCredModel().findOne(
-          { email: email },
+          { $or: [{ email: loginId }, { mobile: loginId }] },
           { _id: 0 },
           async (err: Error, result: ILoginCred) => {
             if (!err) {
-              if (result?.email) {
-                const userData = (await findValidUser(
-                  result?.userId
-                )) as IUserProfile;
+              if (result?.email || result?.mobile) {
                 //@ts-ignore
                 resolve({ ...result._doc, pwd: result?.pwd });
               } else {
                 resolve(errorMsg.incorrectUserEmail);
               }
             } else {
-              reject(errorMsg.noLoginCredFound);
+              resolve(errorMsg.noLoginCredFound);
             }
           }
         );
+      } else {
+        resolve(errorMsg.noLoginCredFound);
       }
     } catch (err) {
       reject(errorMsg.loginError);

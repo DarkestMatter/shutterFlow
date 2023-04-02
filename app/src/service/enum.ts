@@ -13,6 +13,7 @@ export enum errorMsg {
   incorrectOtp = "enter correct otp",
   incorrectUserEmail = "Please login again with proper Email",
   userExist = "User already exists, Please try Login",
+  clientExist = "Client already exists, Please try another Mobile no",
   invalidToken = "Token is invalid, Please Login again",
   eventExists = "Event Already Exists, please create with different Name",
   incorrectUploadFormat = "Only .png, .jpg and .jpeg format allowed!",
@@ -25,7 +26,7 @@ export enum successMsg {
   enterOtp = "Enter OTP recieved on your email ID",
 }
 
-export enum statusEnum {
+export enum registrationStatus {
   registered = "Registered",
   verified = "Verified",
   inactive = "Inactive",

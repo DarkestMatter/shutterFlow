@@ -8,5 +8,5 @@ export interface IUserProfile {
   status?: String;
   customerType?: String;
   createdDate?: String;
-  udpatedDate: String;
+  udpatedDate?: String;
 }

@@ -7,14 +7,34 @@ const clientModel_1 = require("../../model/clientModel");
 const responderController_1 = require("../common/responderController");
 const addEventController_1 = require("./addEventController");
 const enum_1 = require("../../service/enum");
+const addLoginCred_1 = require("../../service/addLoginCred");
+const findValidLogin_1 = require("../../service/findValidLogin");
 const addClientController = async (req, res, next) => {
     var _a, _b;
     try {
         const userData = (await (0, findValidUser_1.findValidUser)(req === null || req === void 0 ? void 0 : req.userId));
         if (userData && (userData === null || userData === void 0 ? void 0 : userData.email) && (userData === null || userData === void 0 ? void 0 : userData.userId)) {
             // && userData?.customerType === customerType.user) {
+            const loginData = (await (0, findValidLogin_1.findValidLogin)(req === null || req === void 0 ? void 0 : req.clientMobileNo));
+            if (loginData === null || loginData === void 0 ? void 0 : loginData.clientId) {
+                (0, responderController_1.responderController)({
+                    result: {},
+                    statusCode: 500,
+                    errorMsg: enum_1.errorMsg.clientExist,
+                }, res);
+                return;
+            }
             const clientId = `${(_a = req === null || req === void 0 ? void 0 : req.clientName) === null || _a === void 0 ? void 0 : _a.replace(/\s/g, "")}-${(0, uuid_1.v4)()}`;
             const eventId = `${(_b = enum_1.eventName.defaultEventName) === null || _b === void 0 ? void 0 : _b.replace(/\s/g, "")}-${(0, uuid_1.v4)()}`;
+            const clientData = {
+                email: req === null || req === void 0 ? void 0 : req.clientEmail,
+                mobile: req === null || req === void 0 ? void 0 : req.clientMobileNo,
+                clientId: clientId,
+                status: enum_1.registrationStatus.verified,
+                customerType: enum_1.customerType.client,
+                pwd: "1234",
+            };
+            await (0, addLoginCred_1.addLoginCred)(clientData);
             const eventList = [
                 {
                     eventId: eventId,

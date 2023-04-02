@@ -10,7 +10,7 @@ const registrationController = async (req, res, next) => {
     var _a, _b;
     try {
         const userData = (await (0, findValidLogin_1.findValidLogin)((_a = req.body) === null || _a === void 0 ? void 0 : _a.email));
-        if ((userData === null || userData === void 0 ? void 0 : userData.email) && (userData === null || userData === void 0 ? void 0 : userData.status) === enum_1.statusEnum.verified) {
+        if ((userData === null || userData === void 0 ? void 0 : userData.email) && (userData === null || userData === void 0 ? void 0 : userData.status) === enum_1.registrationStatus.verified) {
             const resultObj = {
                 result: userData,
                 statusCode: 200,
@@ -18,7 +18,8 @@ const registrationController = async (req, res, next) => {
             };
             (0, responderController_1.responderController)(resultObj, res);
         }
-        else if ((userData === null || userData === void 0 ? void 0 : userData.email) && (userData === null || userData === void 0 ? void 0 : userData.status) === enum_1.statusEnum.registered) {
+        else if ((userData === null || userData === void 0 ? void 0 : userData.email) &&
+            (userData === null || userData === void 0 ? void 0 : userData.status) === enum_1.registrationStatus.registered) {
             const resultObj = {
                 result: userData,
                 statusCode: 200,
@@ -30,17 +31,17 @@ const registrationController = async (req, res, next) => {
             try {
                 const newUserData = {
                     ...req.body,
-                    status: enum_1.statusEnum.registered,
+                    status: enum_1.registrationStatus.registered,
                     customerType: enum_1.customerType.user,
                 };
                 const loginCreated = (await (0, addLoginCred_1.addLoginCred)(newUserData));
                 const saveUserRegistration = (0, userProfileModel_1.userProfileModel)();
-                let new_model = {
+                const new_model = {
                     userId: loginCreated === null || loginCreated === void 0 ? void 0 : loginCreated.userId,
                     email: loginCreated === null || loginCreated === void 0 ? void 0 : loginCreated.email,
                     mobile: loginCreated === null || loginCreated === void 0 ? void 0 : loginCreated.mobile,
                     studioName: (_b = req.body) === null || _b === void 0 ? void 0 : _b.studioName,
-                    status: enum_1.statusEnum.registered,
+                    status: enum_1.registrationStatus.registered,
                     createdDate: new Date(),
                     udpatedDate: new Date(),
                 };

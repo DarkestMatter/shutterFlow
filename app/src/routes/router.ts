@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { getPrimaryEventController } from "../controller/client/getPrimaryEventController";
 import { loginController } from "../controller/common/login/loginController";
 import { otpVerificationController } from "../controller/common/login/otpVerificationController";
 import { registrationController } from "../controller/common/login/registrationController";
@@ -8,10 +9,11 @@ import { addClientController } from "../controller/user/addClientController";
 import { addEventController } from "../controller/user/addEventController";
 import { getClientListController } from "../controller/user/getClientListController";
 import { getEventDataController } from "../controller/user/getEventDataController";
+import { getUserProfileController } from "../controller/user/getUserProfileController";
 import { uploadFileController } from "../controller/user/uploadFileController";
 import { IAuth } from "../interface/IAuth";
 import { decryptToken } from "../service/decryptToken";
-import { statusEnum } from "../service/enum";
+import { registrationStatus } from "../service/enum";
 
 export const router = Router();
 
@@ -38,7 +40,8 @@ router.post("/addClient", async (req, res, next) => {
     userId: auth?.userId,
     customerType: auth?.customerType,
   };
-  auth?.userId && auth?.status === statusEnum.verified
+  console.log(auth);
+  auth?.userId && auth?.status === registrationStatus.verified
     ? addClientController(request, res, next)
     : responderController(
         { result: {}, statusCode: 200, inValidToken: true },
@@ -52,7 +55,7 @@ router.post("/getClientList", async (req, res, next) => {
     ...req.body,
     userId: auth?.userId,
   };
-  auth?.userId && auth?.status === statusEnum.verified
+  auth?.userId && auth?.status === registrationStatus.verified
     ? getClientListController(request, res, next)
     : responderController(
         { result: {}, statusCode: 200, inValidToken: true },
@@ -67,8 +70,8 @@ router.post("/addEvent", async (req, res, next) => {
       ...req.body,
       userId: auth?.userId,
     };
-    console.log(auth?.status, statusEnum?.verified);
-    auth?.userId && auth?.status === statusEnum?.verified
+    console.log(auth?.status, registrationStatus?.verified);
+    auth?.userId && auth?.status === registrationStatus?.verified
       ? addEventController(request, res, next)
       : responderController(
           { result: {}, statusCode: 200, inValidToken: true },
@@ -87,7 +90,7 @@ router.post("/getEventData", async (req, res, next) => {
       ...req.body,
       userId: auth?.userId,
     };
-    auth?.userId && auth?.status === statusEnum.verified
+    auth?.userId && auth?.status === registrationStatus.verified
       ? getEventDataController(request, res, next)
       : responderController(
           { result: {}, statusCode: 200, inValidToken: true },
@@ -101,10 +104,29 @@ router.post("/getEventData", async (req, res, next) => {
 
 router.post("/uploadFile", async (req, res, next) => {
   const auth = (await decryptToken(req.headers)) as unknown as IAuth;
-  auth?.userId && auth?.status === statusEnum.verified
+  auth?.userId && auth?.status === registrationStatus.verified
     ? uploadFileController(req, res, next, auth)
     : responderController(
         { result: {}, statusCode: 200, inValidToken: true },
         res
       );
+});
+
+router.post("/getPrimaryEvent", async (req, res, next) => {
+  try {
+    const auth = (await decryptToken(req.headers)) as unknown as IAuth;
+    const request = {
+      ...req.body,
+      clientId: auth?.clientId,
+    };
+    auth?.clientId && auth?.status === registrationStatus.verified
+      ? getPrimaryEventController(request, res, next)
+      : responderController(
+          { result: {}, statusCode: 200, inValidToken: true },
+          res
+        );
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
 });

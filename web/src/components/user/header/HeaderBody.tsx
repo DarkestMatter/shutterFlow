@@ -3,10 +3,14 @@ import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { currentProfileTypeSelector } from "../../../selectors/currentProfileSelector";
 import {
+  getClientProfileSelector,
   getMsgSelector,
+  getUserProfileSelector,
   isValidTokenSelector,
 } from "../../../selectors/selectors";
+import { customerType } from "../../../services/enum";
 import { AppDispatch } from "../../../store";
 
 export const HeaderBody: React.FC = () => {
@@ -14,18 +18,21 @@ export const HeaderBody: React.FC = () => {
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
 
-  const getMsg = useSelector(getMsgSelector);
-  const isValidToken = useSelector(isValidTokenSelector);
+  const currentProfileType = useSelector(currentProfileTypeSelector);
 
   const [headerColor, setHeaderColor] = useState<string>("#fff");
 
   const handleLogoClick = () => {
-    navigate("/dashboard");
+    if (currentProfileType === customerType.client) {
+      navigate("/client");
+    } else if (currentProfileType === customerType.user) {
+      navigate("/dashboard");
+    }
   };
 
   const handleScroll = () => {
     const position = window.pageYOffset;
-    setHeaderColor(() => (position > 90 ? "#fff" : "none"));
+    setHeaderColor(() => (position > 90 ? "#fff" : "#fff"));
   };
 
   useEffect(() => {

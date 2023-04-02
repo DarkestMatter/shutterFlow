@@ -1,7 +1,8 @@
 import axios from "axios";
 import { api } from "../env";
 import { IApi } from "../interfaces/IApi";
-import { userStatus } from "../services/enum";
+import { customerType, userStatus } from "../services/enum";
+import { updateClientProfile } from "../slices/client/clientProfileSlice";
 import { updateLoader, updateToken } from "../slices/common/commonSlice";
 import { updateMsg } from "../slices/common/msgSlice";
 import { updateUserProfile } from "../slices/user/userProfileSlice";
@@ -21,13 +22,16 @@ export const loginApi = async (api: IApi) => {
           if (response?.data?.validToken && response.data?.result?.token) {
             api.dispatch(updateMsg({ errorMsg: response.data?.errorMsg }));
             localStorage.setItem("token", response.data?.result?.token);
-            api.dispatch(updateUserProfile(response.data?.result));
+            api.dispatch(updateToken({ isValidToken: true }));
             api.dispatch(updateLoader({ isLoading: false }));
+            response?.data?.result?.customerType === customerType.user
+              ? api.dispatch(updateUserProfile(response.data?.result))
+              : api.dispatch(updateClientProfile(response.data?.result));
             resolve(response.data?.result);
           } else {
             api.dispatch(updateLoader({ isLoading: false }));
             api.dispatch(updateToken({ isValidToken: false }));
-            resolve(response.data?.result);
+            resolve(false);
           }
         })
         .catch((err) => {

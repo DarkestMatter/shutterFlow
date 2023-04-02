@@ -57,7 +57,7 @@ export const RegisterationForm: React.FC = () => {
   };
 
   return (
-    <Grid container className="centerDiv">
+    <Grid container className="padding3">
       <OtpDialogBox />
       <Grid item xs={12} display="flex" justifyContent="center">
         <h1 className="ShutterFlowTitleText">Shutter Flow</h1>

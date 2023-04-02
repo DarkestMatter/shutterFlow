@@ -5,7 +5,8 @@ import { IUserProfile } from "../../../interface/IUserProfile";
 import { loginCredModel } from "../../../model/loginCredModel";
 import { userProfileModel } from "../../../model/userProfileModel";
 import { responderController } from "../responderController";
-import { errorMsg, statusEnum } from "../../../service/enum";
+import { errorMsg, registrationStatus } from "../../../service/enum";
+import { IToken } from "../../../interface/IToken";
 
 export const otpVerificationController: RequestHandler = async (
   req,
@@ -17,18 +18,21 @@ export const otpVerificationController: RequestHandler = async (
     isOtpValid
       ? userProfileModel().findOneAndUpdate(
           { email: req.body?.email },
-          { status: statusEnum.verified },
+          { status: registrationStatus.verified },
           async (err: Error, result: IUserProfile) => {
             if (!err) {
               await updateUserLoginCredStatus(req.body?.email);
-              const token = await tokenGenerator(
-                result?.userId,
-                result?.customerType,
-                result?.status
-              );
+              const tokenObj: IToken = {
+                userId: result?.userId,
+                clientId: "",
+                customerType: result?.customerType,
+                status: registrationStatus.verified,
+              };
+              console.log(result);
+              const token = await tokenGenerator(tokenObj);
               const resultObj = {
                 email: result?.email,
-                status: statusEnum.verified,
+                status: registrationStatus.verified,
                 studioName: result?.studioName,
                 mobile: result?.mobile,
               };
@@ -83,7 +87,7 @@ const updateUserLoginCredStatus = (email: IUserProfile) => {
     try {
       loginCredModel().findOneAndUpdate(
         { email: email },
-        { status: statusEnum.verified },
+        { status: registrationStatus.verified },
         (err: Error, result: ILoginCred) => {
           if (!err) {
             resolve(true);

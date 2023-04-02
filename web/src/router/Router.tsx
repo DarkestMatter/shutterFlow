@@ -3,6 +3,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { ClientDashboard } from "../components/client/dashboard/ClientDashboard";
 import { TokenValidator } from "../components/common/TokenValidator";
 import { Dashboard } from "../components/user/dashboard/Dashboard";
 import { EventDashboard } from "../components/user/event/EventDashboard";
@@ -11,6 +12,7 @@ import { Login } from "../components/user/login/Login";
 import { Registration } from "../components/user/registeration/Registration";
 import { SideBar } from "../components/user/sideBar/SideBar";
 import {
+  getClientProfileSelector,
   getUserProfileSelector,
   isLoadingSelector,
 } from "../selectors/selectors";
@@ -20,6 +22,7 @@ import "./router.css";
 export const Router: React.FC = () => {
   const isLoading = useSelector(isLoadingSelector);
   const getUserProfile = useSelector(getUserProfileSelector);
+  const getClientProfile = useSelector(getClientProfileSelector);
 
   return (
     <BrowserRouter>
@@ -32,7 +35,8 @@ export const Router: React.FC = () => {
           <CircularProgress color="inherit" />
         </Backdrop>
       )}
-      {getUserProfile?.status === userStatus.verified ? (
+      {getUserProfile?.status === userStatus.verified ||
+      getClientProfile?.status === userStatus.verified ? (
         <Grid item xs={0} md={4} xl={3}>
           <HeaderBody />
         </Grid>
@@ -66,6 +70,7 @@ export const Router: React.FC = () => {
               <Route path="/register" element={<Registration />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/eventDashboard" element={<EventDashboard />} />
+              <Route path="/client" element={<ClientDashboard />} />
               <Route path="*" element={<Navigate to="/dashboard" />} />
             </Routes>
           </div>

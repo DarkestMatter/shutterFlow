@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { defaultClient, IClientData } from "../../interfaces/IClient";
 import { IEvent } from "../../interfaces/IEvent";
 
-export const userSlice = createSlice({
+export const clientMgmtSlice = createSlice({
   name: "client",
   initialState: defaultClient,
   reducers: {
@@ -24,6 +24,6 @@ export const {
   updateClientList,
   updateSelectedClientEventList,
   updateSelectedClient,
-} = userSlice.actions;
+} = clientMgmtSlice.actions;
 
-export const userReducer = userSlice.reducer;
+export const userReducer = clientMgmtSlice.reducer;

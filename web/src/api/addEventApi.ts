@@ -1,7 +1,7 @@
 import axios from "axios";
 import { api } from "../env";
 import { IApi } from "../interfaces/IApi";
-import { updateSelectedClientEventList } from "../slices/client/clientSlice";
+import { updateSelectedClientEventList } from "../slices/user/clientMgmtSlice";
 import { updateLoader } from "../slices/common/commonSlice";
 import { updateMsg } from "../slices/common/msgSlice";
 

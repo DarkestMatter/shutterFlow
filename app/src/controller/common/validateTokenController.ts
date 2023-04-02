@@ -6,6 +6,7 @@ import { IResponderResult } from "../../interface/IResponderResult";
 import { IUserProfile } from "../../interface/IUserProfile";
 import { responderController } from "./responderController";
 import { errorMsg } from "../../service/enum";
+import { getUserProfileController } from "../user/getUserProfileController";
 
 export const validateTokenController: RequestHandler = async (
   req,
@@ -15,29 +16,9 @@ export const validateTokenController: RequestHandler = async (
   try {
     const auth = (await decryptToken(req.headers)) as unknown as IAuth;
     if (auth?.userId) {
-      const userData: IUserProfile = (await findValidUser(
-        auth?.userId
-      )) as unknown as IUserProfile;
-      const resultObj: IResponderResult = {
-        result: {
-          userId: userData?.userId,
-          email: userData?.email,
-          studioName: userData?.studioName,
-          mobile: userData?.mobile,
-          status: userData?.status,
-        },
-        statusCode: 200,
-      };
-      userData
-        ? responderController(resultObj, res)
-        : responderController(
-            {
-              result: {},
-              statusCode: 200,
-              errorMsg: errorMsg.incorrectUserEmail,
-            },
-            res
-          );
+      getUserProfileController(req, res, next);
+    } else if (auth?.clientId) {
+      responderController({ result: auth, statusCode: 200 }, res);
     } else {
       responderController(
         { result: {}, statusCode: 200, errorMsg: errorMsg.invalidToken },

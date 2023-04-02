@@ -3,6 +3,8 @@ import { IClient } from "../interface/IClient";
 import { ILoginCred } from "../interface/ILoginCred";
 
 const loginCredSchema = new mongoose.Schema<ILoginCred>({
+  name: String,
+  studioName: String,
   email: String,
   mobile: String,
   pwd: String,

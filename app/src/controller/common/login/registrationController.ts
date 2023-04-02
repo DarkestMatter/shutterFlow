@@ -9,7 +9,7 @@ import { responderController } from "../responderController";
 import {
   customerType,
   errorMsg,
-  statusEnum,
+  registrationStatus,
   successMsg,
 } from "../../../service/enum";
 
@@ -22,14 +22,17 @@ export const registrationController: RequestHandler = async (
     const userData = (await findValidLogin(
       req.body?.email
     )) as unknown as ILoginCred;
-    if (userData?.email && userData?.status === statusEnum.verified) {
+    if (userData?.email && userData?.status === registrationStatus.verified) {
       const resultObj: IResponderResult = {
         result: userData,
         statusCode: 200,
         errorMsg: errorMsg.userExist,
       };
       responderController(resultObj, res);
-    } else if (userData?.email && userData?.status === statusEnum.registered) {
+    } else if (
+      userData?.email &&
+      userData?.status === registrationStatus.registered
+    ) {
       const resultObj: IResponderResult = {
         result: userData,
         statusCode: 200,
@@ -40,7 +43,7 @@ export const registrationController: RequestHandler = async (
       try {
         const newUserData: IUserProfile = {
           ...req.body,
-          status: statusEnum.registered,
+          status: registrationStatus.registered,
           customerType: customerType.user,
         };
 
@@ -49,12 +52,12 @@ export const registrationController: RequestHandler = async (
         )) as unknown as ILoginCred;
 
         const saveUserRegistration = userProfileModel();
-        let new_model: IUserProfile = {
+        const new_model: IUserProfile = {
           userId: loginCreated?.userId,
           email: loginCreated?.email,
           mobile: loginCreated?.mobile,
           studioName: req.body?.studioName,
-          status: statusEnum.registered,
+          status: registrationStatus.registered,
           createdDate: new Date() as unknown as String,
           udpatedDate: new Date() as unknown as String,
         };
