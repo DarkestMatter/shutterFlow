@@ -1,4 +1,4 @@
-import { selectFile } from "../services/enum";
+import { imgDimensionType, selectFile } from "../services/enum";
 
 export interface IEventFile {
   eventId?: string;
@@ -20,6 +20,7 @@ export interface IEventFile {
   errorMsg?: string;
   selected?: boolean;
   index?: number;
+  imgDimensionType?: imgDimensionType;
 }
 export interface IEvent {
   eventId?: string;

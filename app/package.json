@@ -17,6 +17,7 @@
     "axios": "^1.2.6",
     "bluebird": "^3.7.2",
     "body-parse": "^0.1.0",
+    "buffer-image-size": "^0.6.4",
     "circular-json": "^0.5.9",
     "cors": "^2.8.5",
     "date-fns": "^2.29.3",

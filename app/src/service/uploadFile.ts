@@ -1,4 +1,6 @@
 import { S3Client } from "@aws-sdk/client-s3";
+import { Upload } from "@aws-sdk/lib-storage";
+import sizeOf from "buffer-image-size";
 import {
   NextFunction,
   ParamsDictionary,
@@ -6,14 +8,18 @@ import {
   Response,
 } from "express-serve-static-core";
 import multer from "multer";
-import sharp from "sharp";
-import { Upload } from "@aws-sdk/lib-storage";
 import { ParsedQs } from "qs";
+import sharp from "sharp";
 //@ts-ignore
 import { iDriveCred } from "../../env";
 import { IEventFile } from "../interface/IEvent";
 import { IFileRespnseObj } from "../interface/IFileMeta";
-import { errorMsg, iDriveData, uploadImgFormat } from "./enum";
+import {
+  errorMsg,
+  iDriveData,
+  imgDimensionType,
+  uploadImgFormat,
+} from "./enum";
 
 const s3 = new S3Client({
   credentials: {
@@ -31,6 +37,7 @@ export const uploadFile = async (
   fileData: IEventFile
 ) => {
   return new Promise(async (resolve, reject) => {
+    let imgDimType: String;
     try {
       const fileRespnseObj: IFileRespnseObj = {};
       const upload = multer({
@@ -73,7 +80,15 @@ export const uploadFile = async (
               });
               const a = await fileUplaod.done();
               console.log(a);
+
               if (req?.file?.mimetype.startsWith("image")) {
+                //calculating img dim
+                const dimensions = sizeOf(req?.file?.buffer);
+                if (dimensions.height > dimensions.width) {
+                  imgDimType = imgDimensionType.portrait;
+                } else {
+                  imgDimType = imgDimensionType.landscape;
+                }
                 const compressImageUpload = new Upload({
                   client: s3,
                   queueSize: 4, // optional concurrency configuration
@@ -83,7 +98,7 @@ export const uploadFile = async (
                     Key: `${fileData?.clientOwnerId}/min/${fileData?.fileId}.${fileType}`,
                     ContentType: req?.file?.mimetype,
                     ACL: "public-read",
-                    Body: sharp(req.file?.buffer).webp({ quality: 10 }),
+                    Body: sharp(req.file?.buffer).webp({ quality: 35 }),
                   },
                 });
 
@@ -91,6 +106,7 @@ export const uploadFile = async (
                   "httpUploadProgress",
                   (progress: any) => {
                     fileRespnseObj.minFileSize = progress?.loaded;
+                    fileRespnseObj.imgDimensionType = imgDimType;
                     console.log(fileRespnseObj);
                   }
                 );

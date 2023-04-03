@@ -1,13 +1,15 @@
 import styled from "@emotion/styled";
 import Grid from "@mui/material/Grid";
+import { AnyAction } from "@reduxjs/toolkit";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getClientPrimaryEventApi } from "../../../api/getClientPrimaryEventApi";
+import { getLandingImageDataSelector } from "../../../selectors/getLandingImgSelector";
 import {
   getClientProfileSelector,
-  getLandingImageDataSelector,
   isValidTokenSelector,
 } from "../../../selectors/selectors";
+import { updateScreenType } from "../../../slices/common/commonSlice";
 import { AppDispatch } from "../../../store";
 
 export const LandingImage: React.FC = () => {
@@ -34,6 +36,9 @@ export const LandingImage: React.FC = () => {
     if (isValidToken) {
       getPrimaryEvent();
     }
+    windowHeight > windowWidth
+      ? dispatch(updateScreenType({ isMobileScreen: true }))
+      : dispatch(updateScreenType({ isMobileScreen: false }));
   }, [isValidToken]);
 
   const ImgBox = styled.div`

@@ -18,7 +18,6 @@ export const getClientPrimaryEventApi = (api: IApi) => {
         .then((response) => {
           if (response.data?.validToken) {
             api.dispatch(updateLoader({ isLoading: false }));
-            console.log(response?.data?.result);
             api.dispatch(updateClientEventList(response.data?.result));
             resolve(true);
           } else {

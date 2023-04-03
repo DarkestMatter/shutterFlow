@@ -9,7 +9,7 @@ const validateTokenController = async (req, res, next) => {
     try {
         const auth = (await (0, decryptToken_1.decryptToken)(req.headers));
         if (auth === null || auth === void 0 ? void 0 : auth.userId) {
-            (0, getUserProfileController_1.getUserProfileController)(req, res, next);
+            (0, getUserProfileController_1.getUserProfileController)(req, res, next, auth);
         }
         else if (auth === null || auth === void 0 ? void 0 : auth.clientId) {
             (0, responderController_1.responderController)({ result: auth, statusCode: 200 }, res);

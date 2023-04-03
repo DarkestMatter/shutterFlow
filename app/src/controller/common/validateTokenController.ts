@@ -16,7 +16,7 @@ export const validateTokenController: RequestHandler = async (
   try {
     const auth = (await decryptToken(req.headers)) as unknown as IAuth;
     if (auth?.userId) {
-      getUserProfileController(req, res, next);
+      getUserProfileController(req, res, next, auth);
     } else if (auth?.clientId) {
       responderController({ result: auth, statusCode: 200 }, res);
     } else {

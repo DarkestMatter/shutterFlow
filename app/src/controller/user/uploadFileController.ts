@@ -55,6 +55,7 @@ export const uploadFileController = async (
       minFileSize: fileUploadResponse?.minFileSize,
       format: fileUploadResponse?.mimetype,
       eventId: fileUploadResponse?.eventId,
+      imgDimensionType: fileUploadResponse?.imgDimensionType,
     };
     const fileDataSaved = (await saveUploadFileData(
       eventFileDataObj
@@ -97,6 +98,7 @@ export const saveUploadFileData = (fileData: IEventFile) => {
         minFileSize: fileData?.minFileSize,
         format: fileData?.format,
         eventId: fileData?.eventId,
+        imgDimensionType: fileData?.imgDimensionType,
       };
       const updatedResult = (await eventModel().findOneAndUpdate(
         {

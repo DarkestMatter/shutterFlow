@@ -9,6 +9,7 @@ const findValidUser = (userId) => {
             if (userId) {
                 (0, userProfileModel_1.userProfileModel)().findOne({ userId: userId }, { _id: 0 }, (err, result) => {
                     if (!err) {
+                        console.log(result);
                         if (result === null || result === void 0 ? void 0 : result.email) {
                             resolve(result);
                         }

@@ -11,6 +11,7 @@ export const findValidUser = (userId: String | undefined) => {
           { _id: 0 },
           (err: Error, result: IUserProfile) => {
             if (!err) {
+              console.log(result);
               if (result?.email) {
                 resolve(result);
               } else {

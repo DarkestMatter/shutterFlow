@@ -57,7 +57,7 @@ export const GalleryList: React.FC = () => {
   }, [showEventGallery, getSelectedEvent?.eventId]);
 
   return (
-    <Grid container>
+    <Grid container justifyContent="center">
       {showEventGallery &&
         getEventFileList?.map((file: IEventFile, index: number) => {
           return (

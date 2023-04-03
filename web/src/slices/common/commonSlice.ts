@@ -14,10 +14,14 @@ export const commonSlice = createSlice({
     updateToken: (state, action: PayloadAction<ICommonInterface>) => {
       state.isValidToken = action.payload.isValidToken;
     },
+    updateScreenType: (state, action: PayloadAction<ICommonInterface>) => {
+      state.isMobileScreen = action.payload.isMobileScreen;
+    },
   },
   extraReducers: (builder) => {},
 });
 
-export const { updateLoader, updateToken } = commonSlice.actions;
+export const { updateLoader, updateToken, updateScreenType } =
+  commonSlice.actions;
 
 export const commonReducer = commonSlice.reducer;

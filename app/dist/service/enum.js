@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fileType = exports.iDriveData = exports.uploadVideoFormat = exports.uploadImgFormat = exports.customerType = exports.eventName = exports.registrationStatus = exports.successMsg = exports.errorMsg = void 0;
+exports.fileType = exports.iDriveData = exports.uploadVideoFormat = exports.uploadImgFormat = exports.imgDimensionType = exports.customerType = exports.eventName = exports.registrationStatus = exports.successMsg = exports.errorMsg = void 0;
 var errorMsg;
 (function (errorMsg) {
     errorMsg["registrationError"] = "Error occurred while Registration";
@@ -44,6 +44,11 @@ var customerType;
     customerType["user"] = "user";
     customerType["client"] = "client";
 })(customerType = exports.customerType || (exports.customerType = {}));
+var imgDimensionType;
+(function (imgDimensionType) {
+    imgDimensionType["landscape"] = "l";
+    imgDimensionType["portrait"] = "p";
+})(imgDimensionType = exports.imgDimensionType || (exports.imgDimensionType = {}));
 var uploadImgFormat;
 (function (uploadImgFormat) {
     uploadImgFormat["jpg"] = "image/jpg";

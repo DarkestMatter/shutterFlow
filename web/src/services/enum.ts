@@ -27,3 +27,8 @@ export enum selectFile {
   all = "All",
   one = "One",
 }
+
+export enum imgDimensionType {
+  landscape = "l",
+  portrait = "p",
+}

@@ -79,13 +79,3 @@ export const getSelectedFilesSelector = createSelector(
   state,
   (state) => state?.event?.selectedFiles
 );
-
-export const getLandingImageDataSelector = createSelector(state, (state) => {
-  if (
-    state?.clientEvent &&
-    state?.clientEvent?.eventList &&
-    state?.clientEvent?.eventList[0]?.eventFileList
-  ) {
-    return state?.clientEvent?.eventList[0]?.eventFileList[3];
-  }
-});

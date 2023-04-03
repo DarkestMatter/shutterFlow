@@ -35,6 +35,7 @@ const uploadFileController = async (req, res, next, auth) => {
             minFileSize: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.minFileSize,
             format: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.mimetype,
             eventId: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.eventId,
+            imgDimensionType: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.imgDimensionType,
         };
         const fileDataSaved = (await (0, exports.saveUploadFileData)(eventFileDataObj));
         (fileDataSaved === null || fileDataSaved === void 0 ? void 0 : fileDataSaved.clientId)
@@ -70,6 +71,7 @@ const saveUploadFileData = (fileData) => {
                 minFileSize: fileData === null || fileData === void 0 ? void 0 : fileData.minFileSize,
                 format: fileData === null || fileData === void 0 ? void 0 : fileData.format,
                 eventId: fileData === null || fileData === void 0 ? void 0 : fileData.eventId,
+                imgDimensionType: fileData === null || fileData === void 0 ? void 0 : fileData.imgDimensionType,
             };
             const updatedResult = (await (0, eventModel_1.eventModel)().findOneAndUpdate({
                 clientOwnerId: fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId,

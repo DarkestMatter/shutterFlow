@@ -1,4 +1,11 @@
 import { RequestHandler } from "express";
+import {
+  Request,
+  ParamsDictionary,
+  Response,
+  NextFunction,
+} from "express-serve-static-core";
+import { ParsedQs } from "qs";
 import { IAuth } from "../../interface/IAuth";
 import { IResponderResult } from "../../interface/IResponderResult";
 import { IUserProfile } from "../../interface/IUserProfile";
@@ -7,10 +14,11 @@ import { errorMsg } from "../../service/enum";
 import { findValidUser } from "../../service/findValidUser";
 import { responderController } from "../common/responderController";
 
-export const getUserProfileController: RequestHandler = async (
-  req,
-  res,
-  next
+export const getUserProfileController = async (
+  req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+  res: Response<any, Record<string, any>, number>,
+  next: NextFunction,
+  auth: IAuth
 ) => {
   try {
     const auth = (await decryptToken(req.headers)) as unknown as IAuth;
@@ -25,6 +33,7 @@ export const getUserProfileController: RequestHandler = async (
           studioName: userData?.studioName,
           mobile: userData?.mobile,
           status: userData?.status,
+          customerType: auth?.customerType,
         },
         statusCode: 200,
       };

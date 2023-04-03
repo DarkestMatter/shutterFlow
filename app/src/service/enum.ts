@@ -41,6 +41,11 @@ export enum customerType {
   client = "client",
 }
 
+export enum imgDimensionType {
+  landscape = "l",
+  portrait = "p",
+}
+
 export enum uploadImgFormat {
   jpg = "image/jpg",
   jpeg = "image/jpeg",

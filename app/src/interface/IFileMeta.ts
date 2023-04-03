@@ -24,4 +24,5 @@ export interface IFileRespnseObj {
   mimetype?: String;
   errorMsg?: String;
   fileType?: String;
+  imgDimensionType?: String;
 }
