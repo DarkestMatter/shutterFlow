@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="theme-color" content="#2b2a3a" />
+    <!-- <link rel="icon" href="mnr_logo.png" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="data:application/json;base64,ew0KICAic2hvcnRfbmFtZSI6ICJSZWFjdCBBcHAiLA0KICAibmFtZSI6ICJDcmVhdGUgUmVhY3QgQXBwIFNhbXBsZSIsDQogICJpY29ucyI6IFsNCiAgICB7DQogICAgICAic3JjIjogImVxdHlfZmF2aWNvbi5pY28iLA0KICAgICAgInNpemVzIjogIjY0eDY0IDMyeDMyIDI0eDI0IDE2eDE2IiwNCiAgICAgICJ0eXBlIjogImltYWdlL3gtaWNvbiINCiAgICB9LA0KICAgIHsNCiAgICAgICJzcmMiOiAiZXF0eV9yZWQucG5nIiwNCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIsDQogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsDQogICAgICAicHVycG9zZSI6ICJhbnkgbWFza2FibGUiDQogICAgfSwNCiAgICB7DQogICAgICAic3JjIjogImVxdHlfcmVkLnBuZyIsDQogICAgICAidHlwZSI6ICJpbWFnZS9wbmciLA0KICAgICAgInNpemVzIjogIjUxMng1MTIiDQogICAgfQ0KICBdLA0KICAic3RhcnRfdXJsIjogIi4iLA0KICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwNCiAgInRoZW1lX2NvbG9yIjogIiMwMDAwMDAiLA0KICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIg0KfQ0K" />
+    <title>ShutterFlow.in</title>
+    <script type="module" crossorigin src="/assets/index-4ca452c9.js"></script>
+    <link rel="stylesheet" href="/assets/index-87aa3bad.css">
+  </head>
+  <!-- Google tag (gtag.js) -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-9YJCHH081V"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-9YJCHH081V");
+  </script>
+  <body>
+    <div id="root"></div>
+    
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("./serviceWorker.js")
+            .then((reg) => {
+              console.log("Worker Registered");
+            })
+            .catch((err) => {
+              console.log("Error in service worker registration.");
+            });
+        });
+      }
+    </script>
+  </body>
+</html>
