@@ -20,7 +20,6 @@ const loginController = async (req, res, next) => {
             (0, responderController_1.responderController)({ result: resultObj, statusCode: 200 }, res);
         }
         else if ((userData === null || userData === void 0 ? void 0 : userData.pwd) === ((_c = req.body) === null || _c === void 0 ? void 0 : _c.pwd)) {
-            //console.log(userData);
             const tokenObj = {
                 userId: userData === null || userData === void 0 ? void 0 : userData.userId,
                 clientId: userData === null || userData === void 0 ? void 0 : userData.clientId,

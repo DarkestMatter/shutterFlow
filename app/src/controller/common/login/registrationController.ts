@@ -73,6 +73,7 @@ export const registrationController: RequestHandler = async (
               };
               responderController({ result: resultObj, statusCode: 200 }, res);
             } else {
+              console.log(err);
               responderController(
                 {
                   result: {},

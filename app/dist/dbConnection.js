@@ -37,7 +37,7 @@ dotenv.config();
 // };
 const connect_db = () => {
     try {
-        const uri = `mongodb+srv://${process.env.liveDBUsername}:${process.env.liveDBPwd}@cluster0.hnvbjox.mongodb.net/${process.env.liveDBUsername}?retryWrites=true&w=majority`;
+        const uri = `mongodb+srv://${process.env.liveDBUsername}:${process.env.liveDBPwd}${process.env.liveDBCluster}/${process.env.liveDBUsername}?retryWrites=true&w=majority`;
         mongoose_1.default.connect(uri, {
             useNewUrlParser: true,
             useUnifiedTopology: true,

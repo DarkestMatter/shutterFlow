@@ -24,7 +24,6 @@ export const loginController: RequestHandler = async (req, res, next) => {
       };
       responderController({ result: resultObj, statusCode: 200 }, res);
     } else if (userData?.pwd === req.body?.pwd) {
-      //console.log(userData);
       const tokenObj: IToken = {
         userId: userData?.userId,
         clientId: userData?.clientId,

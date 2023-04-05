@@ -96,7 +96,7 @@ export const ClientTiles: React.FC = () => {
                     <CardMedia
                       component="img"
                       image={
-                        "https://c3l1.c10.e2-3.dev/shutter-flow/asd-6982abac-1b98-4810-bb07-9424667dce5a/62b63cdf-73f4-4607-87f3-b8b77df6390b.jpeg"
+                        "https://cdn1.iconfinder.com/data/icons/business-company-1/500/image-512.png"
                       }
                       alt="No image Uploaded"
                       style={{ height: 150 }}

@@ -9,7 +9,6 @@ import { addClientController } from "../controller/user/addClientController";
 import { addEventController } from "../controller/user/addEventController";
 import { getClientListController } from "../controller/user/getClientListController";
 import { getEventDataController } from "../controller/user/getEventDataController";
-import { getUserProfileController } from "../controller/user/getUserProfileController";
 import { uploadFileController } from "../controller/user/uploadFileController";
 import { IAuth } from "../interface/IAuth";
 import { decryptToken } from "../service/decryptToken";

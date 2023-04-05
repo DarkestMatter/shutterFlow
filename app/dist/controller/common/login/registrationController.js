@@ -58,6 +58,7 @@ const registrationController = async (req, res, next) => {
                             (0, responderController_1.responderController)({ result: resultObj, statusCode: 200 }, res);
                         }
                         else {
+                            console.log(err);
                             (0, responderController_1.responderController)({
                                 result: {},
                                 statusCode: 500,
