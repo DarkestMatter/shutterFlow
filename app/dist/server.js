@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
@@ -16,8 +17,7 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Credentials", "true");
     next();
 });
-app.use(express_1.default.json()); // Used to parse JSON bodies
-app.use(express_1.default.urlencoded());
+app.use((0, body_parser_1.default)());
 app.use(express_1.default.static(path_1.default.join(__dirname, "../../web/dist")));
 app.get("/", (req, res) => {
     res.sendFile(path_1.default.join(__dirname, "../../web/dist", "index.html"));
