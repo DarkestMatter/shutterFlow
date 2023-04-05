@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -9,16 +32,20 @@ const lib_storage_1 = require("@aws-sdk/lib-storage");
 const buffer_image_size_1 = __importDefault(require("buffer-image-size"));
 const multer_1 = __importDefault(require("multer"));
 const sharp_1 = __importDefault(require("sharp"));
-//@ts-ignore
-const env_1 = require("../../env");
+const dotenv = __importStar(require("dotenv"));
+dotenv.config();
 const enum_1 = require("./enum");
 const s3 = new client_s3_1.S3Client({
     credentials: {
-        secretAccessKey: env_1.iDriveCred.iDriveSecretAccessKey,
-        accessKeyId: env_1.iDriveCred.iDriveAccessKeyId,
+        secretAccessKey: process.env.iDriveSecretAccessKey
+            ? process.env.iDriveSecretAccessKey
+            : "",
+        accessKeyId: process.env.iDriveAccessKeyId
+            ? process.env.iDriveAccessKeyId
+            : "",
     },
-    endpoint: env_1.iDriveCred.iDriveEndpoint,
-    region: env_1.iDriveCred.iDriveRegion,
+    endpoint: process.env.iDriveEndpoint,
+    region: process.env.iDriveRegion,
 });
 const uploadFile = async (req, res, next, fileData) => {
     return new Promise(async (resolve, reject) => {

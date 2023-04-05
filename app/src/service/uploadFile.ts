@@ -10,8 +10,8 @@ import {
 import multer from "multer";
 import { ParsedQs } from "qs";
 import sharp from "sharp";
-//@ts-ignore
-import { iDriveCred } from "../../env";
+import * as dotenv from "dotenv";
+dotenv.config();
 import { IEventFile } from "../interface/IEvent";
 import { IFileRespnseObj } from "../interface/IFileMeta";
 import {
@@ -23,11 +23,15 @@ import {
 
 const s3 = new S3Client({
   credentials: {
-    secretAccessKey: iDriveCred.iDriveSecretAccessKey,
-    accessKeyId: iDriveCred.iDriveAccessKeyId,
+    secretAccessKey: process.env.iDriveSecretAccessKey
+      ? process.env.iDriveSecretAccessKey
+      : "",
+    accessKeyId: process.env.iDriveAccessKeyId
+      ? process.env.iDriveAccessKeyId
+      : "",
   },
-  endpoint: iDriveCred.iDriveEndpoint,
-  region: iDriveCred.iDriveRegion,
+  endpoint: process.env.iDriveEndpoint,
+  region: process.env.iDriveRegion,
 });
 
 export const uploadFile = async (

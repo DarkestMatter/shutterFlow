@@ -1,6 +1,6 @@
 import mongoose, { ConnectOptions } from "mongoose";
-//@ts-ignore
-import { dbCred } from "../env";
+import * as dotenv from "dotenv";
+dotenv.config();
 // const get_line_no = () => {
 //   var obj = {};
 //   Error.captureStackTrace(obj, get_line_no);
@@ -9,8 +9,7 @@ import { dbCred } from "../env";
 
 export const connect_db = () => {
   try {
-    console.log(process.env.liveDBPwd);
-    const uri = `mongodb+srv://${dbCred.liveDBUsername}:${dbCred?.liveDBPwd}@cluster0.hnvbjox.mongodb.net/${dbCred?.liveDBUsername}?retryWrites=true&w=majority`;
+    const uri = `mongodb+srv://${process.env.liveDBUsername}:${process.env.liveDBPwd}@cluster0.hnvbjox.mongodb.net/${process.env.liveDBUsername}?retryWrites=true&w=majority`;
     mongoose.connect(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
