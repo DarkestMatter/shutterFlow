@@ -1,8 +1,6 @@
 import mongoose, { ConnectOptions } from "mongoose";
-import * as dotenv from "dotenv";
 //@ts-ignore
 import { dbCred } from "../env";
-dotenv.config();
 // const get_line_no = () => {
 //   var obj = {};
 //   Error.captureStackTrace(obj, get_line_no);
