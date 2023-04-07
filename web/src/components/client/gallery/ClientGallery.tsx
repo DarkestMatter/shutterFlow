@@ -1,8 +1,7 @@
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
-import CardMedia from "@mui/material/CardMedia";
+import LazyLoad from "react-lazy-load";
 import Grid from "@mui/material/Grid";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IEventFile } from "../../../interfaces/IEvent";
@@ -45,15 +44,16 @@ export const ClientGallery: React.FC = () => {
                         marginBottom: -4,
                       }}
                     /> */}
-                    <LazyLoadImage
-                      src={file?.minFilePath}
-                      alt={file?.minFilePath}
-                      style={{
-                        height: "inherit",
-                        width: "inherit",
-                        marginBottom: -4,
-                      }}
-                    ></LazyLoadImage>
+                    <LazyLoad height={"inherit"} width={"inherit"} offset={50}>
+                      <img
+                        style={{
+                          height: "inherit",
+                          width: "inherit",
+                          marginBottom: -4,
+                        }}
+                        src={file?.minFilePath}
+                      />
+                    </LazyLoad>
                   </CardActionArea>
                 </Card>
               );
