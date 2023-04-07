@@ -48,8 +48,6 @@ export const ClientGallery: React.FC = () => {
                     <LazyLoadImage
                       src={file?.minFilePath}
                       style={{
-                        height: "-webkit-fill-available",
-                        width: "-webkit-fill-available",
                         marginBottom: -4,
                       }}
                     ></LazyLoadImage>
