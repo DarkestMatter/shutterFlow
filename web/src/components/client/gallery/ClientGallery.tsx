@@ -47,7 +47,10 @@ export const ClientGallery: React.FC = () => {
                     /> */}
                     <LazyLoadImage
                       src={file?.minFilePath}
+                      alt={file?.minFilePath}
                       style={{
+                        height: "inherit",
+                        width: "inherit",
                         marginBottom: -4,
                       }}
                     ></LazyLoadImage>
