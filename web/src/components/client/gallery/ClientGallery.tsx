@@ -35,7 +35,7 @@ export const ClientGallery: React.FC = () => {
                   }}
                 >
                   <CardActionArea>
-                    <CardMedia
+                    {/* <CardMedia
                       component="img"
                       image={file?.minFilePath}
                       alt="green iguana"
@@ -44,15 +44,15 @@ export const ClientGallery: React.FC = () => {
                         width: "inherit",
                         marginBottom: -4,
                       }}
-                    />
-                    {/* <LazyLoadImage
+                    /> */}
+                    <LazyLoadImage
                       src={file?.minFilePath}
                       style={{
-                        height: "inherit",
-                        width: "inherit",
+                        height: "-webkit-fill-available",
+                        width: "-webkit-fill-available",
                         marginBottom: -4,
                       }}
-                    ></LazyLoadImage> */}
+                    ></LazyLoadImage>
                   </CardActionArea>
                 </Card>
               );
