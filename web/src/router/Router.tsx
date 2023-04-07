@@ -63,18 +63,30 @@ export const Router: React.FC = () => {
             sx={{ display: { xs: "none", md: "block" } }}
           ></Grid>
         )}
-        <Grid item xs={24} md={20} xl={21}>
-          <div className="paddingTop20">
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Registration />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/eventDashboard" element={<EventDashboard />} />
-              <Route path="/client" element={<ClientDashboard />} />
-              <Route path="*" element={<Navigate to="/dashboard" />} />
-            </Routes>
-          </div>
-        </Grid>
+        {getUserProfile?.status === userStatus.verified ? (
+          <Grid item xs={24} md={20} xl={21}>
+            <div className="paddingTop20">
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Registration />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/eventDashboard" element={<EventDashboard />} />
+                <Route path="/client" element={<ClientDashboard />} />
+                <Route path="*" element={<Navigate to="/dashboard" />} />
+              </Routes>
+            </div>
+          </Grid>
+        ) : (
+          <Grid item xs={24}>
+            <div style={{ marginTop: -5 }}>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/client" element={<ClientDashboard />} />
+                <Route path="*" element={<Navigate to="/client" />} />
+              </Routes>
+            </div>
+          </Grid>
+        )}
       </Grid>
     </BrowserRouter>
   );

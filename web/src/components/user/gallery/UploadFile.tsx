@@ -30,6 +30,10 @@ export const UploadFile: React.FC = () => {
       const formData = new FormData();
       formData.append("myImage", fileVal);
       formData.append(
+        "clientId",
+        getSelectedEvent?.clientId as unknown as string | Blob
+      );
+      formData.append(
         "eventId",
         getSelectedEvent?.eventId as unknown as string | Blob
       );

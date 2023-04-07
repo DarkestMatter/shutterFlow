@@ -7,6 +7,7 @@ const clientSchema = new mongoose.Schema<IClient>({
   clientMobileNo: String,
   eventType: String,
   eventList: [],
+  tileImgUrl: String,
   clientOwnerName: String,
   clientOwnerId: String,
   clientOwnerEmail: String,

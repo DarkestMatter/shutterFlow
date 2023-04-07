@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import { IAuth } from "../../interface/IAuth";
 import { IEvent, IEventFile } from "../../interface/IEvent";
 import { IFileRespnseObj } from "../../interface/IFileMeta";
+import { clientModel } from "../../model/clientModel";
 import { eventModel } from "../../model/eventModel";
 import { errorMsg, fileType, iDriveData } from "../../service/enum";
 import { uploadFile } from "../../service/uploadFile";
@@ -25,7 +26,6 @@ export const uploadFileController = async (
     const fileData: IEventFile = {
       fileId: fileId,
       clientOwnerId: auth?.userId,
-      clientId: req?.body?.clientId,
       originalFilePath: `${auth?.userId}/${fileId}`,
       minFilePath: `${auth?.userId}/min/${fileId}`,
       microFilePath: ``,
@@ -70,6 +70,16 @@ export const uploadFileController = async (
           },
           res
         );
+    await clientModel().findOneAndUpdate(
+      {
+        clientOwnerId: fileData?.clientOwnerId,
+        clientId: fileUploadResponse?.clientId,
+      },
+      {
+        tileImgUrl: `${iDriveData.baseUrl}${fileData?.clientOwnerId}/min/${fileData?.fileId}.${fileUploadResponse?.fileType}`,
+      },
+      { new: true }
+    );
   } catch (err) {
     console.log(err);
     responderController(
@@ -110,6 +120,7 @@ export const saveUploadFileData = (fileData: IEventFile) => {
             originalFileList: originalFileData,
             eventFileList: minFileData,
           },
+          eventImgUrl: minFileData?.minFilePath,
         }
       )) as IEvent;
       updatedResult?.clientId ? resolve(updatedResult) : resolve(false);

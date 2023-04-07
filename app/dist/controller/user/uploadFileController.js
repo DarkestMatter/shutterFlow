@@ -2,18 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.saveUploadFileData = exports.uploadFileController = void 0;
 const uuid_1 = require("uuid");
+const clientModel_1 = require("../../model/clientModel");
 const eventModel_1 = require("../../model/eventModel");
 const enum_1 = require("../../service/enum");
 const uploadFile_1 = require("../../service/uploadFile");
 const responderController_1 = require("../common/responderController");
 const uploadFileController = async (req, res, next, auth) => {
-    var _a;
     try {
         const fileId = (0, uuid_1.v4)();
         const fileData = {
             fileId: fileId,
             clientOwnerId: auth === null || auth === void 0 ? void 0 : auth.userId,
-            clientId: (_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.clientId,
             originalFilePath: `${auth === null || auth === void 0 ? void 0 : auth.userId}/${fileId}`,
             minFilePath: `${auth === null || auth === void 0 ? void 0 : auth.userId}/min/${fileId}`,
             microFilePath: ``,
@@ -45,6 +44,12 @@ const uploadFileController = async (req, res, next, auth) => {
                 statusCode: 200,
                 errorMsg: enum_1.errorMsg.errorFileUpload,
             }, res);
+        await (0, clientModel_1.clientModel)().findOneAndUpdate({
+            clientOwnerId: fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId,
+            clientId: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.clientId,
+        }, {
+            tileImgUrl: `${enum_1.iDriveData.baseUrl}${fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId}/min/${fileData === null || fileData === void 0 ? void 0 : fileData.fileId}.${fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.fileType}`,
+        }, { new: true });
     }
     catch (err) {
         console.log(err);
@@ -81,6 +86,7 @@ const saveUploadFileData = (fileData) => {
                     originalFileList: originalFileData,
                     eventFileList: minFileData,
                 },
+                eventImgUrl: minFileData === null || minFileData === void 0 ? void 0 : minFileData.minFilePath,
             }));
             (updatedResult === null || updatedResult === void 0 ? void 0 : updatedResult.clientId) ? resolve(updatedResult) : resolve(false);
         }

@@ -4,12 +4,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { currentProfileTypeSelector } from "../../../selectors/currentProfileSelector";
-import {
-  getClientProfileSelector,
-  getMsgSelector,
-  getUserProfileSelector,
-  isValidTokenSelector,
-} from "../../../selectors/selectors";
 import { customerType } from "../../../services/enum";
 import { AppDispatch } from "../../../store";
 
@@ -21,6 +15,7 @@ export const HeaderBody: React.FC = () => {
   const currentProfileType = useSelector(currentProfileTypeSelector);
 
   const [headerColor, setHeaderColor] = useState<string>("#fff");
+  const [boxShadow, setBoxShadow] = useState<string>("#fff");
 
   const handleLogoClick = () => {
     if (currentProfileType === customerType.client) {
@@ -32,7 +27,8 @@ export const HeaderBody: React.FC = () => {
 
   const handleScroll = () => {
     const position = window.pageYOffset;
-    setHeaderColor(() => (position > 90 ? "#fff" : "#fff"));
+    setHeaderColor(() => (position > 90 ? "#fff" : "none"));
+    setBoxShadow(() => (position > 90 ? "0 1px 10px 1px gainsboro" : "none"));
   };
 
   useEffect(() => {
@@ -49,7 +45,7 @@ export const HeaderBody: React.FC = () => {
     z-index: 5;
     margin-bottom: 150px;
     background-color: ${headerColor};
-    box-shadow: 0 1px 10px 1px gainsboro;
+    box-shadow: ${boxShadow};
   `;
 
   const HeaderLogo = styled.img`
@@ -59,7 +55,14 @@ export const HeaderBody: React.FC = () => {
   `;
 
   return (
-    <Grid container style={{ marginBottom: 70 }}>
+    <Grid
+      container
+      className={
+        currentProfileType === customerType.user
+          ? "headerBottomPadding"
+          : "headerBottomPaddingNone"
+      }
+    >
       <Grid item xs={12}>
         <HeaderFixed
           style={{ transition: "background-color 1s ease !important" }}

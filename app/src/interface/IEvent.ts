@@ -8,6 +8,7 @@ export interface IEvent {
   eventDate?: String;
   photoCount?: String;
   videoCount?: String;
+  eventImgUrl?: String;
   originalFileList?: IEventFile[];
   eventFileList?: IEventFile[];
   createdDate?: String;
@@ -18,7 +19,7 @@ export interface IEventFile {
   eventId?: String;
   fileId?: String;
   clientOwnerId: String;
-  clientId: String;
+  clientId?: String;
   name?: String;
   originalFileSize?: Number;
   minFileSize?: Number;

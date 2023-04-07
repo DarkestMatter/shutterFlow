@@ -4,7 +4,7 @@ import { AnyAction } from "@reduxjs/toolkit";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getClientPrimaryEventApi } from "../../../api/getClientPrimaryEventApi";
-import { getLandingImageDataSelector } from "../../../selectors/getLandingImgSelector";
+import { landingImageDataSelector } from "../../../selectors/landingImgSelector";
 import {
   getClientProfileSelector,
   isValidTokenSelector,
@@ -17,7 +17,7 @@ export const LandingImage: React.FC = () => {
 
   const getClientProfile = useSelector(getClientProfileSelector);
   const isValidToken = useSelector(isValidTokenSelector);
-  const getLandingImageData = useSelector(getLandingImageDataSelector);
+  const getLandingImageData = useSelector(landingImageDataSelector);
 
   const windowHeight = window.innerHeight;
   const windowWidth = window.innerWidth;

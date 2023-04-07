@@ -79,3 +79,8 @@ export const getSelectedFilesSelector = createSelector(
   state,
   (state) => state?.event?.selectedFiles
 );
+
+export const getClientEventFileListSelector = createSelector(
+  state,
+  (state) => state?.clientEvent?.eventList[0]?.eventFileList
+);

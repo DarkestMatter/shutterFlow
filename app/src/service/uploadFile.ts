@@ -78,6 +78,7 @@ export const uploadFile = async (
               fileUplaod.on("httpUploadProgress", async (progress: any) => {
                 fileRespnseObj.fileType = fileType;
                 fileRespnseObj.eventId = req.body?.eventId;
+                fileRespnseObj.clientId = req.body?.clientId;
                 fileRespnseObj.mimetype = res.req.file?.mimetype;
                 fileRespnseObj.name = res.req.file?.originalname;
                 fileRespnseObj.originalFileSize = progress?.loaded;

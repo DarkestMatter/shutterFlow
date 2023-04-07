@@ -11,6 +11,7 @@ const clientSchema = new mongoose_1.default.Schema({
     clientMobileNo: String,
     eventType: String,
     eventList: [],
+    tileImgUrl: String,
     clientOwnerName: String,
     clientOwnerId: String,
     clientOwnerEmail: String,

@@ -86,11 +86,12 @@ const uploadFile = async (req, res, next, fileData) => {
                                 },
                             });
                             fileUplaod.on("httpUploadProgress", async (progress) => {
-                                var _a, _b, _c;
+                                var _a, _b, _c, _d;
                                 fileRespnseObj.fileType = fileType;
                                 fileRespnseObj.eventId = (_a = req.body) === null || _a === void 0 ? void 0 : _a.eventId;
-                                fileRespnseObj.mimetype = (_b = res.req.file) === null || _b === void 0 ? void 0 : _b.mimetype;
-                                fileRespnseObj.name = (_c = res.req.file) === null || _c === void 0 ? void 0 : _c.originalname;
+                                fileRespnseObj.clientId = (_b = req.body) === null || _b === void 0 ? void 0 : _b.clientId;
+                                fileRespnseObj.mimetype = (_c = res.req.file) === null || _c === void 0 ? void 0 : _c.mimetype;
+                                fileRespnseObj.name = (_d = res.req.file) === null || _d === void 0 ? void 0 : _d.originalname;
                                 fileRespnseObj.originalFileSize = progress === null || progress === void 0 ? void 0 : progress.loaded;
                             });
                             const a = await fileUplaod.done();

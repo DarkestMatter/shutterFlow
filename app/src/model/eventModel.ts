@@ -10,6 +10,7 @@ const eventSchema = new mongoose.Schema<IEvent>({
   eventName: String,
   eventType: String,
   eventDate: String,
+  eventImgUrl: String,
   photoCount: String,
   videoCount: String,
   originalFileList: [],

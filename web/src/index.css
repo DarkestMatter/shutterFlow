@@ -56,6 +56,12 @@
   overflow: hidden;
   display: inline-block;
 }
+.headerBottomPadding {
+  margin-bottom: 70px;
+}
+.headerBottomPaddingNone {
+  margin-bottom: 0;
+}
 .centerDiv {
   display: flex;
   justify-content: center;

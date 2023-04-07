@@ -6,6 +6,7 @@ export interface IClient {
   clientMobileNo: String;
   clientEmail?: String;
   eventType: String;
+  tileImgUrl?: String;
   eventList: IEvent[];
   clientOwnerName?: String;
   clientOwnerId?: String;

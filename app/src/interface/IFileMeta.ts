@@ -19,6 +19,7 @@ export interface IFileMeta {
 export interface IFileRespnseObj {
   eventId?: String;
   name?: String;
+  clientId?: String;
   originalFileSize?: 0;
   minFileSize?: 0;
   mimetype?: String;
