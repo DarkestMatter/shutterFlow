@@ -80,7 +80,12 @@ export const getSelectedFilesSelector = createSelector(
   (state) => state?.event?.selectedFiles
 );
 
-export const getClientEventFileListSelector = createSelector(
+export const getClientSelectedEventSelector = createSelector(
   state,
-  (state) => state?.clientEvent?.eventList[0]?.eventFileList
+  (state) => state?.clientEvent?.selectedEvent
+);
+
+export const getClientEventNameListSelector = createSelector(
+  state,
+  (state) => state?.clientEvent?.allEventNameList
 );

@@ -10,7 +10,7 @@ import { updateMsg } from "../slices/common/msgSlice";
 
 const url = api;
 
-export const getClientPrimaryEventApi = (api: IApi) => {
+export const getClientEventDataApi = (api: IApi) => {
   const token = localStorage.getItem("token");
   return new Promise(async (resolve, reject) => {
     try {
@@ -22,14 +22,7 @@ export const getClientPrimaryEventApi = (api: IApi) => {
         .then((response) => {
           if (response.data?.validToken) {
             api.dispatch(updateLoader({ isLoading: false }));
-            api.dispatch(
-              updateClientEventList(response.data?.result?.priamryEvent)
-            );
-            api.dispatch(
-              updateClientAllEventNameList(
-                response?.data?.result?.eventNameList
-              )
-            );
+            api.dispatch(updateClientEventList(response.data?.result));
             resolve(true);
           } else {
             api.dispatch(updateMsg({ errorMsg: response.data?.errorMsg }));

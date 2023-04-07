@@ -45,10 +45,13 @@ export const defaultIEventRedux: IEventRedux = {
   selectedFiles: [],
 };
 
-export const defaultClientEventList: IClientEventList = {
-  eventList: [],
-};
-
 export interface IClientEventList {
   eventList: IEvent[];
+  allEventNameList: IEvent[];
+  selectedEvent: IEvent;
 }
+export const defaultClientEventList: IClientEventList = {
+  eventList: [],
+  allEventNameList: [],
+  selectedEvent: {},
+};

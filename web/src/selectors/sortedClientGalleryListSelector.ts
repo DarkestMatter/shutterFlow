@@ -1,13 +1,12 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { IEventFile } from "../interfaces/IEvent";
-import { getClientEventFileListSelector } from "./selectors";
+import { clientEventFileListSelector } from "./clientEventFileListSelector";
 
 export const sortedClientGalleryListSelector = createSelector(
-  getClientEventFileListSelector,
+  clientEventFileListSelector,
   (clientEventFileList) => {
     const position = window.innerWidth;
     let arr: IEventFile[][] = [];
-    console.log(clientEventFileList);
     switch (true) {
       case position < 900:
         arr = [[], []];

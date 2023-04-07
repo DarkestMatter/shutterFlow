@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
 const express_1 = require("express");
+const getClientEventDataController_1 = require("../controller/client/getClientEventDataController");
 const getPrimaryEventController_1 = require("../controller/client/getPrimaryEventController");
 const loginController_1 = require("../controller/common/login/loginController");
 const otpVerificationController_1 = require("../controller/common/login/otpVerificationController");
@@ -98,6 +99,22 @@ exports.router.post("/getPrimaryEvent", async (req, res, next) => {
         };
         (auth === null || auth === void 0 ? void 0 : auth.clientId) && (auth === null || auth === void 0 ? void 0 : auth.status) === enum_1.registrationStatus.verified
             ? (0, getPrimaryEventController_1.getPrimaryEventController)(request, res, next)
+            : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: true }, res);
+    }
+    catch (err) {
+        console.log(err);
+        res.json(err);
+    }
+});
+exports.router.post("/getClientEventData", async (req, res, next) => {
+    try {
+        const auth = (await (0, decryptToken_1.decryptToken)(req.headers));
+        const request = {
+            ...req.body,
+            clientId: auth === null || auth === void 0 ? void 0 : auth.clientId,
+        };
+        (auth === null || auth === void 0 ? void 0 : auth.clientId) && (auth === null || auth === void 0 ? void 0 : auth.status) === enum_1.registrationStatus.verified
+            ? (0, getClientEventDataController_1.getClientEventDataController)(request, res, next)
             : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: true }, res);
     }
     catch (err) {

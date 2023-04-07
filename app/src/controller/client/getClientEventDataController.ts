@@ -7,7 +7,7 @@ import { eventModel } from "../../model/eventModel";
 import { errorMsg } from "../../service/enum";
 import { responderController } from "../common/responderController";
 
-export const getPrimaryEventController = async (
+export const getClientEventDataController = async (
   req: IEvent & IAuth,
   res: Response<any, Record<string, any>, number>,
   next: NextFunction
@@ -17,26 +17,20 @@ export const getPrimaryEventController = async (
       eventModel().findOne(
         {
           clientId: req?.clientId,
-          "eventFileList.0": { $exists: true },
+          eventId: req?.eventId,
         },
         { _id: 0 },
         async (err, result: IEvent) => {
           if (!err) {
-            const eventNameList = await clientModel().findOne({
-              clientId: req?.clientId,
-            });
             const resultObj = {
-              priamryEvent: {
-                eventId: result?.eventId,
-                clientId: result?.clientId,
-                clientName: result?.clientName,
-                clientOwnerId: result?.clientOwnerId,
-                eventName: result?.eventName,
-                eventFileList: result?.eventFileList,
-                createdDate: result?.createdDate,
-                updatedDate: result?.updatedDate,
-              },
-              eventNameList: eventNameList?.eventList,
+              eventId: result?.eventId,
+              clientId: result?.clientId,
+              clientName: result?.clientName,
+              clientOwnerId: result?.clientOwnerId,
+              eventName: result?.eventName,
+              eventFileList: result?.eventFileList,
+              createdDate: result?.createdDate,
+              updatedDate: result?.updatedDate,
             };
             responderController({ result: resultObj, statusCode: 200 }, res);
           } else {

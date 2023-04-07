@@ -14,7 +14,9 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
-
+::-webkit-scrollbar {
+  display: none;
+}
 .grecaptcha-badge {
   visibility: hidden;
 }
@@ -61,6 +63,24 @@
 }
 .headerBottomPaddingNone {
   margin-bottom: 0;
+}
+.overFlowEventNameList {
+  display: inline-block;
+  margin-right: 15px;
+  margin-left: 15px;
+  float: none;
+  line-height: 16px;
+  color: #706d69;
+}
+.overFlowSelectedEventName {
+  display: inline-block;
+  margin-right: 15px;
+  margin-left: 15px;
+  float: none;
+  line-height: 16px;
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  font-weight: 700;
 }
 .centerDiv {
   display: flex;

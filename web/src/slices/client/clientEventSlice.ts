@@ -6,16 +6,26 @@ export const clientEventSlice = createSlice({
   initialState: defaultClientEventList,
   reducers: {
     updateClientEventList: (state, action: PayloadAction<IEvent>) => {
-      const eventAlreadyExists = state.eventList.map(
+      const eventAlreadyExists = state.eventList.some(
         (event) => event?.eventName === action.payload?.eventName
       );
-      if (action.payload?.clientId && eventAlreadyExists.length === 0) {
+      if (action.payload?.clientId && !eventAlreadyExists) {
         state.eventList = [...state.eventList, action.payload];
       }
+    },
+    updateClientAllEventNameList: (state, action: PayloadAction<IEvent[]>) => {
+      state.allEventNameList = action.payload;
+    },
+    updateClientSelectedEvent: (state, action: PayloadAction<IEvent>) => {
+      state.selectedEvent = action.payload;
     },
   },
 });
 
-export const { updateClientEventList } = clientEventSlice.actions;
+export const {
+  updateClientEventList,
+  updateClientAllEventNameList,
+  updateClientSelectedEvent,
+} = clientEventSlice.actions;
 
 export const clientEventReducer = clientEventSlice.reducer;

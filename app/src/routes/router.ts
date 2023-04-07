@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { getClientEventDataController } from "../controller/client/getClientEventDataController";
 import { getPrimaryEventController } from "../controller/client/getPrimaryEventController";
 import { loginController } from "../controller/common/login/loginController";
 import { otpVerificationController } from "../controller/common/login/otpVerificationController";
@@ -120,6 +121,25 @@ router.post("/getPrimaryEvent", async (req, res, next) => {
     };
     auth?.clientId && auth?.status === registrationStatus.verified
       ? getPrimaryEventController(request, res, next)
+      : responderController(
+          { result: {}, statusCode: 200, inValidToken: true },
+          res
+        );
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+});
+
+router.post("/getClientEventData", async (req, res, next) => {
+  try {
+    const auth = (await decryptToken(req.headers)) as unknown as IAuth;
+    const request = {
+      ...req.body,
+      clientId: auth?.clientId,
+    };
+    auth?.clientId && auth?.status === registrationStatus.verified
+      ? getClientEventDataController(request, res, next)
       : responderController(
           { result: {}, statusCode: 200, inValidToken: true },
           res
