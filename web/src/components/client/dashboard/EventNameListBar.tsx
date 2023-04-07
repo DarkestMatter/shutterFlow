@@ -35,7 +35,7 @@ export const EventNameListBar: React.FC = () => {
   }, [getClientEventNameList]);
 
   return (
-    <Grid container justifyContent="center">
+    <Grid container>
       <ul
         style={{ whiteSpace: "nowrap", overflowX: "auto", cursor: "pointer" }}
       >

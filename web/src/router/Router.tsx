@@ -4,6 +4,7 @@ import Grid from "@mui/material/Grid";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ClientDashboard } from "../components/client/dashboard/ClientDashboard";
+import { InstaSelect } from "../components/client/instaSelect/InstaSelect";
 import { TokenValidator } from "../components/common/TokenValidator";
 import { Dashboard } from "../components/user/dashboard/Dashboard";
 import { EventDashboard } from "../components/user/event/EventDashboard";
@@ -82,6 +83,7 @@ export const Router: React.FC = () => {
               <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/client" element={<ClientDashboard />} />
+                <Route path="/instaSelect" element={<InstaSelect />} />
                 <Route path="*" element={<Navigate to="/client" />} />
               </Routes>
             </div>
