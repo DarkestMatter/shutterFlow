@@ -1,7 +1,7 @@
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
-import LazyLoad from "react-lazy-load";
 import Grid from "@mui/material/Grid";
+import LazyLoad from "react-lazy-load";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IEventFile } from "../../../interfaces/IEvent";
@@ -34,16 +34,6 @@ export const ClientGallery: React.FC = () => {
                   }}
                 >
                   <CardActionArea>
-                    {/* <CardMedia
-                      component="img"
-                      image={file?.minFilePath}
-                      alt="green iguana"
-                      style={{
-                        height: "inherit",
-                        width: "inherit",
-                        marginBottom: -4,
-                      }}
-                    /> */}
                     <LazyLoad height={"inherit"} width={"inherit"} offset={50}>
                       <img
                         style={{

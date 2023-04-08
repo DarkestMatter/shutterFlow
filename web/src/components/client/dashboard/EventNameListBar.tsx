@@ -19,19 +19,23 @@ export const EventNameListBar: React.FC = () => {
   const getClientSelectedEvent = useSelector(getClientSelectedEventSelector);
 
   const handleEventClick = async (event: IEvent) => {
-    await getClientEventDataApi({
-      dispatch: dispatch,
-      uri: "getClientEventData",
-      data: {
-        clientId: getClientProfile?.clientId,
-        eventId: event?.eventId,
-      },
-    });
-    dispatch(updateClientSelectedEvent(event));
+    if (getClientSelectedEvent?.eventId !== event?.eventId) {
+      await getClientEventDataApi({
+        dispatch: dispatch,
+        uri: "getClientEventData",
+        data: {
+          clientId: getClientProfile?.clientId,
+          eventId: event?.eventId,
+        },
+      });
+      dispatch(updateClientSelectedEvent(event));
+    }
   };
 
   useEffect(() => {
-    dispatch(updateClientSelectedEvent(getClientEventNameList[0]));
+    if (getClientEventNameList) {
+      dispatch(updateClientSelectedEvent(getClientEventNameList[0]));
+    }
   }, [getClientEventNameList]);
 
   return (

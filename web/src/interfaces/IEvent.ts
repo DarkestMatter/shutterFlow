@@ -19,6 +19,7 @@ export interface IEventFile {
   format?: string;
   errorMsg?: string;
   selected?: boolean;
+  liked?: boolean;
   index?: number;
   imgDimensionType?: imgDimensionType;
 }
@@ -53,5 +54,5 @@ export interface IClientEventList {
 export const defaultClientEventList: IClientEventList = {
   eventList: [],
   allEventNameList: [],
-  selectedEvent: {},
+  selectedEvent: { eventFileList: [] },
 };
