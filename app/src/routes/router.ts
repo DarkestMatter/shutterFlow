@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { fileLikedController } from "../controller/client/fileLikedController";
 import { getClientEventDataController } from "../controller/client/getClientEventDataController";
 import { getPrimaryEventController } from "../controller/client/getPrimaryEventController";
 import { loginController } from "../controller/common/login/loginController";
@@ -140,6 +141,25 @@ router.post("/getClientEventData", async (req, res, next) => {
     };
     auth?.clientId && auth?.status === registrationStatus.verified
       ? getClientEventDataController(request, res, next)
+      : responderController(
+          { result: {}, statusCode: 200, inValidToken: true },
+          res
+        );
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+});
+
+router.post("/fileLiked", async (req, res, next) => {
+  try {
+    const auth = (await decryptToken(req.headers)) as unknown as IAuth;
+    const request = {
+      ...req.body,
+      clientId: auth?.clientId,
+    };
+    auth?.clientId && auth?.status === registrationStatus.verified
+      ? fileLikedController(request, res, next)
       : responderController(
           { result: {}, statusCode: 200, inValidToken: true },
           res

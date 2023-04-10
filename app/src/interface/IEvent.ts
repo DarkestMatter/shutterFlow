@@ -21,6 +21,7 @@ export interface IEventFile {
   clientOwnerId: String;
   clientId?: String;
   name?: String;
+  liked?: Boolean;
   originalFileSize?: Number;
   minFileSize?: Number;
   microFileSize?: Number;

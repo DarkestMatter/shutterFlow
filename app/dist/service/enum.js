@@ -22,6 +22,7 @@ var errorMsg;
     errorMsg["eventExists"] = "Event Already Exists, please create with different Name";
     errorMsg["incorrectUploadFormat"] = "Only .png, .jpg and .jpeg format allowed!";
     errorMsg["errorFileUpload"] = "Error at file uploading";
+    errorMsg["errorAtFileLiked"] = "Some error occurred while liking a file";
 })(errorMsg = exports.errorMsg || (exports.errorMsg = {}));
 var successMsg;
 (function (successMsg) {

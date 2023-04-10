@@ -33,12 +33,13 @@ export const LandingImage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (isValidToken) {
+    if (isValidToken && !getLandingImageData) {
       getPrimaryEvent();
     }
     windowHeight > windowWidth
       ? dispatch(updateScreenType({ isMobileScreen: true }))
       : dispatch(updateScreenType({ isMobileScreen: false }));
+    window.scrollTo(0, 0);
   }, [isValidToken]);
 
   const ImgBox = styled.div`

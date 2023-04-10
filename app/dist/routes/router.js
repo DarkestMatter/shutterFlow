@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
 const express_1 = require("express");
+const fileLikedController_1 = require("../controller/client/fileLikedController");
 const getClientEventDataController_1 = require("../controller/client/getClientEventDataController");
 const getPrimaryEventController_1 = require("../controller/client/getPrimaryEventController");
 const loginController_1 = require("../controller/common/login/loginController");
@@ -115,6 +116,22 @@ exports.router.post("/getClientEventData", async (req, res, next) => {
         };
         (auth === null || auth === void 0 ? void 0 : auth.clientId) && (auth === null || auth === void 0 ? void 0 : auth.status) === enum_1.registrationStatus.verified
             ? (0, getClientEventDataController_1.getClientEventDataController)(request, res, next)
+            : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: true }, res);
+    }
+    catch (err) {
+        console.log(err);
+        res.json(err);
+    }
+});
+exports.router.post("/fileLiked", async (req, res, next) => {
+    try {
+        const auth = (await (0, decryptToken_1.decryptToken)(req.headers));
+        const request = {
+            ...req.body,
+            clientId: auth === null || auth === void 0 ? void 0 : auth.clientId,
+        };
+        (auth === null || auth === void 0 ? void 0 : auth.clientId) && (auth === null || auth === void 0 ? void 0 : auth.status) === enum_1.registrationStatus.verified
+            ? (0, fileLikedController_1.fileLikedController)(request, res, next)
             : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: true }, res);
     }
     catch (err) {

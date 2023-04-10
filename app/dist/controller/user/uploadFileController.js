@@ -44,12 +44,12 @@ const uploadFileController = async (req, res, next, auth) => {
                 statusCode: 200,
                 errorMsg: enum_1.errorMsg.errorFileUpload,
             }, res);
-        await (0, clientModel_1.clientModel)().findOneAndUpdate({
+        await (0, clientModel_1.clientModel)().updateOne({
             clientOwnerId: fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId,
             clientId: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.clientId,
         }, {
             tileImgUrl: `${enum_1.iDriveData.baseUrl}${fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId}/min/${fileData === null || fileData === void 0 ? void 0 : fileData.fileId}.${fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.fileType}`,
-        }, { new: true });
+        });
     }
     catch (err) {
         console.log(err);
@@ -87,7 +87,7 @@ const saveUploadFileData = (fileData) => {
                     eventFileList: minFileData,
                 },
                 eventImgUrl: minFileData === null || minFileData === void 0 ? void 0 : minFileData.minFilePath,
-            }));
+            }, { new: true }));
             (updatedResult === null || updatedResult === void 0 ? void 0 : updatedResult.clientId) ? resolve(updatedResult) : resolve(false);
         }
         catch (err) {

@@ -1,5 +1,4 @@
 import jwt, { Secret } from "jsonwebtoken";
-import { ILoginCred } from "../interface/ILoginCred";
 import { IToken } from "../interface/IToken";
 
 export const SECRET_KEY: Secret = "7896-5630-7564-0809";

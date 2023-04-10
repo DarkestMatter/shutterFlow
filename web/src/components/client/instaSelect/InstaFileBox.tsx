@@ -1,39 +1,52 @@
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import {
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  IconButton,
+} from "@mui/material";
 import Grid from "@mui/material/Grid";
+import { MouseEvent } from "react";
 import LazyLoad from "react-lazy-load";
 import { useDispatch, useSelector } from "react-redux";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { clientEventFileListSelector } from "../../../selectors/clientEventFileListSelector";
+import { fileLikedApi } from "../../../api/fileLikedApi";
 import { IEventFile } from "../../../interfaces/IEvent";
-import { AppDispatch } from "../../../store";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import { clientEventFileListSelector } from "../../../selectors/clientEventFileListSelector";
 import { updateLikedFile } from "../../../slices/client/clientEventSlice";
-import { MouseEvent } from "react";
+import { AppDispatch } from "../../../store";
 
 export const InstaFileBox: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const clientEventFileList = useSelector(clientEventFileListSelector);
 
-  const handleLikedFile = (file: IEventFile, idx: number) => {
-    dispatch(
-      updateLikedFile({
-        eventId: file?.eventId,
-        fileId: file?.fileId,
-        index: idx,
-        liked: !file?.liked,
-        clientId: file?.clientId,
-        clientOwnerId: file?.clientOwnerId,
-        eventFileList: [],
-      })
-    );
+  const handleLikeBtn = async (file: IEventFile, idx: number) => {
+    const fileLikedObj = {
+      eventId: file?.eventId,
+      fileId: file?.fileId,
+      index: idx,
+      liked: !file?.liked,
+      clientId: file?.clientId,
+      clientOwnerId: file?.clientOwnerId,
+    };
+    dispatch(updateLikedFile(fileLikedObj));
+    const fileLiked = await fileLikedApi({
+      dispatch: dispatch,
+      uri: "fileLiked",
+      data: fileLikedObj,
+    });
+    fileLiked &&
+      dispatch(updateLikedFile({ ...fileLikedObj, liked: !file?.liked }));
   };
 
   const handleFileClick = (
-    event: MouseEvent<HTMLImageElement, globalThis.MouseEvent>,
+    event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
     file: IEventFile,
     idx: number
   ) => {
     if (event.detail === 2) {
-      handleLikedFile(file, idx);
+      handleLikeBtn(file, idx);
     }
   };
 
@@ -41,38 +54,45 @@ export const InstaFileBox: React.FC = () => {
     <Grid container>
       {clientEventFileList?.map((file, idx) => {
         return (
-          <>
-            <Grid item xs={12}>
-              <LazyLoad height={"100%"} width={"100%"} offset={50}>
+          <Card
+            onClick={(e) => handleFileClick(e, file, idx)}
+            style={{
+              marginTop: 5,
+              marginLeft: 2,
+              marginRight: 2,
+            }}
+          >
+            <CardActionArea>
+              <LazyLoad height={"inherit"} width={"inherit"} offset={50}>
                 <img
                   style={{
-                    height: "100%",
-                    width: "100%",
-                    marginBottom: -4,
-                    cursor: "pointer",
+                    height: "inherit",
+                    width: "inherit",
                   }}
                   src={file?.minFilePath}
-                  onClick={(e) => handleFileClick(e, file, idx)}
                 />
               </LazyLoad>
-            </Grid>
-            {file?.liked ? (
-              <Grid item xs={12}>
-                <FavoriteIcon
-                  style={{ color: "#d51b1b" }}
-                  className="hand"
-                  onClick={() => handleLikedFile(file, idx)}
-                />
-              </Grid>
-            ) : (
-              <Grid item xs={12}>
-                <FavoriteBorderIcon
-                  className="hand"
-                  onClick={() => handleLikedFile(file, idx)}
-                />
-              </Grid>
-            )}
-          </>
+            </CardActionArea>
+            <CardActions
+              disableSpacing
+              style={{ justifyContent: "right", marginRight: 15 }}
+            >
+              <IconButton>
+                {file?.liked ? (
+                  <FavoriteIcon
+                    style={{ color: "#d51b1b" }}
+                    className="hand"
+                    onClick={() => handleLikeBtn(file, idx)}
+                  />
+                ) : (
+                  <FavoriteBorderIcon
+                    className="hand"
+                    onClick={() => handleLikeBtn(file, idx)}
+                  />
+                )}
+              </IconButton>
+            </CardActions>
+          </Card>
         );
       })}
     </Grid>

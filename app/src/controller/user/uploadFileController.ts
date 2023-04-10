@@ -70,15 +70,14 @@ export const uploadFileController = async (
           },
           res
         );
-    await clientModel().findOneAndUpdate(
+    await clientModel().updateOne(
       {
         clientOwnerId: fileData?.clientOwnerId,
         clientId: fileUploadResponse?.clientId,
       },
       {
         tileImgUrl: `${iDriveData.baseUrl}${fileData?.clientOwnerId}/min/${fileData?.fileId}.${fileUploadResponse?.fileType}`,
-      },
-      { new: true }
+      }
     );
   } catch (err) {
     console.log(err);
@@ -121,7 +120,8 @@ export const saveUploadFileData = (fileData: IEventFile) => {
             eventFileList: minFileData,
           },
           eventImgUrl: minFileData?.minFilePath,
-        }
+        },
+        { new: true }
       )) as IEvent;
       updatedResult?.clientId ? resolve(updatedResult) : resolve(false);
     } catch (err) {

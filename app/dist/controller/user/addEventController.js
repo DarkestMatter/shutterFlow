@@ -27,7 +27,7 @@ const addEventController = async (req, res, next) => {
                     $push: {
                         eventList: newEventObj,
                     },
-                }));
+                }, { new: true }));
                 (updatedResult === null || updatedResult === void 0 ? void 0 : updatedResult.clientId)
                     ? (0, responderController_1.responderController)({ result: newEventObj, statusCode: 200 }, res)
                     : (0, responderController_1.responderController)({

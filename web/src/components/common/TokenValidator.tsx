@@ -34,16 +34,12 @@ export const TokenValidator: React.FC = () => {
     if (!isValidToken) {
       getToken();
     } else {
-      if (location.pathname === "/login" || location.pathname === "/register") {
-        if (currentProfileType === customerType.user) {
-          navigate("/dashboard");
-        } else if (currentProfileType === customerType.client) {
-          navigate("/client");
-        } else {
-          navigate("login");
-        }
+      if (currentProfileType === customerType.user) {
+        navigate("/dashboard");
+      } else if (currentProfileType === customerType.client) {
+        navigate("/client");
       } else {
-        navigate(location.pathname);
+        navigate("login");
       }
     }
   }, [isValidToken]);

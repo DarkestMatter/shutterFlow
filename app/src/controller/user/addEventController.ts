@@ -35,7 +35,8 @@ export const addEventController = async (
             $push: {
               eventList: newEventObj,
             },
-          }
+          },
+          { new: true }
         )) as IClient;
         updatedResult?.clientId
           ? responderController({ result: newEventObj, statusCode: 200 }, res)

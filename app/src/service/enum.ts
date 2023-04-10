@@ -18,6 +18,7 @@ export enum errorMsg {
   eventExists = "Event Already Exists, please create with different Name",
   incorrectUploadFormat = "Only .png, .jpg and .jpeg format allowed!",
   errorFileUpload = "Error at file uploading",
+  errorAtFileLiked = "Some error occurred while liking a file",
 }
 
 export enum successMsg {
