@@ -48,6 +48,16 @@ export const clientEventSlice = createSlice({
     updateClientLikedFileList: (state, action: PayloadAction<IEventFile[]>) => {
       state.likedFileList = action.payload;
     },
+    updateRemoveClientLikedFile: (state, action: PayloadAction<IEventFile>) => {
+      if (action.payload?.fileId) {
+        state.likedFileList?.map((file, idx) => {
+          if (file?.fileId === action.payload?.fileId) {
+            state.likedFileList?.splice(idx, 1);
+            return;
+          }
+        });
+      }
+    },
   },
 });
 
@@ -58,6 +68,7 @@ export const {
   updateLikedFile,
   updateClientSelectedFile,
   updateClientLikedFileList,
+  updateRemoveClientLikedFile,
 } = clientEventSlice.actions;
 
 export const clientEventReducer = clientEventSlice.reducer;

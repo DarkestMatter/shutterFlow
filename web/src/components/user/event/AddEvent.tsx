@@ -41,7 +41,7 @@ export const AddEvent: React.FC = () => {
     if (getSelectedClient?.eventList) {
       dispatch(updateSelectedEvent(getSelectedClient?.eventList[0]));
     }
-  }, [getSelectedClient]);
+  }, []);
 
   return (
     <Grid container style={{ marginTop: 10 }}>

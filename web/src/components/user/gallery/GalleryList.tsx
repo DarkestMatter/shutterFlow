@@ -5,6 +5,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useEffect } from "react";
+import LazyLoad from "react-lazy-load";
 import { useDispatch, useSelector } from "react-redux";
 import { getEventDataApi } from "../../../api/getEventDataApi";
 import { IEventFile } from "../../../interfaces/IEvent";
@@ -76,12 +77,14 @@ export const GalleryList: React.FC = () => {
               }}
             >
               <CardActionArea>
-                <CardMedia
-                  component="img"
-                  image={file?.minFilePath}
-                  alt="green iguana"
-                  style={{ height: 150 }}
-                />
+                <LazyLoad height={150} width={150} offset={150}>
+                  <CardMedia
+                    component="img"
+                    image={file?.minFilePath}
+                    alt="green iguana"
+                    style={{ height: 150 }}
+                  />
+                </LazyLoad>
               </CardActionArea>
             </Card>
           );

@@ -28,8 +28,20 @@ export const HeaderBody: React.FC = () => {
 
   const handleScroll = () => {
     const position = window.pageYOffset;
-    setHeaderColor(() => (position > 90 ? "#fff" : "none"));
-    setBoxShadow(() => (position > 90 ? "0 1px 10px 1px gainsboro" : "none"));
+    setHeaderColor(() =>
+      position > 90
+        ? "#fff"
+        : currentProfileType === customerType.user
+        ? "#fff"
+        : "none"
+    );
+    setBoxShadow(() =>
+      position > 90
+        ? "0 1px 10px 1px gainsboro"
+        : currentProfileType === customerType.user
+        ? "0 1px 10px 1px gainsboro"
+        : "none"
+    );
   };
 
   const handleGoToLiked = () => {
@@ -82,12 +94,14 @@ export const HeaderBody: React.FC = () => {
                 Shutter Flow
               </h4>
             </Grid>
-            <Grid container item xs={3} justifyContent="right">
-              <FavoriteBorderIcon
-                style={{ marginTop: 20, marginRight: 20, cursor: "pointer" }}
-                onClick={handleGoToLiked}
-              />
-            </Grid>
+            {currentProfileType === customerType.client && (
+              <Grid container item xs={3} justifyContent="right">
+                <FavoriteBorderIcon
+                  style={{ marginTop: 20, marginRight: 20, cursor: "pointer" }}
+                  onClick={handleGoToLiked}
+                />
+              </Grid>
+            )}
           </Grid>
         </HeaderFixed>
       </Grid>
