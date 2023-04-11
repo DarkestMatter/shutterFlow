@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { currentProfileTypeSelector } from "../../../selectors/currentProfileSelector";
 import { customerType } from "../../../services/enum";
 import { AppDispatch } from "../../../store";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 export const HeaderBody: React.FC = () => {
   const navigate = useNavigate();
@@ -29,6 +30,10 @@ export const HeaderBody: React.FC = () => {
     const position = window.pageYOffset;
     setHeaderColor(() => (position > 90 ? "#fff" : "none"));
     setBoxShadow(() => (position > 90 ? "0 1px 10px 1px gainsboro" : "none"));
+  };
+
+  const handleGoToLiked = () => {
+    navigate("/liked");
   };
 
   useEffect(() => {
@@ -68,7 +73,7 @@ export const HeaderBody: React.FC = () => {
           style={{ transition: "background-color 1s ease !important" }}
         >
           <Grid item xs={12} container>
-            <Grid item xs={6}>
+            <Grid item xs={9}>
               {/* <HeaderLogo
                 src={`${envProp.imgApi}/mnr_logo.png`}
                 onClick={handleLogoClick}
@@ -76,6 +81,12 @@ export const HeaderBody: React.FC = () => {
               <h4 style={{ marginLeft: 15 }} onClick={handleLogoClick}>
                 Shutter Flow
               </h4>
+            </Grid>
+            <Grid container item xs={3} justifyContent="right">
+              <FavoriteBorderIcon
+                style={{ marginTop: 20, marginRight: 20, cursor: "pointer" }}
+                onClick={handleGoToLiked}
+              />
             </Grid>
           </Grid>
         </HeaderFixed>

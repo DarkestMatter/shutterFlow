@@ -9,7 +9,7 @@ export const ClientDashboard: React.FC = () => {
       <Grid item xs={12}>
         <LandingImage />
         <EventNameListBar />
-        <ClientGallery />
+        <ClientGallery likedGallery={false} />
       </Grid>
     </Grid>
   );

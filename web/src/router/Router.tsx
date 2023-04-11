@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ClientDashboard } from "../components/client/dashboard/ClientDashboard";
 import { InstaSelect } from "../components/client/instaSelect/InstaSelect";
+import { Liked } from "../components/client/liked/Liked";
 import { TokenValidator } from "../components/common/TokenValidator";
 import { Dashboard } from "../components/user/dashboard/Dashboard";
 import { EventDashboard } from "../components/user/event/EventDashboard";
@@ -84,6 +85,7 @@ export const Router: React.FC = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/client" element={<ClientDashboard />} />
                 <Route path="/instaSelect" element={<InstaSelect />} />
+                <Route path="/liked" element={<Liked />} />
                 <Route path="*" element={<Navigate to="/client" />} />
               </Routes>
             </div>

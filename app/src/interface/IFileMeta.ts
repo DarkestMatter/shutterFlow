@@ -20,10 +20,12 @@ export interface IFileRespnseObj {
   eventId?: String;
   name?: String;
   clientId?: String;
-  originalFileSize?: 0;
-  minFileSize?: 0;
+  originalFileSize?: Number;
+  minFileSize?: Number;
   mimetype?: String;
   errorMsg?: String;
   fileType?: String;
+  imgWidth?: Number;
+  imgHeight?: Number;
   imgDimensionType?: String;
 }

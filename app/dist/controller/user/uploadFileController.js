@@ -20,6 +20,7 @@ const uploadFileController = async (req, res, next, auth) => {
         //original file upload
         const fileUploadResponse = (await (0, uploadFile_1.uploadFile)(req, res, next, fileData));
         if (fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.errorMsg) {
+            //delete all existing related files from drive
             (0, responderController_1.responderController)({ result: {}, statusCode: 200, errorMsg: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.errorMsg }, res);
             return;
         }
@@ -34,6 +35,8 @@ const uploadFileController = async (req, res, next, auth) => {
             minFileSize: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.minFileSize,
             format: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.mimetype,
             eventId: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.eventId,
+            imgHeight: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.imgHeight,
+            imgWidth: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.imgWidth,
             imgDimensionType: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.imgDimensionType,
         };
         const fileDataSaved = (await (0, exports.saveUploadFileData)(eventFileDataObj));
@@ -76,6 +79,8 @@ const saveUploadFileData = (fileData) => {
                 minFileSize: fileData === null || fileData === void 0 ? void 0 : fileData.minFileSize,
                 format: fileData === null || fileData === void 0 ? void 0 : fileData.format,
                 eventId: fileData === null || fileData === void 0 ? void 0 : fileData.eventId,
+                imgHeight: fileData === null || fileData === void 0 ? void 0 : fileData.imgHeight,
+                imgWidth: fileData === null || fileData === void 0 ? void 0 : fileData.imgWidth,
                 imgDimensionType: fileData === null || fileData === void 0 ? void 0 : fileData.imgDimensionType,
             };
             const updatedResult = (await (0, eventModel_1.eventModel)().findOneAndUpdate({

@@ -31,6 +31,8 @@ export interface IEventFile {
   originalFileKey?: String;
   minFileKey?: String;
   microFileKey?: String;
+  imgHeight?: Number;
+  imgWidth?: Number;
   imgDimensionType?: String;
   format?: String;
   errorMsg?: String;

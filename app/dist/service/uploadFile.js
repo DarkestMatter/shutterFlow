@@ -68,37 +68,20 @@ const uploadFile = async (req, res, next, fileData) => {
                 },
             });
             upload.single("myImage")(req, res, async (err) => {
-                var _a, _b, _c, _d, _e, _f, _g, _h;
+                var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q;
                 const fileType = (_a = res.req.file) === null || _a === void 0 ? void 0 : _a.mimetype.split("/")[1];
                 if (!err) {
                     if (((_b = res === null || res === void 0 ? void 0 : res.req) === null || _b === void 0 ? void 0 : _b.file) && (req === null || req === void 0 ? void 0 : req.file)) {
                         try {
-                            const fileUplaod = new lib_storage_1.Upload({
-                                client: s3,
-                                queueSize: 4,
-                                leavePartsOnError: false,
-                                params: {
-                                    Bucket: enum_1.iDriveData.bucket,
-                                    Key: `${fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId}/${fileData === null || fileData === void 0 ? void 0 : fileData.fileId}.${fileType}`,
-                                    ContentType: (_c = req === null || req === void 0 ? void 0 : req.file) === null || _c === void 0 ? void 0 : _c.mimetype,
-                                    ACL: "public-read",
-                                    Body: (_d = req.file) === null || _d === void 0 ? void 0 : _d.buffer,
-                                },
-                            });
-                            fileUplaod.on("httpUploadProgress", async (progress) => {
-                                var _a, _b, _c, _d;
-                                fileRespnseObj.fileType = fileType;
-                                fileRespnseObj.eventId = (_a = req.body) === null || _a === void 0 ? void 0 : _a.eventId;
-                                fileRespnseObj.clientId = (_b = req.body) === null || _b === void 0 ? void 0 : _b.clientId;
-                                fileRespnseObj.mimetype = (_c = res.req.file) === null || _c === void 0 ? void 0 : _c.mimetype;
-                                fileRespnseObj.name = (_d = res.req.file) === null || _d === void 0 ? void 0 : _d.originalname;
-                                fileRespnseObj.originalFileSize = progress === null || progress === void 0 ? void 0 : progress.loaded;
-                            });
-                            const a = await fileUplaod.done();
-                            console.log(a);
-                            if ((_e = req === null || req === void 0 ? void 0 : req.file) === null || _e === void 0 ? void 0 : _e.mimetype.startsWith("image")) {
+                            fileRespnseObj.fileType = fileType;
+                            fileRespnseObj.eventId = (_c = req.body) === null || _c === void 0 ? void 0 : _c.eventId;
+                            fileRespnseObj.clientId = (_d = req.body) === null || _d === void 0 ? void 0 : _d.clientId;
+                            fileRespnseObj.mimetype = (_e = res.req.file) === null || _e === void 0 ? void 0 : _e.mimetype;
+                            fileRespnseObj.name = (_f = res.req.file) === null || _f === void 0 ? void 0 : _f.originalname;
+                            fileRespnseObj.originalFileSize = (_g = req === null || req === void 0 ? void 0 : req.file) === null || _g === void 0 ? void 0 : _g.size;
+                            if ((_h = req === null || req === void 0 ? void 0 : req.file) === null || _h === void 0 ? void 0 : _h.mimetype.startsWith("image")) {
                                 //calculating img dim
-                                const dimensions = (0, buffer_image_size_1.default)((_f = req === null || req === void 0 ? void 0 : req.file) === null || _f === void 0 ? void 0 : _f.buffer);
+                                const dimensions = (0, buffer_image_size_1.default)((_j = req === null || req === void 0 ? void 0 : req.file) === null || _j === void 0 ? void 0 : _j.buffer);
                                 if (dimensions.height > dimensions.width) {
                                     imgDimType = enum_1.imgDimensionType.portrait;
                                 }
@@ -112,22 +95,38 @@ const uploadFile = async (req, res, next, fileData) => {
                                     params: {
                                         Bucket: enum_1.iDriveData.bucket,
                                         Key: `${fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId}/min/${fileData === null || fileData === void 0 ? void 0 : fileData.fileId}.${fileType}`,
-                                        ContentType: (_g = req === null || req === void 0 ? void 0 : req.file) === null || _g === void 0 ? void 0 : _g.mimetype,
+                                        ContentType: (_k = req === null || req === void 0 ? void 0 : req.file) === null || _k === void 0 ? void 0 : _k.mimetype,
                                         ACL: "public-read",
-                                        Body: (0, sharp_1.default)((_h = req.file) === null || _h === void 0 ? void 0 : _h.buffer).webp({ quality: 35 }),
+                                        Body: (0, sharp_1.default)((_l = req.file) === null || _l === void 0 ? void 0 : _l.buffer).webp({ quality: 35 }),
                                     },
                                 });
                                 compressImageUpload.on("httpUploadProgress", (progress) => {
                                     fileRespnseObj.minFileSize = progress === null || progress === void 0 ? void 0 : progress.loaded;
                                     fileRespnseObj.imgDimensionType = imgDimType;
-                                    console.log(fileRespnseObj);
+                                    fileRespnseObj.imgHeight = dimensions === null || dimensions === void 0 ? void 0 : dimensions.height;
+                                    fileRespnseObj.imgWidth = dimensions === null || dimensions === void 0 ? void 0 : dimensions.width;
                                 });
                                 await compressImageUpload.done();
                                 resolve(fileRespnseObj);
                             }
-                            else {
-                                resolve(fileRespnseObj);
-                            }
+                            const fileUplaod = new lib_storage_1.Upload({
+                                client: s3,
+                                queueSize: 4,
+                                leavePartsOnError: false,
+                                params: {
+                                    Bucket: enum_1.iDriveData.bucket,
+                                    Key: `${fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId}/${fileData === null || fileData === void 0 ? void 0 : fileData.fileId}.${fileType}`,
+                                    ContentType: (_m = req === null || req === void 0 ? void 0 : req.file) === null || _m === void 0 ? void 0 : _m.mimetype,
+                                    ACL: "public-read",
+                                    Body: (_o = req.file) === null || _o === void 0 ? void 0 : _o.buffer,
+                                },
+                            });
+                            fileUplaod.on("httpUploadProgress", async (progress) => { });
+                            const imgUploadData = await fileUplaod.done();
+                            ((_p = req === null || req === void 0 ? void 0 : req.file) === null || _p === void 0 ? void 0 : _p.mimetype.startsWith("image")) &&
+                                ((_q = imgUploadData === null || imgUploadData === void 0 ? void 0 : imgUploadData.$metadata) === null || _q === void 0 ? void 0 : _q.httpStatusCode) === 200
+                                ? resolve(fileRespnseObj)
+                                : resolve({ errorMsg: enum_1.errorMsg.errorFileUpload });
                         }
                         catch (err) {
                             console.log(err);

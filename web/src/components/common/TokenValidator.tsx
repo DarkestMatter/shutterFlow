@@ -8,6 +8,7 @@ import {
   isValidTokenSelector,
 } from "../../selectors/selectors";
 import { customerType } from "../../services/enum";
+import { updateWindowWidth } from "../../slices/common/commonSlice";
 import { AppDispatch } from "../../store";
 
 export const TokenValidator: React.FC = () => {
@@ -31,6 +32,7 @@ export const TokenValidator: React.FC = () => {
   };
 
   useEffect(() => {
+    dispatch(updateWindowWidth({ windowWidth: window.innerWidth }));
     if (!isValidToken) {
       getToken();
     } else {

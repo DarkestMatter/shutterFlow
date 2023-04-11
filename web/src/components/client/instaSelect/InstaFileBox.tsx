@@ -1,24 +1,23 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import {
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  IconButton,
-} from "@mui/material";
+import { Card, CardActionArea, CardActions, IconButton } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { MouseEvent } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import LazyLoad from "react-lazy-load";
 import { useDispatch, useSelector } from "react-redux";
 import { fileLikedApi } from "../../../api/fileLikedApi";
 import { IEventFile } from "../../../interfaces/IEvent";
 import { clientEventFileListSelector } from "../../../selectors/clientEventFileListSelector";
+import { getClientSelectedFileSelector } from "../../../selectors/selectors";
 import { updateLikedFile } from "../../../slices/client/clientEventSlice";
 import { AppDispatch } from "../../../store";
 
 export const InstaFileBox: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+
+  const [eventFileList, setEventFileList] = useState<IEventFile[]>();
+
+  const getClientSelectedFile = useSelector(getClientSelectedFileSelector);
   const clientEventFileList = useSelector(clientEventFileListSelector);
 
   const handleLikeBtn = async (file: IEventFile, idx: number) => {
@@ -50,49 +49,67 @@ export const InstaFileBox: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (getClientSelectedFile) {
+      const a = clientEventFileList?.slice(
+        clientEventFileList.indexOf(getClientSelectedFile)
+      );
+      setEventFileList(a);
+    }
+  }, [getClientSelectedFile, clientEventFileList]);
+
   return (
     <Grid container>
-      {clientEventFileList?.map((file, idx) => {
+      {eventFileList?.map((file, idx) => {
         return (
-          <Card
-            onClick={(e) => handleFileClick(e, file, idx)}
-            style={{
-              marginTop: 5,
-              marginLeft: 2,
-              marginRight: 2,
-            }}
-          >
-            <CardActionArea>
-              <LazyLoad height={"inherit"} width={"inherit"} offset={50}>
-                <img
-                  style={{
-                    height: "inherit",
-                    width: "inherit",
-                  }}
-                  src={file?.minFilePath}
-                />
-              </LazyLoad>
-            </CardActionArea>
-            <CardActions
-              disableSpacing
-              style={{ justifyContent: "right", marginRight: 15 }}
+          <Grid item xs={12} key={file?.fileId} id={file?.fileId}>
+            <Card
+              onClick={(e) => handleFileClick(e, file, idx)}
+              style={{
+                marginTop: 5,
+                marginLeft: 2,
+                marginRight: 2,
+              }}
+              key={file?.fileId}
+              id={file?.fileId}
             >
-              <IconButton>
-                {file?.liked ? (
-                  <FavoriteIcon
-                    style={{ color: "#d51b1b" }}
-                    className="hand"
-                    onClick={() => handleLikeBtn(file, idx)}
+              <CardActionArea>
+                <LazyLoad height={"inherit"} width={"inherit"} offset={50}>
+                  <img
+                    style={{
+                      height: "inherit",
+                      width: "inherit",
+                    }}
+                    src={file?.minFilePath}
                   />
-                ) : (
-                  <FavoriteBorderIcon
-                    className="hand"
-                    onClick={() => handleLikeBtn(file, idx)}
-                  />
-                )}
-              </IconButton>
-            </CardActions>
-          </Card>
+                </LazyLoad>
+              </CardActionArea>
+              <CardActions
+                disableSpacing
+                style={{
+                  justifyContent: "right",
+                  marginRight: 15,
+                  marginTop: -12,
+                  marginBottom: -8,
+                }}
+              >
+                <IconButton>
+                  {file?.liked ? (
+                    <FavoriteIcon
+                      style={{ color: "#d51b1b" }}
+                      className="hand"
+                      onClick={() => handleLikeBtn(file, idx)}
+                    />
+                  ) : (
+                    <FavoriteBorderIcon
+                      className="hand"
+                      onClick={() => handleLikeBtn(file, idx)}
+                    />
+                  )}
+                </IconButton>
+              </CardActions>
+            </Card>
+          </Grid>
         );
       })}
     </Grid>

@@ -89,3 +89,23 @@ export const getClientEventNameListSelector = createSelector(
   state,
   (state) => state?.clientEvent?.allEventNameList
 );
+
+export const getClientSelectedFileSelector = createSelector(
+  state,
+  (state) => state?.clientEvent?.selectedFile
+);
+
+export const getLastScrollPositioneSelector = createSelector(
+  state,
+  (state) => state?.common?.lastScrollPosition
+);
+
+export const getWindowWidthSelector = createSelector(
+  state,
+  (state) => state?.common?.windowWidth
+);
+
+export const getClientLikedFileListSelector = createSelector(
+  state,
+  (state) => state?.clientEvent?.likedFileList
+);

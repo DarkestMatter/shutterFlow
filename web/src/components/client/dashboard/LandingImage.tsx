@@ -39,7 +39,6 @@ export const LandingImage: React.FC = () => {
     windowHeight > windowWidth
       ? dispatch(updateScreenType({ isMobileScreen: true }))
       : dispatch(updateScreenType({ isMobileScreen: false }));
-    window.scrollTo(0, 0);
   }, [isValidToken]);
 
   const ImgBox = styled.div`

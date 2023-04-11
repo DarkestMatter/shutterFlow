@@ -30,7 +30,6 @@ export const fileLikedController = async (
           },
         },
         (err: Error, result: { modifiedCount: Number }) => {
-          console.log(result);
           if (!err && result?.modifiedCount === 1) {
             responderController({ result: {}, statusCode: 200 }, res);
           } else {

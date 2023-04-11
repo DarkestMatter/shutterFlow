@@ -15,6 +15,8 @@ export interface IEventFile {
   originalFileKey?: string;
   minFileKey?: string;
   microFileKey?: string;
+  imgHeight?: number;
+  imgWidth?: number;
   type?: string;
   format?: string;
   errorMsg?: string;
@@ -50,9 +52,12 @@ export interface IClientEventList {
   eventList: IEvent[];
   allEventNameList: IEvent[];
   selectedEvent: IEvent;
+  selectedFile?: IEventFile;
+  likedFileList: IEventFile[];
 }
 export const defaultClientEventList: IClientEventList = {
   eventList: [],
   allEventNameList: [],
   selectedEvent: { eventFileList: [] },
+  likedFileList: [],
 };

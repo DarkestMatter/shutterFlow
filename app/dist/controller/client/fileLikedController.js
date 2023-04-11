@@ -20,7 +20,6 @@ const fileLikedController = async (req, res, next) => {
                     "eventFileList.$.liked": req === null || req === void 0 ? void 0 : req.liked,
                 },
             }, (err, result) => {
-                console.log(result);
                 if (!err && (result === null || result === void 0 ? void 0 : result.modifiedCount) === 1) {
                     (0, responderController_1.responderController)({ result: {}, statusCode: 200 }, res);
                 }

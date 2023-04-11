@@ -38,6 +38,7 @@ export const uploadFileController = async (
       fileData
     )) as IFileRespnseObj;
     if (fileUploadResponse?.errorMsg) {
+      //delete all existing related files from drive
       responderController(
         { result: {}, statusCode: 200, errorMsg: fileUploadResponse?.errorMsg },
         res
@@ -55,6 +56,8 @@ export const uploadFileController = async (
       minFileSize: fileUploadResponse?.minFileSize,
       format: fileUploadResponse?.mimetype,
       eventId: fileUploadResponse?.eventId,
+      imgHeight: fileUploadResponse?.imgHeight,
+      imgWidth: fileUploadResponse?.imgWidth,
       imgDimensionType: fileUploadResponse?.imgDimensionType,
     };
     const fileDataSaved = (await saveUploadFileData(
@@ -107,6 +110,8 @@ export const saveUploadFileData = (fileData: IEventFile) => {
         minFileSize: fileData?.minFileSize,
         format: fileData?.format,
         eventId: fileData?.eventId,
+        imgHeight: fileData?.imgHeight,
+        imgWidth: fileData?.imgWidth,
         imgDimensionType: fileData?.imgDimensionType,
       };
       const updatedResult = (await eventModel().findOneAndUpdate(
