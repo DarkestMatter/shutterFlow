@@ -16,6 +16,7 @@ var errorMsg;
     errorMsg["serverError"] = "Some Error occurred";
     errorMsg["incorrectOtp"] = "enter correct otp";
     errorMsg["incorrectUserEmail"] = "Please login again with proper Email";
+    errorMsg["errorAtDeleteFile"] = "Some error occurred while deleting a file";
     errorMsg["userExist"] = "User already exists, Please try Login";
     errorMsg["clientExist"] = "Client already exists, Please try another Mobile no";
     errorMsg["invalidToken"] = "Token is invalid, Please Login again";

@@ -12,6 +12,7 @@ export enum errorMsg {
   serverError = "Some Error occurred",
   incorrectOtp = "enter correct otp",
   incorrectUserEmail = "Please login again with proper Email",
+  errorAtDeleteFile = "Some error occurred while deleting a file",
   userExist = "User already exists, Please try Login",
   clientExist = "Client already exists, Please try another Mobile no",
   invalidToken = "Token is invalid, Please Login again",

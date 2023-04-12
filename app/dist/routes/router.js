@@ -13,6 +13,7 @@ const responderController_1 = require("../controller/common/responderController"
 const validateTokenController_1 = require("../controller/common/validateTokenController");
 const addClientController_1 = require("../controller/user/addClientController");
 const addEventController_1 = require("../controller/user/addEventController");
+const deleteFileController_1 = require("../controller/user/deleteFileController");
 const getClientListController_1 = require("../controller/user/getClientListController");
 const getEventDataController_1 = require("../controller/user/getEventDataController");
 const uploadFileController_1 = require("../controller/user/uploadFileController");
@@ -91,6 +92,22 @@ exports.router.post("/uploadFile", async (req, res, next) => {
     (auth === null || auth === void 0 ? void 0 : auth.userId) && (auth === null || auth === void 0 ? void 0 : auth.status) === enum_1.registrationStatus.verified
         ? (0, uploadFileController_1.uploadFileController)(req, res, next, auth)
         : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: true }, res);
+});
+exports.router.post("/deleteFile", async (req, res, next) => {
+    try {
+        const auth = (await (0, decryptToken_1.decryptToken)(req.headers));
+        const request = {
+            ...req.body,
+            userId: auth === null || auth === void 0 ? void 0 : auth.userId,
+        };
+        (auth === null || auth === void 0 ? void 0 : auth.userId) && (auth === null || auth === void 0 ? void 0 : auth.status) === enum_1.registrationStatus.verified
+            ? (0, deleteFileController_1.deleteFileController)(request, res, next)
+            : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: true }, res);
+    }
+    catch (err) {
+        console.log(err);
+        res.json(err);
+    }
 });
 exports.router.post("/getPrimaryEvent", async (req, res, next) => {
     try {

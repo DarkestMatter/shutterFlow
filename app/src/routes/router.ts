@@ -10,6 +10,7 @@ import { responderController } from "../controller/common/responderController";
 import { validateTokenController } from "../controller/common/validateTokenController";
 import { addClientController } from "../controller/user/addClientController";
 import { addEventController } from "../controller/user/addEventController";
+import { deleteFileController } from "../controller/user/deleteFileController";
 import { getClientListController } from "../controller/user/getClientListController";
 import { getEventDataController } from "../controller/user/getEventDataController";
 import { uploadFileController } from "../controller/user/uploadFileController";
@@ -112,6 +113,25 @@ router.post("/uploadFile", async (req, res, next) => {
         { result: {}, statusCode: 200, inValidToken: true },
         res
       );
+});
+
+router.post("/deleteFile", async (req, res, next) => {
+  try {
+    const auth = (await decryptToken(req.headers)) as unknown as IAuth;
+    const request = {
+      ...req.body,
+      userId: auth?.userId,
+    };
+    auth?.userId && auth?.status === registrationStatus.verified
+      ? deleteFileController(request, res, next)
+      : responderController(
+          { result: {}, statusCode: 200, inValidToken: true },
+          res
+        );
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
 });
 
 router.post("/getPrimaryEvent", async (req, res, next) => {

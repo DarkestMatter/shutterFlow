@@ -95,6 +95,7 @@ export const saveUploadFileData = (fileData: IEventFile) => {
   return new Promise(async (resolve, reject) => {
     try {
       const originalFileData: IEventFile = {
+        fileId: fileData?.fileId,
         clientId: fileData?.clientId,
         clientOwnerId: fileData?.clientOwnerId,
         name: fileData?.name,

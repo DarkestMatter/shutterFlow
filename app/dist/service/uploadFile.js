@@ -105,6 +105,7 @@ const uploadFile = async (req, res, next, fileData) => {
                                     fileRespnseObj.imgDimensionType = imgDimType;
                                     fileRespnseObj.imgHeight = dimensions === null || dimensions === void 0 ? void 0 : dimensions.height;
                                     fileRespnseObj.imgWidth = dimensions === null || dimensions === void 0 ? void 0 : dimensions.width;
+                                    console.log(progress);
                                 });
                                 await compressImageUpload.done();
                                 resolve(fileRespnseObj);
@@ -121,7 +122,9 @@ const uploadFile = async (req, res, next, fileData) => {
                                     Body: (_o = req.file) === null || _o === void 0 ? void 0 : _o.buffer,
                                 },
                             });
-                            fileUplaod.on("httpUploadProgress", async (progress) => { });
+                            fileUplaod.on("httpUploadProgress", async (progress) => {
+                                console.log(progress);
+                            });
                             const imgUploadData = await fileUplaod.done();
                             ((_p = req === null || req === void 0 ? void 0 : req.file) === null || _p === void 0 ? void 0 : _p.mimetype.startsWith("image")) &&
                                 ((_q = imgUploadData === null || imgUploadData === void 0 ? void 0 : imgUploadData.$metadata) === null || _q === void 0 ? void 0 : _q.httpStatusCode) === 200

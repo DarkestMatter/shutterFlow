@@ -64,6 +64,7 @@ const saveUploadFileData = (fileData) => {
     return new Promise(async (resolve, reject) => {
         try {
             const originalFileData = {
+                fileId: fileData === null || fileData === void 0 ? void 0 : fileData.fileId,
                 clientId: fileData === null || fileData === void 0 ? void 0 : fileData.clientId,
                 clientOwnerId: fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId,
                 name: fileData === null || fileData === void 0 ? void 0 : fileData.name,

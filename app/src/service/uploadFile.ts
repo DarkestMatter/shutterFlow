@@ -98,6 +98,7 @@ export const uploadFile = async (
                     fileRespnseObj.imgDimensionType = imgDimType;
                     fileRespnseObj.imgHeight = dimensions?.height;
                     fileRespnseObj.imgWidth = dimensions?.width;
+                    console.log(progress);
                   }
                 );
                 await compressImageUpload.done();
@@ -116,7 +117,9 @@ export const uploadFile = async (
                   Body: req.file?.buffer,
                 },
               });
-              fileUplaod.on("httpUploadProgress", async (progress: any) => {});
+              fileUplaod.on("httpUploadProgress", async (progress: any) => {
+                console.log(progress);
+              });
               const imgUploadData = await fileUplaod.done();
               req?.file?.mimetype.startsWith("image") &&
               imgUploadData?.$metadata?.httpStatusCode === 200
