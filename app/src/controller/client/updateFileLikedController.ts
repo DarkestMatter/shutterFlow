@@ -1,8 +1,6 @@
 import { NextFunction, Response } from "express-serve-static-core";
 import { IAuth } from "../../interface/IAuth";
-import { IClient } from "../../interface/IClient";
-import { IEvent, IEventFile } from "../../interface/IEvent";
-import { clientModel } from "../../model/clientModel";
+import { IEventFile } from "../../interface/IEvent";
 import { eventModel } from "../../model/eventModel";
 import { errorMsg } from "../../service/enum";
 import { responderController } from "../common/responderController";

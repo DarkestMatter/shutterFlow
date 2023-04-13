@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteFileController = void 0;
 const eventModel_1 = require("../../model/eventModel");
+const deleteFile_1 = require("../../service/deleteFile");
 const enum_1 = require("../../service/enum");
 const responderController_1 = require("../common/responderController");
 const deleteFileController = async (req, res, next) => {
@@ -30,38 +31,44 @@ const deleteFileController = async (req, res, next) => {
         //   },
         // ]);
         // console.log(a);
-        //@ts-ignore
-        (0, eventModel_1.eventModel)().findOneAndUpdate({ eventId: req === null || req === void 0 ? void 0 : req.eventId, clientOwnerId: req === null || req === void 0 ? void 0 : req.userId }, {
-            $pull: {
-                eventFileList: {
-                    fileId: { $in: req === null || req === void 0 ? void 0 : req.eventFileList },
+        const deletedFileList = (await (0, deleteFile_1.deleteFile)(req));
+        deletedFileList &&
+            //@ts-ignore
+            (0, eventModel_1.eventModel)().findOneAndUpdate({ eventId: req === null || req === void 0 ? void 0 : req.eventId, clientOwnerId: req === null || req === void 0 ? void 0 : req.userId }, {
+                $pull: {
+                    eventFileList: {
+                        minFilePath: {
+                            $in: deletedFileList === null || deletedFileList === void 0 ? void 0 : deletedFileList.map((key) => `${enum_1.iDriveData.baseUrl}${key === null || key === void 0 ? void 0 : key.Key}`),
+                        },
+                    },
+                    originalFileList: {
+                        originalFilePath: {
+                            $in: deletedFileList === null || deletedFileList === void 0 ? void 0 : deletedFileList.map((key) => `${enum_1.iDriveData.baseUrl}${key === null || key === void 0 ? void 0 : key.Key}`),
+                        },
+                    },
                 },
-                originalFileList: {
-                    fileId: { $in: req === null || req === void 0 ? void 0 : req.eventFileList },
-                },
-            },
-        }, { new: true }, (err, result) => {
-            if (!err) {
-                const resultObj = {
-                    eventId: result === null || result === void 0 ? void 0 : result.eventId,
-                    clientId: result === null || result === void 0 ? void 0 : result.clientId,
-                    clientName: result === null || result === void 0 ? void 0 : result.clientName,
-                    clientOwnerId: result === null || result === void 0 ? void 0 : result.clientOwnerId,
-                    eventName: result === null || result === void 0 ? void 0 : result.eventName,
-                    eventFileList: result === null || result === void 0 ? void 0 : result.eventFileList,
-                    createdDate: result === null || result === void 0 ? void 0 : result.createdDate,
-                    updatedDate: result === null || result === void 0 ? void 0 : result.updatedDate,
-                };
-                (0, responderController_1.responderController)({ result: resultObj, statusCode: 200 }, res);
-            }
-            else {
-                (0, responderController_1.responderController)({
-                    result: err,
-                    statusCode: 200,
-                    errorMsg: enum_1.errorMsg.errorAtDeleteFile,
-                }, res);
-            }
-        });
+            }, { new: true }, (err, result) => {
+                if (!err) {
+                    const resultObj = {
+                        eventId: result === null || result === void 0 ? void 0 : result.eventId,
+                        clientId: result === null || result === void 0 ? void 0 : result.clientId,
+                        clientName: result === null || result === void 0 ? void 0 : result.clientName,
+                        clientOwnerId: result === null || result === void 0 ? void 0 : result.clientOwnerId,
+                        eventName: result === null || result === void 0 ? void 0 : result.eventName,
+                        eventFileList: result === null || result === void 0 ? void 0 : result.eventFileList,
+                        createdDate: result === null || result === void 0 ? void 0 : result.createdDate,
+                        updatedDate: result === null || result === void 0 ? void 0 : result.updatedDate,
+                    };
+                    (0, responderController_1.responderController)({ result: resultObj, statusCode: 200 }, res);
+                }
+                else {
+                    (0, responderController_1.responderController)({
+                        result: err,
+                        statusCode: 200,
+                        errorMsg: enum_1.errorMsg.errorAtDeleteFile,
+                    }, res);
+                }
+            });
     }
     catch (err) {
         (0, responderController_1.responderController)({

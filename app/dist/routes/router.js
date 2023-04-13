@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
 const express_1 = require("express");
-const fileLikedController_1 = require("../controller/client/fileLikedController");
 const getClientEventDataController_1 = require("../controller/client/getClientEventDataController");
+const updateFileLikedController_1 = require("../controller/client/updateFileLikedController");
 const getLikedFileListController_1 = require("../controller/client/getLikedFileListController");
 const getPrimaryEventController_1 = require("../controller/client/getPrimaryEventController");
 const loginController_1 = require("../controller/common/login/loginController");
@@ -16,6 +16,7 @@ const addEventController_1 = require("../controller/user/addEventController");
 const deleteFileController_1 = require("../controller/user/deleteFileController");
 const getClientListController_1 = require("../controller/user/getClientListController");
 const getEventDataController_1 = require("../controller/user/getEventDataController");
+const getLikedFileForUserController_1 = require("../controller/user/getLikedFileForUserController");
 const uploadFileController_1 = require("../controller/user/uploadFileController");
 const decryptToken_1 = require("../service/decryptToken");
 const enum_1 = require("../service/enum");
@@ -93,6 +94,22 @@ exports.router.post("/uploadFile", async (req, res, next) => {
         ? (0, uploadFileController_1.uploadFileController)(req, res, next, auth)
         : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: true }, res);
 });
+exports.router.post("/getLikedFilesUser", async (req, res, next) => {
+    try {
+        const auth = (await (0, decryptToken_1.decryptToken)(req.headers));
+        const request = {
+            ...req.body,
+            userId: auth === null || auth === void 0 ? void 0 : auth.userId,
+        };
+        (auth === null || auth === void 0 ? void 0 : auth.userId) && (auth === null || auth === void 0 ? void 0 : auth.status) === enum_1.registrationStatus.verified
+            ? (0, getLikedFileForUserController_1.getLikedFileForUserController)(request, res, next)
+            : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: true }, res);
+    }
+    catch (err) {
+        console.log(err);
+        res.json(err);
+    }
+});
 exports.router.post("/deleteFile", async (req, res, next) => {
     try {
         const auth = (await (0, decryptToken_1.decryptToken)(req.headers));
@@ -149,7 +166,7 @@ exports.router.post("/fileLiked", async (req, res, next) => {
             clientId: auth === null || auth === void 0 ? void 0 : auth.clientId,
         };
         (auth === null || auth === void 0 ? void 0 : auth.clientId) && (auth === null || auth === void 0 ? void 0 : auth.status) === enum_1.registrationStatus.verified
-            ? (0, fileLikedController_1.fileLikedController)(request, res, next)
+            ? (0, updateFileLikedController_1.fileLikedController)(request, res, next)
             : (0, responderController_1.responderController)({ result: {}, statusCode: 200, inValidToken: true }, res);
     }
     catch (err) {
@@ -159,6 +176,7 @@ exports.router.post("/fileLiked", async (req, res, next) => {
 });
 exports.router.post("/getLikedFiles", async (req, res, next) => {
     try {
+        console.log("hey");
         const auth = (await (0, decryptToken_1.decryptToken)(req.headers));
         const request = {
             ...req.body,

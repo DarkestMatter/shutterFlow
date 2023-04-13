@@ -2,7 +2,8 @@ import { NextFunction, Response } from "express-serve-static-core";
 import { IAuth } from "../../interface/IAuth";
 import { IEvent } from "../../interface/IEvent";
 import { eventModel } from "../../model/eventModel";
-import { errorMsg } from "../../service/enum";
+import { deleteFile } from "../../service/deleteFile";
+import { errorMsg, iDriveData } from "../../service/enum";
 import { responderController } from "../common/responderController";
 
 export const deleteFileController = async (
@@ -35,45 +36,56 @@ export const deleteFileController = async (
     //   },
     // ]);
     // console.log(a);
-    //@ts-ignore
-    eventModel().findOneAndUpdate(
-      { eventId: req?.eventId, clientOwnerId: req?.userId },
-      {
-        $pull: {
-          eventFileList: {
-            fileId: { $in: req?.eventFileList },
-          },
-          originalFileList: {
-            fileId: { $in: req?.eventFileList },
+
+    const deletedFileList = (await deleteFile(req)) as unknown as { Key: "" }[];
+    deletedFileList &&
+      //@ts-ignore
+      eventModel().findOneAndUpdate(
+        { eventId: req?.eventId, clientOwnerId: req?.userId },
+        {
+          $pull: {
+            eventFileList: {
+              minFilePath: {
+                $in: deletedFileList?.map(
+                  (key) => `${iDriveData.baseUrl}${key?.Key}`
+                ),
+              },
+            },
+            originalFileList: {
+              originalFilePath: {
+                $in: deletedFileList?.map(
+                  (key) => `${iDriveData.baseUrl}${key?.Key}`
+                ),
+              },
+            },
           },
         },
-      },
-      { new: true },
-      (err: Error, result: IEvent) => {
-        if (!err) {
-          const resultObj = {
-            eventId: result?.eventId,
-            clientId: result?.clientId,
-            clientName: result?.clientName,
-            clientOwnerId: result?.clientOwnerId,
-            eventName: result?.eventName,
-            eventFileList: result?.eventFileList,
-            createdDate: result?.createdDate,
-            updatedDate: result?.updatedDate,
-          };
-          responderController({ result: resultObj, statusCode: 200 }, res);
-        } else {
-          responderController(
-            {
-              result: err,
-              statusCode: 200,
-              errorMsg: errorMsg.errorAtDeleteFile,
-            },
-            res
-          );
+        { new: true },
+        (err: Error, result: IEvent) => {
+          if (!err) {
+            const resultObj = {
+              eventId: result?.eventId,
+              clientId: result?.clientId,
+              clientName: result?.clientName,
+              clientOwnerId: result?.clientOwnerId,
+              eventName: result?.eventName,
+              eventFileList: result?.eventFileList,
+              createdDate: result?.createdDate,
+              updatedDate: result?.updatedDate,
+            };
+            responderController({ result: resultObj, statusCode: 200 }, res);
+          } else {
+            responderController(
+              {
+                result: err,
+                statusCode: 200,
+                errorMsg: errorMsg.errorAtDeleteFile,
+              },
+              res
+            );
+          }
         }
-      }
-    );
+      );
   } catch (err) {
     responderController(
       {

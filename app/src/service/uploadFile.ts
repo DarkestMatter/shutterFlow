@@ -1,6 +1,7 @@
 import { S3Client } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import sizeOf from "buffer-image-size";
+import * as dotenv from "dotenv";
 import {
   NextFunction,
   ParamsDictionary,
@@ -10,8 +11,6 @@ import {
 import multer from "multer";
 import { ParsedQs } from "qs";
 import sharp from "sharp";
-import * as dotenv from "dotenv";
-dotenv.config();
 import { IEventFile } from "../interface/IEvent";
 import { IFileRespnseObj } from "../interface/IFileMeta";
 import {
@@ -20,7 +19,7 @@ import {
   imgDimensionType,
   uploadImgFormat,
 } from "./enum";
-import { responderController } from "../controller/common/responderController";
+dotenv.config();
 
 const s3 = new S3Client({
   credentials: {
@@ -71,6 +70,32 @@ export const uploadFile = async (
               fileRespnseObj.name = res.req.file?.originalname;
               fileRespnseObj.originalFileSize = req?.file?.size;
 
+              const uploadOriginalFile = async () => {
+                const fileUplaod = new Upload({
+                  client: s3,
+                  queueSize: 4, // optional concurrency configuration
+                  leavePartsOnError: false, // optional manually handle dropped parts
+                  params: {
+                    Bucket: iDriveData.bucket,
+                    Key: `${fileData?.clientOwnerId}/${fileData?.fileId}.${fileType}`,
+                    ContentType: req?.file?.mimetype,
+                    ACL: "public-read",
+                    Body: req.file?.buffer,
+                  },
+                });
+                fileUplaod.on(
+                  "httpUploadProgress",
+                  async (progress: any) => {}
+                );
+                const imgUploadData = await fileUplaod.done();
+                if (!req?.file?.mimetype.startsWith("image")) {
+                  req?.file?.mimetype.startsWith("image") &&
+                  imgUploadData?.$metadata?.httpStatusCode === 200
+                    ? resolve(fileRespnseObj)
+                    : resolve({ errorMsg: errorMsg.errorFileUpload });
+                }
+              };
+
               if (req?.file?.mimetype.startsWith("image")) {
                 //calculating img dim
                 const dimensions = sizeOf(req?.file?.buffer);
@@ -81,8 +106,8 @@ export const uploadFile = async (
                 }
                 const compressImageUpload = new Upload({
                   client: s3,
-                  queueSize: 4, // optional concurrency configuration
-                  leavePartsOnError: false, // optional manually handle dropped parts
+                  queueSize: 4,
+                  leavePartsOnError: false,
                   params: {
                     Bucket: iDriveData.bucket,
                     Key: `${fileData?.clientOwnerId}/min/${fileData?.fileId}.${fileType}`,
@@ -98,33 +123,16 @@ export const uploadFile = async (
                     fileRespnseObj.imgDimensionType = imgDimType;
                     fileRespnseObj.imgHeight = dimensions?.height;
                     fileRespnseObj.imgWidth = dimensions?.width;
-                    console.log(progress);
                   }
                 );
                 await compressImageUpload.done();
                 resolve(fileRespnseObj);
+                uploadOriginalFile();
               }
 
-              const fileUplaod = new Upload({
-                client: s3,
-                queueSize: 4, // optional concurrency configuration
-                leavePartsOnError: false, // optional manually handle dropped parts
-                params: {
-                  Bucket: iDriveData.bucket,
-                  Key: `${fileData?.clientOwnerId}/${fileData?.fileId}.${fileType}`,
-                  ContentType: req?.file?.mimetype,
-                  ACL: "public-read",
-                  Body: req.file?.buffer,
-                },
-              });
-              fileUplaod.on("httpUploadProgress", async (progress: any) => {
-                console.log(progress);
-              });
-              const imgUploadData = await fileUplaod.done();
-              req?.file?.mimetype.startsWith("image") &&
-              imgUploadData?.$metadata?.httpStatusCode === 200
-                ? resolve(fileRespnseObj)
-                : resolve({ errorMsg: errorMsg.errorFileUpload });
+              if (!req?.file?.mimetype.startsWith("image")) {
+                uploadOriginalFile();
+              }
             } catch (err) {
               console.log(err);
               resolve({ errorMsg: errorMsg.errorFileUpload });

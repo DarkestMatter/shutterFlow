@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { fileLikedController } from "../controller/client/fileLikedController";
 import { getClientEventDataController } from "../controller/client/getClientEventDataController";
+import { fileLikedController } from "../controller/client/updateFileLikedController";
 import { getLikedFileListController } from "../controller/client/getLikedFileListController";
 import { getPrimaryEventController } from "../controller/client/getPrimaryEventController";
 import { loginController } from "../controller/common/login/loginController";
@@ -13,6 +13,7 @@ import { addEventController } from "../controller/user/addEventController";
 import { deleteFileController } from "../controller/user/deleteFileController";
 import { getClientListController } from "../controller/user/getClientListController";
 import { getEventDataController } from "../controller/user/getEventDataController";
+import { getLikedFileForUserController } from "../controller/user/getLikedFileForUserController";
 import { uploadFileController } from "../controller/user/uploadFileController";
 import { IAuth } from "../interface/IAuth";
 import { decryptToken } from "../service/decryptToken";
@@ -115,6 +116,25 @@ router.post("/uploadFile", async (req, res, next) => {
       );
 });
 
+router.post("/getLikedFilesUser", async (req, res, next) => {
+  try {
+    const auth = (await decryptToken(req.headers)) as unknown as IAuth;
+    const request = {
+      ...req.body,
+      userId: auth?.userId,
+    };
+    auth?.userId && auth?.status === registrationStatus.verified
+      ? getLikedFileForUserController(request, res, next)
+      : responderController(
+          { result: {}, statusCode: 200, inValidToken: true },
+          res
+        );
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+});
+
 router.post("/deleteFile", async (req, res, next) => {
   try {
     const auth = (await decryptToken(req.headers)) as unknown as IAuth;
@@ -193,6 +213,7 @@ router.post("/fileLiked", async (req, res, next) => {
 
 router.post("/getLikedFiles", async (req, res, next) => {
   try {
+    console.log("hey");
     const auth = (await decryptToken(req.headers)) as unknown as IAuth;
     const request = {
       ...req.body,
