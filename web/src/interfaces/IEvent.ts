@@ -22,7 +22,6 @@ export interface IEventFile {
   errorMsg?: string;
   selected?: boolean;
   liked?: boolean;
-  index?: number;
   imgDimensionType?: imgDimensionType;
 }
 export interface IEvent {
@@ -41,12 +40,9 @@ export interface IEvent {
 
 export interface IEventRedux {
   selectedEvent?: IEvent;
-  selectedFiles: IEventFile[];
 }
 
-export const defaultIEventRedux: IEventRedux = {
-  selectedFiles: [],
-};
+export const defaultIEventRedux: IEventRedux = {};
 
 export interface IClientEventList {
   eventList: IEvent[];

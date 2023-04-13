@@ -4,6 +4,7 @@ import { IApi } from "../interfaces/IApi";
 import { updateSelectedClientEventList } from "../slices/user/clientMgmtSlice";
 import { updateLoader } from "../slices/common/commonSlice";
 import { updateMsg } from "../slices/common/msgSlice";
+import { updateSelectedEvent } from "../slices/user/eventSlice";
 
 const url = api;
 
@@ -19,7 +20,7 @@ export const deleteEventFilesApi = async (api: IApi) => {
         .then((response) => {
           if (response.data?.validToken) {
             api.dispatch(updateMsg({ errorMsg: response.data?.errorMsg }));
-            //api.dispatch(updateSelectedClientEventList(response.data?.result));
+            api.dispatch(updateSelectedEvent(response?.data?.result));
             api.dispatch(updateLoader({ isLoading: false }));
             resolve(true);
           } else {

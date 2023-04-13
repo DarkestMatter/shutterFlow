@@ -14,6 +14,7 @@ export enum dialogName {
   otpDialog = "otpDialog",
   addClientDialog = "addClientDialog",
   addEventDialog = "addEventDialog",
+  fileNameListDialog = "fileNameListDialog",
 }
 
 export enum uploadImgFormat {

@@ -33,8 +33,14 @@ export const AddEvent: React.FC = () => {
   const handleAddEvent = () =>
     dispatch(openDialogBox({ dialogName: dialogName.addEventDialog }));
 
-  const handleSelectedEvent = (event: IEvent) => {
-    dispatch(updateSelectedEvent(event));
+  const handleSelectEvent = (event: IEvent) => {
+    if (getSelectedEvent?.eventId !== event?.eventId) {
+      dispatch(updateSelectedEvent(event));
+    }
+  };
+
+  const handleGetLikedFile = () => {
+    dispatch(updateSelectedEvent({}));
   };
 
   useEffect(() => {
@@ -46,31 +52,41 @@ export const AddEvent: React.FC = () => {
   return (
     <Grid container style={{ marginTop: 10 }}>
       <Grid item xs={12}>
-        <Grid container justifyContent="center">
-          <Grid item xs={12}></Grid>
+        <Grid container item xs={12}></Grid>
+        <Grid
+          container
+          item
+          xs={12}
+          className="eventSidebarList"
+          onClick={handleGetLikedFile}
+        >
+          <EventListCol
+            style={{
+              color: `${!getSelectedEvent?.eventId ? "#191914" : "grey"}`,
+            }}
+          >
+            <span>Liked</span>
+          </EventListCol>
         </Grid>
         {selectedClient?.eventList?.map((list) => {
           return (
             <Grid
               item
               xs={12}
-              style={{
-                marginTop: 7,
-                borderBottom: "1px solid gainsboro",
-                width: 120,
-                paddingBottom: 12,
-                marginLeft: 10,
-                cursor: "pointer",
-              }}
-              onClick={() => handleSelectedEvent(list)}
+              className="eventSidebarList"
+              onClick={() => handleSelectEvent(list)}
             >
-              {getSelectedEvent?.eventId === list?.eventId ? (
-                <EventListCol style={{ color: "#191914" }}>
-                  {list?.eventName}
-                </EventListCol>
-              ) : (
-                <EventListCol>{list?.eventName}</EventListCol>
-              )}
+              <EventListCol
+                style={{
+                  color: `${
+                    getSelectedEvent?.eventId === list?.eventId
+                      ? "#191914"
+                      : "grey"
+                  }`,
+                }}
+              >
+                {list?.eventName}
+              </EventListCol>
             </Grid>
           );
         })}

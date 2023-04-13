@@ -1,31 +1,35 @@
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
-import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import { useEffect } from "react";
 import LazyLoad from "react-lazy-load";
 import { useDispatch, useSelector } from "react-redux";
 import { getEventDataApi } from "../../../api/getEventDataApi";
+import { getLikedFilesApi } from "../../../api/getLikedFilesApi";
 import { IEventFile } from "../../../interfaces/IEvent";
 import {
+  getClientLikedFileListSelector,
   getEventFileListSelector,
+  getSelectedClientSelector,
   getSelectedEventSelector,
-  getSelectFileEnabledSelector,
 } from "../../../selectors/selectors";
 import { showEventGallerySelector } from "../../../selectors/showEventGallerySelector";
-import { selectFile } from "../../../services/enum";
 import { updateSelectedFile } from "../../../slices/user/eventSlice";
 import { AppDispatch } from "../../../store";
 
 export const GalleryList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
+  const getSelectedClient = useSelector(getSelectedClientSelector);
   const showEventGallery = useSelector(showEventGallerySelector);
   const getSelectedEvent = useSelector(getSelectedEventSelector);
   const getEventFileList = useSelector(getEventFileListSelector);
-  const getSelectFileEnabled = useSelector(getSelectFileEnabledSelector);
+  const getClientLikedFileList = useSelector(getClientLikedFileListSelector);
+  const galleryFileList = getEventFileList
+    ? getEventFileList
+    : getClientLikedFileList;
 
   const getEventData = async () => {
     await getEventDataApi({
@@ -38,11 +42,18 @@ export const GalleryList: React.FC = () => {
     });
   };
 
+  const getClientLikedFile = async () => {
+    await getLikedFilesApi({
+      dispatch: dispatch,
+      uri: "getLikedFilesUser",
+      data: { clientId: getSelectedClient?.clientId },
+    });
+  };
+
   const handleFileClick = (file: IEventFile, index: number) => {
     dispatch(
       updateSelectedFile({
         fileId: file?.fileId,
-        index: index,
         clientId: file?.clientId,
         clientOwnerId: file?.clientOwnerId,
         selected: !file?.selected,
@@ -54,26 +65,21 @@ export const GalleryList: React.FC = () => {
   useEffect(() => {
     if (getSelectedEvent?.eventId && showEventGallery) {
       getEventData();
+    } else if (!getSelectedEvent?.eventId) {
+      getClientLikedFile();
     }
   }, [showEventGallery, getSelectedEvent?.eventId]);
 
   return (
     <Grid container justifyContent="center">
       {showEventGallery &&
-        getEventFileList?.map((file: IEventFile, index: number) => {
+        galleryFileList?.map((file: IEventFile, index: number) => {
           return (
             <Card
               onClick={() => handleFileClick(file, index)}
               style={{
                 width: 150,
                 margin: 5,
-                border: `${
-                  getSelectFileEnabled
-                    ? getSelectFileEnabled === selectFile.one && !file?.selected
-                      ? "5px solid blue"
-                      : "15px solid red"
-                    : "none"
-                }`,
               }}
             >
               <CardActionArea>
@@ -86,6 +92,7 @@ export const GalleryList: React.FC = () => {
                   />
                 </LazyLoad>
               </CardActionArea>
+              {file?.selected && <CheckCircleOutlineIcon />}
             </Card>
           );
         })}

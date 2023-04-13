@@ -1,69 +1,103 @@
 import Grid from "@mui/material/Grid";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteEventFilesApi } from "../../../api/deleteEventFilesApi";
 import {
-  getSelectedEventNameSelector,
-  getSelectedFilesSelector,
-  getSelectFileEnabledSelector,
+  getClientLikedFileListSelector,
+  getSelectedEventSelector,
 } from "../../../selectors/selectors";
-import { selectFile } from "../../../services/enum";
-import { updateSelectFileEnabler } from "../../../slices/user/eventSlice";
+import { updateSelectAllFile } from "../../../slices/user/eventSlice";
+import { deleteEventFilesApi } from "../../../api/deleteEventFilesApi";
 import { AppDispatch } from "../../../store";
+import { Button } from "@mui/material";
+import { FileNameListDialogBox } from "./FileNameListDialogBox";
+import { openDialogBox } from "../../../slices/common/dialogBoxSlice";
+import { dialogName } from "../../../services/enum";
 
 export const GalleryHeader: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const getSelectedEventName = useSelector(getSelectedEventNameSelector);
-  const getSelectFileEnabled = useSelector(getSelectFileEnabledSelector);
-  const getSelectedFiles = useSelector(getSelectedFilesSelector);
+  const [selectedAll, setSelectedAll] = useState<boolean>(false);
 
-  const handleSelectFileEnabler = (value: selectFile) => {
-    if (getSelectFileEnabled !== value) {
-      dispatch(updateSelectFileEnabler({ selectFile: value }));
-    } else {
-      dispatch(updateSelectFileEnabler({ selectFile: undefined }));
-    }
+  const getSelectedEvent = useSelector(getSelectedEventSelector);
+  const getClientLikedFileList = useSelector(getClientLikedFileListSelector);
+
+  const handleSelectAll = () => {
+    dispatch(
+      updateSelectAllFile({
+        selected: !selectedAll,
+        clientOwnerId: "",
+        clientId: "",
+      })
+    );
+    setSelectedAll(!selectedAll);
   };
 
   const handleDeleteFile = async () => {
-    const fileIdList = getSelectedFiles.map((file) => file?.fileId);
+    const fileIdList = getSelectedEvent?.eventFileList
+      ?.filter((file) => file?.selected)
+      ?.map((file) => {
+        return { fileId: file?.fileId, minFilePath: file?.minFilePath };
+      });
     await deleteEventFilesApi({
       dispatch: dispatch,
       uri: "deleteFile",
       data: {
-        fileId: fileIdList,
+        eventFileList: fileIdList,
+        eventId: getSelectedEvent?.eventId,
       },
     });
   };
 
+  const handleShowLikedFileName = () =>
+    dispatch(openDialogBox({ dialogName: dialogName.fileNameListDialog }));
+
   return (
     <Grid container style={{ margin: 15 }}>
-      <Grid item xs={8}>
-        <span style={{ fontSize: 24 }}>
-          <b>{getSelectedEventName}</b>
-        </span>
-      </Grid>
-      <Grid
-        item
-        xs={1}
-        className="hand"
-        onClick={() => handleSelectFileEnabler(selectFile?.one)}
-      >
-        <span>Select</span>
-      </Grid>
-      <Grid
-        item
-        xs={2}
-        className="hand"
-        onClick={() => handleSelectFileEnabler(selectFile?.all)}
-      >
-        <span>Select All</span>
-      </Grid>
-      {getSelectFileEnabled && (
-        <Grid item xs={1} className="hand" onClick={handleDeleteFile}>
-          <span>Delete</span>
+      <FileNameListDialogBox />
+      <Grid item xs={5}>
+        <Grid container>
+          <Grid item xs={12}>
+            <span style={{ fontSize: 24 }}>
+              <b>{getSelectedEvent?.eventName || "Liked"}</b>
+            </span>
+          </Grid>
+          <Grid container item xs={12} style={{ marginLeft: 5 }}>
+            <span>
+              {getSelectedEvent?.eventFileList?.length ||
+                getClientLikedFileList?.length}
+              files
+            </span>
+          </Grid>
         </Grid>
-      )}
+      </Grid>
+      <Grid item xs={3}>
+        <Button
+          className="smallBtn"
+          variant="outlined"
+          onClick={handleShowLikedFileName}
+        >
+          Show File Name
+        </Button>
+      </Grid>
+      <Grid item xs={2}>
+        <Button
+          className="smallBtn"
+          variant="outlined"
+          onClick={handleSelectAll}
+        >
+          Select All
+        </Button>
+      </Grid>
+      <Grid item xs={2}>
+        <Button
+          className="smallBtn"
+          variant="outlined"
+          onClick={handleDeleteFile}
+        >
+          Delete File
+        </Button>
+      </Grid>
+
       <Grid item xs={12} className="horizontalBar"></Grid>
     </Grid>
   );

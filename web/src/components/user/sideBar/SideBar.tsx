@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const sideBarList = ["Client", "Collections", "Settings"];
 
@@ -11,7 +12,13 @@ export const SideBarItemStyled = styled.span`
 `;
 
 export const SideBar: React.FC = () => {
+  const navigate = useNavigate();
   const [windowHeight, setWindowHeight] = useState<number>();
+
+  const handleMenuClick = (list: string) => {
+    navigate("/dashboard");
+  };
+
   useEffect(() => {
     setWindowHeight(window.innerHeight);
   }, []);
@@ -37,7 +44,9 @@ export const SideBar: React.FC = () => {
                     cursor: "pointer",
                   }}
                 >
-                  <SideBarItemStyled>{list}</SideBarItemStyled>
+                  <SideBarItemStyled onClick={() => handleMenuClick(list)}>
+                    {list}
+                  </SideBarItemStyled>
                 </Grid>
               ) : (
                 <Grid item xs={12}></Grid>

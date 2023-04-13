@@ -83,6 +83,7 @@ export const Router: React.FC = () => {
             <div style={{ marginTop: -5 }}>
               <Routes>
                 <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Registration />} />
                 <Route path="/client" element={<ClientDashboard />} />
                 <Route path="/instaSelect" element={<InstaSelect />} />
                 <Route path="/liked" element={<Liked />} />
