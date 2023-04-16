@@ -18,6 +18,7 @@ import {
 import { showEventGallerySelector } from "../../../selectors/showEventGallerySelector";
 import { updateSelectedFile } from "../../../slices/user/eventSlice";
 import { AppDispatch } from "../../../store";
+import { LikedFileListHeader } from "./LikedFileListHeader";
 
 export const GalleryList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -72,6 +73,7 @@ export const GalleryList: React.FC = () => {
 
   return (
     <Grid container justifyContent="center">
+      {!getSelectedEvent?.eventName && <LikedFileListHeader />}
       {showEventGallery &&
         galleryFileList?.map((file: IEventFile, index: number) => {
           return (

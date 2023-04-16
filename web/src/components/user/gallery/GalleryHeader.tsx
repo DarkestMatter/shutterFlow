@@ -48,9 +48,6 @@ export const GalleryHeader: React.FC = () => {
     });
   };
 
-  const handleShowLikedFileName = () =>
-    dispatch(openDialogBox({ dialogName: dialogName.fileNameListDialog }));
-
   return (
     <Grid container style={{ margin: 15 }}>
       <FileNameListDialogBox />
@@ -65,39 +62,33 @@ export const GalleryHeader: React.FC = () => {
             <span>
               {getSelectedEvent?.eventFileList?.length ||
                 getClientLikedFileList?.length}
-              files
+              {` files`}
             </span>
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={3}>
-        <Button
-          className="smallBtn"
-          variant="outlined"
-          onClick={handleShowLikedFileName}
-        >
-          Show File Name
-        </Button>
-      </Grid>
-      <Grid item xs={2}>
-        <Button
-          className="smallBtn"
-          variant="outlined"
-          onClick={handleSelectAll}
-        >
-          Select All
-        </Button>
-      </Grid>
-      <Grid item xs={2}>
-        <Button
-          className="smallBtn"
-          variant="outlined"
-          onClick={handleDeleteFile}
-        >
-          Delete File
-        </Button>
-      </Grid>
-
+      {getSelectedEvent?.eventName && (
+        <>
+          <Grid item xs={2}>
+            <Button
+              className="smallBtn"
+              variant="outlined"
+              onClick={handleSelectAll}
+            >
+              Select All
+            </Button>
+          </Grid>
+          <Grid item xs={2}>
+            <Button
+              className="smallBtn"
+              variant="outlined"
+              onClick={handleDeleteFile}
+            >
+              Delete File
+            </Button>
+          </Grid>
+        </>
+      )}
       <Grid item xs={12} className="horizontalBar"></Grid>
     </Grid>
   );

@@ -4,6 +4,7 @@ exports.addLoginCred = void 0;
 const uuid_1 = require("uuid");
 const loginCredModel_1 = require("../model/loginCredModel");
 const enum_1 = require("./enum");
+const otpGenerator_1 = require("./otpGenerator");
 const addLoginCred = async (userData) => {
     return new Promise((resolve, reject) => {
         var _a, _b, _c;
@@ -21,7 +22,7 @@ const addLoginCred = async (userData) => {
             pwd: userData === null || userData === void 0 ? void 0 : userData.pwd,
             status: userData === null || userData === void 0 ? void 0 : userData.status,
             customerType: userData === null || userData === void 0 ? void 0 : userData.customerType,
-            otp: "123456",
+            otp: (0, otpGenerator_1.otpGenerator)(),
             createdDate: new Date(),
             updatedDate: new Date(),
         };

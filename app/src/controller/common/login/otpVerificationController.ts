@@ -5,7 +5,11 @@ import { IUserProfile } from "../../../interface/IUserProfile";
 import { loginCredModel } from "../../../model/loginCredModel";
 import { userProfileModel } from "../../../model/userProfileModel";
 import { responderController } from "../responderController";
-import { errorMsg, registrationStatus } from "../../../service/enum";
+import {
+  customerType,
+  errorMsg,
+  registrationStatus,
+} from "../../../service/enum";
 import { IToken } from "../../../interface/IToken";
 
 export const otpVerificationController: RequestHandler = async (
@@ -25,7 +29,7 @@ export const otpVerificationController: RequestHandler = async (
               const tokenObj: IToken = {
                 userId: result?.userId,
                 clientId: "",
-                customerType: result?.customerType,
+                customerType: customerType.user,
                 status: registrationStatus.verified,
               };
               console.log(result);
@@ -35,6 +39,7 @@ export const otpVerificationController: RequestHandler = async (
                 status: registrationStatus.verified,
                 studioName: result?.studioName,
                 mobile: result?.mobile,
+                customerType: customerType.user,
               };
               responderController(
                 { result: { ...resultObj, token: token }, statusCode: 200 },

@@ -18,7 +18,7 @@ const otpVerificationController = async (req, res, next) => {
                     const tokenObj = {
                         userId: result === null || result === void 0 ? void 0 : result.userId,
                         clientId: "",
-                        customerType: result === null || result === void 0 ? void 0 : result.customerType,
+                        customerType: enum_1.customerType.user,
                         status: enum_1.registrationStatus.verified,
                     };
                     console.log(result);
@@ -28,6 +28,7 @@ const otpVerificationController = async (req, res, next) => {
                         status: enum_1.registrationStatus.verified,
                         studioName: result === null || result === void 0 ? void 0 : result.studioName,
                         mobile: result === null || result === void 0 ? void 0 : result.mobile,
+                        customerType: enum_1.customerType.user,
                     };
                     (0, responderController_1.responderController)({ result: { ...resultObj, token: token }, statusCode: 200 }, res);
                 }

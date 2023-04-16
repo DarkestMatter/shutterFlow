@@ -21,7 +21,7 @@ export const addLoginCred = async (userData: IUserProfile & ILoginCred) => {
       pwd: userData?.pwd,
       status: userData?.status,
       customerType: userData?.customerType,
-      otp: "123456", //otpGenerator(),
+      otp: otpGenerator(),
       createdDate: new Date() as unknown as String,
       updatedDate: new Date() as unknown as String,
     };
