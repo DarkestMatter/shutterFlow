@@ -34,6 +34,7 @@ export const addLoginCred = async (userData: IUserProfile & ILoginCred) => {
             email: result?.email,
             mobile: result?.mobile,
             status: result?.status,
+            otp: result?.otp,
             customerType: result?.customerType,
             updatedDate: result?.updatedDate,
           };

@@ -51,9 +51,6 @@ export const LoginPage: React.FC = () => {
       data: { loginId: loginId, pwd: pwd },
     })) as IUserProfile;
     switch (true) {
-      case apiResp?.status === userStatus.registered:
-        dispatch(openDialogBox({ dialogName: dialogName.otpDialog }));
-        break;
       case apiResp?.customerType === customerType.user:
         navigate("/dashboard");
         break;

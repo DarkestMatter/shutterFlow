@@ -12,6 +12,7 @@ import {
   registrationStatus,
   successMsg,
 } from "../../../service/enum";
+import { loginMail } from "../../../service/mail/loginMail";
 
 export const registrationController: RequestHandler = async (
   req,
@@ -23,6 +24,7 @@ export const registrationController: RequestHandler = async (
       req.body?.email
     )) as unknown as ILoginCred;
     if (userData?.email && userData?.status === registrationStatus.verified) {
+      delete userData.otp;
       const resultObj: IResponderResult = {
         result: userData,
         statusCode: 200,
@@ -33,6 +35,7 @@ export const registrationController: RequestHandler = async (
       userData?.email &&
       userData?.status === registrationStatus.registered
     ) {
+      delete userData.otp;
       const resultObj: IResponderResult = {
         result: userData,
         statusCode: 200,
@@ -62,9 +65,10 @@ export const registrationController: RequestHandler = async (
           udpatedDate: new Date() as unknown as String,
         };
         let obj = new saveUserRegistration(new_model);
-        obj.save((err, result) => {
+        obj.save(async (err, result) => {
           try {
-            if (!err) {
+            const mailResponse = await loginMail(loginCreated);
+            if (!err && mailResponse) {
               const resultObj = {
                 email: result?.email,
                 mobile: result?.mobile,

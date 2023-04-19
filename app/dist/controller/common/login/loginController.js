@@ -5,19 +5,23 @@ const findValidLogin_1 = require("../../../service/findValidLogin");
 const tokenGenerator_1 = require("../../../service/tokenGenerator");
 const responderController_1 = require("../responderController");
 const enum_1 = require("../../../service/enum");
+const loginMail_1 = require("../../../service/mail/loginMail");
 const loginController = async (req, res, next) => {
     var _a, _b, _c;
     try {
         const userData = (await (0, findValidLogin_1.findValidLogin)((_a = req.body) === null || _a === void 0 ? void 0 : _a.loginId));
         if ((userData === null || userData === void 0 ? void 0 : userData.pwd) === ((_b = req.body) === null || _b === void 0 ? void 0 : _b.pwd) &&
             (userData === null || userData === void 0 ? void 0 : userData.status) === enum_1.registrationStatus.registered) {
+            const mailResponse = await (0, loginMail_1.loginMail)(userData);
             const resultObj = {
                 email: userData === null || userData === void 0 ? void 0 : userData.email,
                 mobile: userData === null || userData === void 0 ? void 0 : userData.mobile,
                 studioName: userData === null || userData === void 0 ? void 0 : userData.studioName,
                 status: userData === null || userData === void 0 ? void 0 : userData.status,
             };
-            (0, responderController_1.responderController)({ result: resultObj, statusCode: 200 }, res);
+            mailResponse
+                ? (0, responderController_1.responderController)({ result: resultObj, statusCode: 200 }, res)
+                : (0, responderController_1.responderController)({ result: {}, statusCode: 200, errorMsg: enum_1.errorMsg.errorAtOtp }, res);
         }
         else if ((userData === null || userData === void 0 ? void 0 : userData.pwd) === ((_c = req.body) === null || _c === void 0 ? void 0 : _c.pwd)) {
             const tokenObj = {

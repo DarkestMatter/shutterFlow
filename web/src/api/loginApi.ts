@@ -1,9 +1,10 @@
 import axios from "axios";
 import { api } from "../env";
 import { IApi } from "../interfaces/IApi";
-import { customerType, userStatus } from "../services/enum";
+import { customerType, dialogName, userStatus } from "../services/enum";
 import { updateClientProfile } from "../slices/client/clientProfileSlice";
 import { updateLoader, updateToken } from "../slices/common/commonSlice";
+import { openDialogBox } from "../slices/common/dialogBoxSlice";
 import { updateMsg } from "../slices/common/msgSlice";
 import { updateUserProfile } from "../slices/user/userProfileSlice";
 
@@ -20,7 +21,6 @@ export const loginApi = async (api: IApi) => {
         })
         .then((response) => {
           if (response?.data?.validToken && response.data?.result?.token) {
-            api.dispatch(updateMsg({ errorMsg: response.data?.errorMsg }));
             localStorage.setItem("token", response.data?.result?.token);
             api.dispatch(updateToken({ isValidToken: true }));
             api.dispatch(updateLoader({ isLoading: false }));
@@ -29,6 +29,9 @@ export const loginApi = async (api: IApi) => {
               : api.dispatch(updateClientProfile(response.data?.result));
             resolve(response.data?.result);
           } else {
+            if (response.data?.result?.status === userStatus.registered) {
+              api.dispatch(openDialogBox({ dialogName: dialogName.otpDialog }));
+            }
             api.dispatch(updateLoader({ isLoading: false }));
             api.dispatch(updateToken({ isValidToken: false }));
             resolve(false);

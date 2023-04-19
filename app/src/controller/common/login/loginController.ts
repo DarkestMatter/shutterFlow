@@ -6,6 +6,7 @@ import { responderController } from "../responderController";
 import { errorMsg, registrationStatus } from "../../../service/enum";
 import { ILoginCred } from "../../../interface/ILoginCred";
 import { IToken } from "../../../interface/IToken";
+import { loginMail } from "../../../service/mail/loginMail";
 
 export const loginController: RequestHandler = async (req, res, next) => {
   try {
@@ -16,13 +17,19 @@ export const loginController: RequestHandler = async (req, res, next) => {
       userData?.pwd === req.body?.pwd &&
       userData?.status === registrationStatus.registered
     ) {
+      const mailResponse = await loginMail(userData);
       const resultObj = {
         email: userData?.email,
         mobile: userData?.mobile,
         studioName: userData?.studioName,
         status: userData?.status,
       };
-      responderController({ result: resultObj, statusCode: 200 }, res);
+      mailResponse
+        ? responderController({ result: resultObj, statusCode: 200 }, res)
+        : responderController(
+            { result: {}, statusCode: 200, errorMsg: errorMsg.errorAtOtp },
+            res
+          );
     } else if (userData?.pwd === req.body?.pwd) {
       const tokenObj: IToken = {
         userId: userData?.userId,

@@ -6,11 +6,13 @@ const findValidLogin_1 = require("../../../service/findValidLogin");
 const userProfileModel_1 = require("../../../model/userProfileModel");
 const responderController_1 = require("../responderController");
 const enum_1 = require("../../../service/enum");
+const loginMail_1 = require("../../../service/mail/loginMail");
 const registrationController = async (req, res, next) => {
     var _a, _b;
     try {
         const userData = (await (0, findValidLogin_1.findValidLogin)((_a = req.body) === null || _a === void 0 ? void 0 : _a.email));
         if ((userData === null || userData === void 0 ? void 0 : userData.email) && (userData === null || userData === void 0 ? void 0 : userData.status) === enum_1.registrationStatus.verified) {
+            delete userData.otp;
             const resultObj = {
                 result: userData,
                 statusCode: 200,
@@ -20,6 +22,7 @@ const registrationController = async (req, res, next) => {
         }
         else if ((userData === null || userData === void 0 ? void 0 : userData.email) &&
             (userData === null || userData === void 0 ? void 0 : userData.status) === enum_1.registrationStatus.registered) {
+            delete userData.otp;
             const resultObj = {
                 result: userData,
                 statusCode: 200,
@@ -46,9 +49,10 @@ const registrationController = async (req, res, next) => {
                     udpatedDate: new Date(),
                 };
                 let obj = new saveUserRegistration(new_model);
-                obj.save((err, result) => {
+                obj.save(async (err, result) => {
                     try {
-                        if (!err) {
+                        const mailResponse = await (0, loginMail_1.loginMail)(loginCreated);
+                        if (!err && mailResponse) {
                             const resultObj = {
                                 email: result === null || result === void 0 ? void 0 : result.email,
                                 mobile: result === null || result === void 0 ? void 0 : result.mobile,

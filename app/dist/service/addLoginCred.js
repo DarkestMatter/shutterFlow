@@ -35,6 +35,7 @@ const addLoginCred = async (userData) => {
                         email: result === null || result === void 0 ? void 0 : result.email,
                         mobile: result === null || result === void 0 ? void 0 : result.mobile,
                         status: result === null || result === void 0 ? void 0 : result.status,
+                        otp: result === null || result === void 0 ? void 0 : result.otp,
                         customerType: result === null || result === void 0 ? void 0 : result.customerType,
                         updatedDate: result === null || result === void 0 ? void 0 : result.updatedDate,
                     };
