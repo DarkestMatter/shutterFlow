@@ -68,7 +68,7 @@ const uploadFile = async (req, res, next, fileData) => {
                 },
             });
             upload.single("myImage")(req, res, async (err) => {
-                var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+                var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
                 const fileType = (_a = res.req.file) === null || _a === void 0 ? void 0 : _a.mimetype.split("/")[1];
                 if (!err) {
                     if (((_b = res === null || res === void 0 ? void 0 : res.req) === null || _b === void 0 ? void 0 : _b.file) && (req === null || req === void 0 ? void 0 : req.file)) {
@@ -103,20 +103,20 @@ const uploadFile = async (req, res, next, fileData) => {
                                 }
                             };
                             if ((_h = req === null || req === void 0 ? void 0 : req.file) === null || _h === void 0 ? void 0 : _h.mimetype.startsWith("image")) {
+                                // const compressedImg = sharp(req.file?.buffer).webp({
+                                //   quality: 1,
+                                // });
+                                const compressedImg = (0, sharp_1.default)((_j = req.file) === null || _j === void 0 ? void 0 : _j.buffer).rotate().resize({
+                                    width: 500,
+                                });
                                 //calculating img dim
-                                const dimensions = (0, buffer_image_size_1.default)((_j = req === null || req === void 0 ? void 0 : req.file) === null || _j === void 0 ? void 0 : _j.buffer);
+                                const dimensions = (0, buffer_image_size_1.default)(await compressedImg.toBuffer());
                                 if (dimensions.height > dimensions.width) {
                                     imgDimType = enum_1.imgDimensionType.portrait;
                                 }
                                 else {
                                     imgDimType = enum_1.imgDimensionType.landscape;
                                 }
-                                // const compressedImg = sharp(req.file?.buffer).webp({
-                                //   quality: 1,
-                                // });
-                                const compressedImg = (0, sharp_1.default)((_k = req.file) === null || _k === void 0 ? void 0 : _k.buffer).rotate().resize({
-                                    width: 500,
-                                });
                                 const compressImageUpload = new lib_storage_1.Upload({
                                     client: s3,
                                     queueSize: 4,
@@ -124,7 +124,7 @@ const uploadFile = async (req, res, next, fileData) => {
                                     params: {
                                         Bucket: enum_1.iDriveData.bucket,
                                         Key: `${fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId}/min/${fileData === null || fileData === void 0 ? void 0 : fileData.fileId}.${fileType}`,
-                                        ContentType: (_l = req === null || req === void 0 ? void 0 : req.file) === null || _l === void 0 ? void 0 : _l.mimetype,
+                                        ContentType: (_k = req === null || req === void 0 ? void 0 : req.file) === null || _k === void 0 ? void 0 : _k.mimetype,
                                         ACL: "public-read",
                                         Body: compressedImg,
                                     },
@@ -139,7 +139,7 @@ const uploadFile = async (req, res, next, fileData) => {
                                 resolve(fileRespnseObj);
                                 uploadOriginalFile();
                             }
-                            if (!((_m = req === null || req === void 0 ? void 0 : req.file) === null || _m === void 0 ? void 0 : _m.mimetype.startsWith("image"))) {
+                            if (!((_l = req === null || req === void 0 ? void 0 : req.file) === null || _l === void 0 ? void 0 : _l.mimetype.startsWith("image"))) {
                                 uploadOriginalFile();
                             }
                         }

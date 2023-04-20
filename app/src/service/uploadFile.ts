@@ -97,19 +97,19 @@ export const uploadFile = async (
               };
 
               if (req?.file?.mimetype.startsWith("image")) {
-                //calculating img dim
-                const dimensions = sizeOf(req?.file?.buffer);
-                if (dimensions.height > dimensions.width) {
-                  imgDimType = imgDimensionType.portrait;
-                } else {
-                  imgDimType = imgDimensionType.landscape;
-                }
                 // const compressedImg = sharp(req.file?.buffer).webp({
                 //   quality: 1,
                 // });
                 const compressedImg = sharp(req.file?.buffer).rotate().resize({
                   width: 500,
                 });
+                //calculating img dim
+                const dimensions = sizeOf(await compressedImg.toBuffer());
+                if (dimensions.height > dimensions.width) {
+                  imgDimType = imgDimensionType.portrait;
+                } else {
+                  imgDimType = imgDimensionType.landscape;
+                }
                 const compressImageUpload = new Upload({
                   client: s3,
                   queueSize: 4,

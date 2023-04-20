@@ -12,6 +12,7 @@ import {
   getClientSelectedFileSelector,
   getWindowWidthSelector,
 } from "../../../selectors/selectors";
+import { lazyLoadOffset } from "../../../services/enum";
 import { updateLikedFile } from "../../../slices/client/clientEventSlice";
 import { AppDispatch } from "../../../store";
 
@@ -87,7 +88,7 @@ export const InstaFileBox: React.FC = () => {
                         : "inherit"
                     }
                     width={getWindowWidth}
-                    offset={50}
+                    offset={lazyLoadOffset.offset}
                   >
                     <img
                       style={{

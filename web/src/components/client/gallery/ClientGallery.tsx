@@ -17,6 +17,7 @@ import {
 } from "../../../selectors/selectors";
 import { sortedClientGalleryListSelector } from "../../../selectors/sortedClientGalleryListSelector";
 import { sortedClientLikedFileListSelector } from "../../../selectors/sortedClientLikedFileListSelector";
+import { lazyLoadOffset } from "../../../services/enum";
 import {
   updateClientSelectedFile,
   updateLikedFile,
@@ -109,7 +110,7 @@ export const ClientGallery: React.FC<IClientGallery> = (props) => {
                               : "inherit"
                           }
                           width={getWindowWidth / galleryList.length}
-                          offset={50}
+                          offset={lazyLoadOffset.offset}
                         >
                           <img
                             style={{

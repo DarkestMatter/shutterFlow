@@ -33,3 +33,7 @@ export enum imgDimensionType {
   landscape = "l",
   portrait = "p",
 }
+
+export enum lazyLoadOffset {
+  offset = 200,
+}

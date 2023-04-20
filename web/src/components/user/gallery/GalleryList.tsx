@@ -16,6 +16,7 @@ import {
   getSelectedEventSelector,
 } from "../../../selectors/selectors";
 import { showEventGallerySelector } from "../../../selectors/showEventGallerySelector";
+import { lazyLoadOffset } from "../../../services/enum";
 import { updateSelectedFile } from "../../../slices/user/eventSlice";
 import { AppDispatch } from "../../../store";
 import { LikedFileListHeader } from "./LikedFileListHeader";
@@ -85,7 +86,11 @@ export const GalleryList: React.FC = () => {
               }}
             >
               <CardActionArea>
-                <LazyLoad height={150} width={150} offset={150}>
+                <LazyLoad
+                  height={150}
+                  width={150}
+                  offset={lazyLoadOffset.offset}
+                >
                   <CardMedia
                     component="img"
                     image={file?.minFilePath}
