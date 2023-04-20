@@ -111,6 +111,12 @@ const uploadFile = async (req, res, next, fileData) => {
                                 else {
                                     imgDimType = enum_1.imgDimensionType.landscape;
                                 }
+                                // const compressedImg = sharp(req.file?.buffer).webp({
+                                //   quality: 1,
+                                // });
+                                const compressedImg = (0, sharp_1.default)((_k = req.file) === null || _k === void 0 ? void 0 : _k.buffer).rotate().resize({
+                                    width: 500,
+                                });
                                 const compressImageUpload = new lib_storage_1.Upload({
                                     client: s3,
                                     queueSize: 4,
@@ -118,9 +124,9 @@ const uploadFile = async (req, res, next, fileData) => {
                                     params: {
                                         Bucket: enum_1.iDriveData.bucket,
                                         Key: `${fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId}/min/${fileData === null || fileData === void 0 ? void 0 : fileData.fileId}.${fileType}`,
-                                        ContentType: (_k = req === null || req === void 0 ? void 0 : req.file) === null || _k === void 0 ? void 0 : _k.mimetype,
+                                        ContentType: (_l = req === null || req === void 0 ? void 0 : req.file) === null || _l === void 0 ? void 0 : _l.mimetype,
                                         ACL: "public-read",
-                                        Body: (0, sharp_1.default)((_l = req.file) === null || _l === void 0 ? void 0 : _l.buffer).webp({ quality: 35 }),
+                                        Body: compressedImg,
                                     },
                                 });
                                 compressImageUpload.on("httpUploadProgress", (progress) => {

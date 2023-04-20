@@ -104,6 +104,12 @@ export const uploadFile = async (
                 } else {
                   imgDimType = imgDimensionType.landscape;
                 }
+                // const compressedImg = sharp(req.file?.buffer).webp({
+                //   quality: 1,
+                // });
+                const compressedImg = sharp(req.file?.buffer).rotate().resize({
+                  width: 500,
+                });
                 const compressImageUpload = new Upload({
                   client: s3,
                   queueSize: 4,
@@ -113,7 +119,7 @@ export const uploadFile = async (
                     Key: `${fileData?.clientOwnerId}/min/${fileData?.fileId}.${fileType}`,
                     ContentType: req?.file?.mimetype,
                     ACL: "public-read",
-                    Body: sharp(req.file?.buffer).webp({ quality: 35 }),
+                    Body: compressedImg,
                   },
                 });
                 compressImageUpload.on(
