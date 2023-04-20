@@ -92,7 +92,7 @@ export const UploadFile: React.FC = () => {
                   onChange={(files) => handleUpload(files.target?.files)}
                   name="file"
                   type="file"
-                  accept="file_extension|video/*|image/*"
+                  accept=".jpg,.jpeg,.JPG,.JPEG,.png,.PNG"
                   multiple
                 />
               </div>
