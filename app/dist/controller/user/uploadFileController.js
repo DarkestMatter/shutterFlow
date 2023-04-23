@@ -17,6 +17,7 @@ const uploadFileController = async (req, res, next, auth) => {
             minFilePath: `${auth === null || auth === void 0 ? void 0 : auth.userId}/min/${fileId}`,
             microFilePath: ``,
         };
+        (0, responderController_1.responderController)({ result: {}, statusCode: 200 }, res);
         //original file upload
         const fileUploadResponse = (await (0, uploadFile_1.uploadFile)(req, res, next, fileData));
         if (fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.errorMsg) {
@@ -40,13 +41,16 @@ const uploadFileController = async (req, res, next, auth) => {
             imgDimensionType: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.imgDimensionType,
         };
         const fileDataSaved = (await (0, exports.saveUploadFileData)(eventFileDataObj));
-        (fileDataSaved === null || fileDataSaved === void 0 ? void 0 : fileDataSaved.clientId)
-            ? (0, responderController_1.responderController)({ result: {}, statusCode: 200 }, res)
-            : (0, responderController_1.responderController)({
-                result: {},
-                statusCode: 200,
-                errorMsg: enum_1.errorMsg.errorFileUpload,
-            }, res);
+        // fileDataSaved?.clientId
+        //   ? responderController({ result: {}, statusCode: 200 }, res)
+        //   : responderController(
+        //       {
+        //         result: {},
+        //         statusCode: 200,
+        //         errorMsg: errorMsg.errorFileUpload,
+        //       },
+        //       res
+        //     );
         await (0, clientModel_1.clientModel)().updateOne({
             clientOwnerId: fileData === null || fileData === void 0 ? void 0 : fileData.clientOwnerId,
             clientId: fileUploadResponse === null || fileUploadResponse === void 0 ? void 0 : fileUploadResponse.clientId,

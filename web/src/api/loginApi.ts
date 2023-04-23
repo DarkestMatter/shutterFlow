@@ -30,6 +30,7 @@ export const loginApi = async (api: IApi) => {
             resolve(response.data?.result);
           } else {
             if (response.data?.result?.status === userStatus.registered) {
+              api.dispatch(updateUserProfile(response.data?.result));
               api.dispatch(openDialogBox({ dialogName: dialogName.otpDialog }));
             }
             api.dispatch(updateLoader({ isLoading: false }));

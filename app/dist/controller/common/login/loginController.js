@@ -18,6 +18,7 @@ const loginController = async (req, res, next) => {
                 mobile: userData === null || userData === void 0 ? void 0 : userData.mobile,
                 studioName: userData === null || userData === void 0 ? void 0 : userData.studioName,
                 status: userData === null || userData === void 0 ? void 0 : userData.status,
+                customerType: userData === null || userData === void 0 ? void 0 : userData.customerType,
             };
             mailResponse
                 ? (0, responderController_1.responderController)({ result: resultObj, statusCode: 200 }, res)

@@ -23,6 +23,7 @@ export const loginController: RequestHandler = async (req, res, next) => {
         mobile: userData?.mobile,
         studioName: userData?.studioName,
         status: userData?.status,
+        customerType: userData?.customerType,
       };
       mailResponse
         ? responderController({ result: resultObj, statusCode: 200 }, res)

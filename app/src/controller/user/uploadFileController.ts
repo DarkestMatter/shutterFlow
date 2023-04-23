@@ -30,6 +30,7 @@ export const uploadFileController = async (
       minFilePath: `${auth?.userId}/min/${fileId}`,
       microFilePath: ``,
     };
+    responderController({ result: {}, statusCode: 200 }, res);
     //original file upload
     const fileUploadResponse = (await uploadFile(
       req,
@@ -63,16 +64,16 @@ export const uploadFileController = async (
     const fileDataSaved = (await saveUploadFileData(
       eventFileDataObj
     )) as IEvent;
-    fileDataSaved?.clientId
-      ? responderController({ result: {}, statusCode: 200 }, res)
-      : responderController(
-          {
-            result: {},
-            statusCode: 200,
-            errorMsg: errorMsg.errorFileUpload,
-          },
-          res
-        );
+    // fileDataSaved?.clientId
+    //   ? responderController({ result: {}, statusCode: 200 }, res)
+    //   : responderController(
+    //       {
+    //         result: {},
+    //         statusCode: 200,
+    //         errorMsg: errorMsg.errorFileUpload,
+    //       },
+    //       res
+    //     );
     await clientModel().updateOne(
       {
         clientOwnerId: fileData?.clientOwnerId,
